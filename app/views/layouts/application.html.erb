@@ -24,6 +24,10 @@
   </head>
 
   <body>
+    <% flash.each do |key, message| %>
+      <div class="flash flash--<%= key %>" role="alert"><%= message %></div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
