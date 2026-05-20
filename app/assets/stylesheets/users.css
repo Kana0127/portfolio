@@ -1,0 +1,216 @@
+/*
+ * Monthly Step - 新規会員登録画面のスタイル
+ * home.css と同じパステルグリーン基調で揃え、独立した class 名で管理する
+ */
+
+.signup-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px 16px 40px;
+  box-sizing: border-box;
+  background-color: #eaf2e6;
+  color: #2f3b2a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+  line-height: 1.6;
+}
+
+.signup-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 12px 32px rgba(63, 107, 58, 0.12);
+  padding: 32px 28px;
+  box-sizing: border-box;
+}
+
+.signup-app-name {
+  margin: 0 0 24px;
+  text-align: center;
+  color: #3f6b3a;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.signup-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.signup-heading {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.signup-lead {
+  margin: 0;
+  color: #6b7a64;
+  font-size: 13px;
+}
+
+.signup-error {
+  background-color: #fdecea;
+  border: 1px solid #f5c2bd;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  color: #8a2a22;
+}
+
+.signup-error-title {
+  margin: 0 0 6px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.signup-error-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 0 0 20px;
+}
+
+.signup-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2f3b2a;
+  margin-bottom: 8px;
+}
+
+.signup-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  border: none;
+  background-color: #d6dfd1;
+  border-radius: 14px;
+  font-size: 15px;
+  color: #2f3b2a;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.signup-input::placeholder {
+  color: #8a9684;
+}
+
+.signup-input:focus {
+  outline: 2px solid #3f6b3a;
+  outline-offset: 1px;
+}
+
+.signup-form-hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: #6b7a64;
+}
+
+.signup-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 52px;
+  border: none;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.05s ease;
+  font-family: inherit;
+}
+
+.signup-btn:active {
+  transform: scale(0.99);
+}
+
+.signup-btn--primary {
+  margin-top: 8px;
+  background-color: #3f6b3a;
+  color: #ffffff;
+}
+
+.signup-btn--primary:hover {
+  background-color: #345a30;
+}
+
+.signup-back-link {
+  margin: 24px 0 0;
+  text-align: center;
+  font-size: 13px;
+  color: #6b7a64;
+}
+
+.signup-back-link-anchor {
+  color: #3f6b3a;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signup-back-link-anchor:hover {
+  text-decoration: underline;
+}
+
+/* スマホ幅では画面いっぱいに自然に表示する */
+@media (max-width: 480px) {
+  .signup-page {
+    padding: 16px 12px 32px;
+  }
+
+  .signup-card {
+    box-shadow: none;
+    border-radius: 0;
+    background-color: transparent;
+    padding: 16px 4px 24px;
+  }
+
+  .signup-heading {
+    font-size: 20px;
+  }
+}
+
+/* ----------------------------------------------------------------
+ * Flash メッセージ（共通レイアウトから呼ばれる）
+ * ---------------------------------------------------------------- */
+
+.flash {
+  max-width: 440px;
+  margin: 16px auto 0;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.flash--notice {
+  background-color: #d8ecd0;
+  color: #2f5a2a;
+  border: 1px solid #b7dcaa;
+}
+
+.flash--alert {
+  background-color: #fdecea;
+  color: #8a2a22;
+  border: 1px solid #f5c2bd;
+}
