@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   root "home#top"
 
   resources :users, only: %i[new create]
+  resources :monthly_goals, only: %i[index new create]
 
   get    "login",  to: "sessions#new"
   post   "login",  to: "sessions#create"

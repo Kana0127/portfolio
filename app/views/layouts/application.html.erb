@@ -27,6 +27,7 @@
     <header class="app-header">
       <nav class="app-header-nav">
         <% if logged_in? %>
+          <%= link_to "月目標一覧", monthly_goals_path, class: "app-header-link" %>
           <%= button_to "ログアウト", logout_path, method: :delete, class: "app-header-link app-header-link--logout", form: { class: "app-header-form" } %>
         <% else %>
           <%= link_to "ログイン", login_path, class: "app-header-link" %>
