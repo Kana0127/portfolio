@@ -1,0 +1,213 @@
+/*
+ * Monthly Step - ログイン画面のスタイル
+ * signup（users.css）と同じパステルグリーン基調で揃え、独立した class 名で管理する
+ */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px 16px 40px;
+  box-sizing: border-box;
+  background-color: #eaf2e6;
+  color: #2f3b2a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+  line-height: 1.6;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 12px 32px rgba(63, 107, 58, 0.12);
+  padding: 32px 28px;
+  box-sizing: border-box;
+}
+
+.login-app-name {
+  margin: 0 0 24px;
+  text-align: center;
+  color: #3f6b3a;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.login-heading {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.login-lead {
+  margin: 0;
+  color: #6b7a64;
+  font-size: 13px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 0 0 20px;
+}
+
+.login-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2f3b2a;
+  margin-bottom: 8px;
+}
+
+.login-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  border: none;
+  background-color: #d6dfd1;
+  border-radius: 14px;
+  font-size: 15px;
+  color: #2f3b2a;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.login-input::placeholder {
+  color: #8a9684;
+}
+
+.login-input:focus {
+  outline: 2px solid #3f6b3a;
+  outline-offset: 1px;
+}
+
+.login-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 52px;
+  border: none;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.05s ease;
+  font-family: inherit;
+}
+
+.login-btn:active {
+  transform: scale(0.99);
+}
+
+.login-btn--primary {
+  margin-top: 8px;
+  background-color: #3f6b3a;
+  color: #ffffff;
+}
+
+.login-btn--primary:hover {
+  background-color: #345a30;
+}
+
+.login-signup-link,
+.login-back-link {
+  margin: 16px 0 0;
+  text-align: center;
+  font-size: 13px;
+  color: #6b7a64;
+}
+
+.login-signup-link-anchor,
+.login-back-link-anchor {
+  color: #3f6b3a;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-signup-link-anchor:hover,
+.login-back-link-anchor:hover {
+  text-decoration: underline;
+}
+
+/* スマホ幅では画面いっぱいに自然に表示する */
+@media (max-width: 480px) {
+  .login-page {
+    padding: 16px 12px 32px;
+  }
+
+  .login-card {
+    box-shadow: none;
+    border-radius: 0;
+    background-color: transparent;
+    padding: 16px 4px 24px;
+  }
+
+  .login-heading {
+    font-size: 20px;
+  }
+}
+
+/* ----------------------------------------------------------------
+ * 共通レイアウト：app-header（layouts/application.html.erb から呼ばれる）
+ * ログイン状態によって表示が変わるシンプルなヘッダー
+ * ---------------------------------------------------------------- */
+
+.app-header {
+  width: 100%;
+  background-color: transparent;
+  padding: 12px 16px;
+  box-sizing: border-box;
+}
+
+.app-header-nav {
+  max-width: 1024px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-header-form {
+  margin: 0;
+}
+
+.app-header-link {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #3f6b3a;
+  border: 1px solid #cdd6c7;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.15s ease;
+}
+
+.app-header-link:hover {
+  background-color: #f4f7f1;
+}
+
+.app-header-link--logout {
+  color: #6b7a64;
+}
