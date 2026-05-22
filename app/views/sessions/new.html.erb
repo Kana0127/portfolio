@@ -1,0 +1,39 @@
+<% content_for :title, "ログイン | Monthly Step" %>
+
+<main class="login-page">
+  <section class="login-card" aria-labelledby="login-heading">
+    <p class="login-app-name">Monthly Step</p>
+
+    <header class="login-header">
+      <h1 id="login-heading" class="login-heading">ログイン</h1>
+      <p class="login-lead">アカウント情報を入力してください。</p>
+    </header>
+
+    <%= form_with url: login_path, local: true, class: "login-form" do |f| %>
+      <div class="login-form-group">
+        <%= f.label :email, "メールアドレス", class: "login-label" %>
+        <%= f.email_field :email,
+              class: "login-input",
+              placeholder: "your@email.com",
+              autocomplete: "email" %>
+      </div>
+
+      <div class="login-form-group">
+        <%= f.label :password, "パスワード", class: "login-label" %>
+        <%= f.password_field :password,
+              class: "login-input",
+              placeholder: "••••••••",
+              autocomplete: "current-password" %>
+      </div>
+
+      <%= f.submit "ログイン", class: "login-btn login-btn--primary" %>
+    <% end %>
+
+    <p class="login-signup-link">
+      アカウントをお持ちでない方は<%= link_to "新規会員登録", new_user_path, class: "login-signup-link-anchor" %>
+    </p>
+    <p class="login-back-link">
+      <%= link_to "TOPに戻る", root_path, class: "login-back-link-anchor" %>
+    </p>
+  </section>
+</main>

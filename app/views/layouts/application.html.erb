@@ -24,6 +24,17 @@
   </head>
 
   <body>
+    <header class="app-header">
+      <nav class="app-header-nav">
+        <% if logged_in? %>
+          <%= button_to "ログアウト", logout_path, method: :delete, class: "app-header-link app-header-link--logout", form: { class: "app-header-form" } %>
+        <% else %>
+          <%= link_to "ログイン", login_path, class: "app-header-link" %>
+          <%= link_to "新規会員登録", new_user_path, class: "app-header-link" %>
+        <% end %>
+      </nav>
+    </header>
+
     <% flash.each do |key, message| %>
       <div class="flash flash--<%= key %>" role="alert"><%= message %></div>
     <% end %>
