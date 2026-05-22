@@ -10,14 +10,9 @@
   --top-color-text-muted: #6b7a64;
   --top-color-primary: #3f6b3a;
   --top-color-primary-hover: #345a30;
-  --top-color-input-bg: #d6dfd1;
-  --top-color-input-placeholder: #8a9684;
   --top-color-border: #cdd6c7;
-  --top-color-apple-bg: #1f1f1f;
-  --top-color-apple-text: #ffffff;
   --top-radius-lg: 28px;
   --top-radius-md: 999px;
-  --top-radius-sm: 14px;
   --top-shadow-card: 0 12px 32px rgba(63, 107, 58, 0.12);
 }
 
@@ -36,7 +31,7 @@ body {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   padding: 24px 16px 40px;
   box-sizing: border-box;
 }
@@ -47,12 +42,12 @@ body {
   background-color: var(--top-color-card);
   border-radius: var(--top-radius-lg);
   box-shadow: var(--top-shadow-card);
-  padding: 32px 28px;
+  padding: 40px 28px;
   box-sizing: border-box;
 }
 
 .top-app-name {
-  margin: 0 0 24px;
+  margin: 0 0 32px;
   text-align: center;
   color: var(--top-color-primary);
   font-size: 26px;
@@ -62,13 +57,14 @@ body {
 
 .top-header {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 36px;
 }
 
 .top-heading {
-  margin: 0 0 8px;
-  font-size: 24px;
+  margin: 0 0 16px;
+  font-size: 22px;
   font-weight: 700;
+  line-height: 1.5;
   letter-spacing: 0.02em;
 }
 
@@ -76,65 +72,19 @@ body {
   margin: 0;
   color: var(--top-color-text-muted);
   font-size: 14px;
+  line-height: 1.7;
 }
 
-.top-form {
+.top-actions {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  margin: 0 0 24px;
-}
-
-.top-form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.top-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--top-color-text);
-  margin-bottom: 8px;
-}
-
-.top-input {
-  width: 100%;
-  height: 48px;
-  padding: 0 16px;
-  border: none;
-  background-color: var(--top-color-input-bg);
-  border-radius: var(--top-radius-sm);
-  font-size: 15px;
-  color: var(--top-color-text);
-  box-sizing: border-box;
-  font-family: inherit;
-}
-
-.top-input::placeholder {
-  color: var(--top-color-input-placeholder);
-}
-
-.top-input:focus {
-  outline: 2px solid var(--top-color-primary);
-  outline-offset: 1px;
-}
-
-.top-input:disabled {
-  cursor: not-allowed;
-  opacity: 0.85;
-}
-
-.top-form-hint {
-  margin: 8px 0 0;
-  font-size: 12px;
-  color: var(--top-color-text-muted);
+  gap: 12px;
 }
 
 .top-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   width: 100%;
   height: 52px;
   border-radius: var(--top-radius-md);
@@ -151,7 +101,6 @@ body {
 }
 
 .top-btn--primary {
-  margin-top: 8px;
   background-color: var(--top-color-primary);
   color: #ffffff;
 }
@@ -160,94 +109,31 @@ body {
   background-color: var(--top-color-primary-hover);
 }
 
-.top-btn--oauth {
-  border: 1px solid var(--top-color-border);
+.top-btn--secondary {
   background-color: #ffffff;
-  color: var(--top-color-text);
-}
-
-.top-btn--oauth:hover {
-  background-color: #f4f7f1;
-}
-
-.top-btn--apple {
-  background-color: var(--top-color-apple-bg);
-  border-color: var(--top-color-apple-bg);
-  color: var(--top-color-apple-text);
-}
-
-.top-btn--apple:hover {
-  background-color: #000000;
-}
-
-.top-btn-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.top-divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 20px 0;
-  color: var(--top-color-text-muted);
-  font-size: 12px;
-}
-
-.top-divider::before,
-.top-divider::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background-color: var(--top-color-border);
-}
-
-.top-divider-text {
-  flex-shrink: 0;
-}
-
-.top-oauth {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.top-login-link {
-  margin: 28px 0 0;
-  text-align: center;
-  font-size: 13px;
-  color: var(--top-color-text-muted);
-}
-
-.top-login-link-anchor {
   color: var(--top-color-primary);
-  font-weight: 600;
-  text-decoration: none;
+  border: 1px solid var(--top-color-border);
 }
 
-.top-login-link-anchor:hover {
-  text-decoration: underline;
+.top-btn--secondary:hover {
+  background-color: #f4f7f1;
 }
 
 /* スマホ幅では画面いっぱいに自然に表示する */
 @media (max-width: 480px) {
   .top-page {
     padding: 16px 12px 32px;
+    align-items: flex-start;
   }
 
   .top-card {
     box-shadow: none;
     border-radius: 0;
     background-color: transparent;
-    padding: 16px 4px 24px;
+    padding: 24px 4px;
   }
 
   .top-heading {
-    font-size: 22px;
+    font-size: 20px;
   }
 }
