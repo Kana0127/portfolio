@@ -1,0 +1,72 @@
+<% content_for :title, "月目標を作成 | Monthly Step" %>
+
+<main class="goal-new-page">
+  <header class="goal-new-header">
+    <%= link_to "←", monthly_goals_path, class: "goal-new-back", "aria-label": "月目標一覧に戻る" %>
+    <h1 class="goal-new-heading">目標を作成する</h1>
+  </header>
+
+  <section class="goal-new-card" aria-labelledby="goal-new-card-label">
+    <p id="goal-new-card-label" class="goal-new-card-label">
+      <%= @target_month_param == "next" ? "来月の目標" : "今月の目標" %>
+    </p>
+    <p class="goal-new-target-month">
+      <%= @target_month_date.strftime("%Y年%-m月") %>の月目標を作成
+    </p>
+
+    <% if @monthly_goal.errors.any? %>
+      <div class="goal-new-error" role="alert">
+        <p class="goal-new-error-title"><%= @monthly_goal.errors.count %>件のエラーがあります</p>
+        <ul class="goal-new-error-list">
+          <% @monthly_goal.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with model: @monthly_goal,
+                  url: monthly_goals_path(target_month: @target_month_param),
+                  local: true,
+                  class: "goal-new-form" do |f| %>
+      <div class="goal-new-form-group">
+        <%= f.label :title, "目標内容", class: "goal-new-form-label" %>
+        <%= f.text_field :title,
+              class: "goal-new-form-input",
+              placeholder: "例：毎日30分英語の勉強をする" %>
+      </div>
+
+      <div class="goal-new-form-group">
+        <span class="goal-new-form-label">カテゴリー</span>
+        <div class="goal-new-chips" role="radiogroup" aria-label="カテゴリー">
+          <% @categories.each do |category| %>
+            <label class="goal-new-chip">
+              <%= f.radio_button :category_id, category.id, class: "goal-new-chip-input" %>
+              <span class="goal-new-chip-label"><%= category.name %></span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="goal-new-form-group">
+        <span class="goal-new-form-label">目標タイプ</span>
+        <div class="goal-new-chips" role="radiogroup" aria-label="目標タイプ">
+          <label class="goal-new-chip">
+            <%= f.radio_button :goal_kind, "step", class: "goal-new-chip-input" %>
+            <span class="goal-new-chip-label">週分解型</span>
+          </label>
+          <label class="goal-new-chip">
+            <%= f.radio_button :goal_kind, "single", class: "goal-new-chip-input" %>
+            <span class="goal-new-chip-label">単発型</span>
+          </label>
+        </div>
+        <p class="goal-new-form-hint">
+          週分解型：週ごとの小さな目標に分解して取り組むタイプ<br>
+          単発型：1か月単位で達成・未達成を管理するタイプ
+        </p>
+      </div>
+
+      <%= f.submit "登録する", class: "goal-new-submit" %>
+    <% end %>
+  </section>
+</main>

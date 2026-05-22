@@ -1,0 +1,351 @@
+/*
+ * Monthly Step - 月目標一覧・新規作成画面のスタイル
+ * パステルグリーン基調で既存ページと統一感を持たせる
+ */
+
+/* ============================================================
+ *  共通：ページ全体の背景・フォント設定（layouts経由のbodyに当たる）
+ * ============================================================ */
+
+.goals-page,
+.goal-new-page {
+  min-height: calc(100vh - 60px);
+  padding: 16px;
+  box-sizing: border-box;
+  background-color: #eaf2e6;
+  color: #2f3b2a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+  line-height: 1.6;
+}
+
+/* ============================================================
+ *  月目標一覧（goals-*）
+ * ============================================================ */
+
+.goals-page {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.goals-page-header {
+  margin: 8px 0 24px;
+  text-align: center;
+}
+
+.goals-page-heading {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.goals-page-lead {
+  margin: 0;
+  color: #6b7a64;
+  font-size: 13px;
+}
+
+.goals-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.goals-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.goals-btn--primary {
+  background-color: #3f6b3a;
+  color: #ffffff;
+}
+
+.goals-btn--primary:hover {
+  background-color: #345a30;
+}
+
+.goals-btn--secondary {
+  background-color: #ffffff;
+  color: #3f6b3a;
+  border: 1px solid #cdd6c7;
+}
+
+.goals-btn--secondary:hover {
+  background-color: #f4f7f1;
+}
+
+.goals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.goals-empty {
+  margin: 32px 0;
+  text-align: center;
+  color: #6b7a64;
+  font-size: 14px;
+}
+
+.goals-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(63, 107, 58, 0.06);
+}
+
+.goals-card-month {
+  margin: 0 0 6px;
+  color: #3f6b3a;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.goals-card-title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.goals-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.goals-card-chip {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.goals-card-chip--category {
+  background-color: #eaf2e6;
+  color: #3f6b3a;
+}
+
+.goals-card-chip--kind {
+  background-color: #f4f7f1;
+  color: #6b7a64;
+  border: 1px solid #cdd6c7;
+}
+
+/* ============================================================
+ *  新規作成（goal-new-*）
+ * ============================================================ */
+
+.goal-new-page {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.goal-new-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 16px;
+}
+
+.goal-new-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #3f6b3a;
+  text-decoration: none;
+  font-size: 16px;
+  border: 1px solid #cdd6c7;
+}
+
+.goal-new-back:hover {
+  background-color: #f4f7f1;
+}
+
+.goal-new-heading {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.goal-new-card {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(63, 107, 58, 0.08);
+}
+
+.goal-new-card-label {
+  margin: 0 0 4px;
+  color: #3f6b3a;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.goal-new-target-month {
+  margin: 0 0 20px;
+  color: #6b7a64;
+  font-size: 13px;
+}
+
+.goal-new-error {
+  background-color: #fdecea;
+  border: 1px solid #f5c2bd;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  color: #8a2a22;
+}
+
+.goal-new-error-title {
+  margin: 0 0 4px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.goal-new-error-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+
+.goal-new-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.goal-new-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.goal-new-form-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2f3b2a;
+  margin-bottom: 8px;
+}
+
+.goal-new-form-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: none;
+  background-color: #eef2eb;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #2f3b2a;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.goal-new-form-input::placeholder {
+  color: #a8b0a3;
+}
+
+.goal-new-form-input:focus {
+  outline: 2px solid #3f6b3a;
+  outline-offset: 1px;
+}
+
+.goal-new-form-hint {
+  margin: 10px 0 0;
+  color: #6b7a64;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* チップ状の radio（カテゴリー / 目標タイプ） */
+.goal-new-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.goal-new-chip {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.goal-new-chip-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.goal-new-chip-label {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background-color: #f4f7f1;
+  color: #2f3b2a;
+  border: 1px solid #cdd6c7;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.goal-new-chip:hover .goal-new-chip-label {
+  background-color: #eaf2e6;
+}
+
+.goal-new-chip-input:checked + .goal-new-chip-label {
+  background-color: #3f6b3a;
+  color: #ffffff;
+  border-color: #3f6b3a;
+}
+
+.goal-new-chip-input:focus-visible + .goal-new-chip-label {
+  outline: 2px solid #3f6b3a;
+  outline-offset: 2px;
+}
+
+.goal-new-submit {
+  margin-top: 8px;
+  width: 100%;
+  height: 52px;
+  border: none;
+  border-radius: 999px;
+  background-color: #3f6b3a;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.15s ease;
+}
+
+.goal-new-submit:hover {
+  background-color: #345a30;
+}
+
+/* ============================================================
+ *  PC幅微調整
+ * ============================================================ */
+
+@media (min-width: 600px) {
+  .goals-actions {
+    flex-direction: row;
+  }
+}

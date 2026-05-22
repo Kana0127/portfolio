@@ -1,0 +1,34 @@
+<% content_for :title, "月目標一覧 | Monthly Step" %>
+
+<main class="goals-page">
+  <header class="goals-page-header">
+    <h1 class="goals-page-heading">月目標一覧</h1>
+    <p class="goals-page-lead">今月・来月の目標を作って、小さな一歩を積み重ねましょう。</p>
+  </header>
+
+  <div class="goals-actions">
+    <%= link_to "今月の目標を登録する", new_monthly_goal_path(target_month: "this"), class: "goals-btn goals-btn--primary" %>
+    <% if @next_month_available %>
+      <%= link_to "来月の目標を登録する", new_monthly_goal_path(target_month: "next"), class: "goals-btn goals-btn--secondary" %>
+    <% end %>
+  </div>
+
+  <section class="goals-list">
+    <% if @monthly_goals.empty? %>
+      <p class="goals-empty">まだ月目標がありません。<br>「今月の目標を登録する」からはじめましょう。</p>
+    <% else %>
+      <% @monthly_goals.each do |goal| %>
+        <article class="goals-card">
+          <p class="goals-card-month"><%= goal.target_month.strftime("%Y年%-m月") %></p>
+          <h2 class="goals-card-title"><%= goal.title %></h2>
+          <div class="goals-card-meta">
+            <span class="goals-card-chip goals-card-chip--category"><%= goal.category.name %></span>
+            <span class="goals-card-chip goals-card-chip--kind">
+              <%= goal.step? ? "週分解型" : "単発型" %>
+            </span>
+          </div>
+        </article>
+      <% end %>
+    <% end %>
+  </section>
+</main>
