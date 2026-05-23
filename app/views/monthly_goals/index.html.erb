@@ -63,23 +63,31 @@
             </span>
           </div>
 
-          <%# 週目標表示エリア
-              今後 WeeklyGoal モデル実装後は
-              goal.weekly_goals.order(:week_number).each do |w| ... end
-              のように差し替える %>
+          <%# 週目標表示エリア（実データ）。並びは week_number 昇順、start_date 昇順 %>
           <section class="weekly-goals" aria-label="週目標">
             <h3 class="weekly-goals-heading">週目標</h3>
-            <ol class="weekly-goals-list">
-              <% (1..5).each do |week_number| %>
-                <li class="weekly-goal-item">
-                  <span class="weekly-goal-week">第<%= week_number %>週</span>
-                  <span class="weekly-goal-placeholder">未設定</span>
-                </li>
-              <% end %>
-            </ol>
 
-            <%# TODO: 週目標作成機能を実装したら new_monthly_goal_weekly_goal_path(goal) などにリンクを差し替える %>
-            <button type="button" class="weekly-goals-add-btn">＋ 週目標を追加する</button>
+            <% sorted_weekly_goals = goal.weekly_goals.to_a.sort_by { |w| [w.week_number, w.start_date] } %>
+            <% is_current_month_card = goal.target_month == @current_month_date %>
+            <% if sorted_weekly_goals.empty? %>
+              <p class="weekly-goals-empty">週目標はまだありません。</p>
+            <% else %>
+              <ol class="weekly-goals-list">
+                <% sorted_weekly_goals.each do |wg| %>
+                  <% is_current_week = is_current_month_card && wg.week_number == @current_week_number %>
+                  <li class="weekly-goal-item <%= 'weekly-goal-item--current' if is_current_week %>"
+                      <%= 'aria-current="true"'.html_safe if is_current_week %>>
+                    <span class="weekly-goal-week">第<%= wg.week_number %>週</span>
+                    <span class="weekly-goal-title"><%= wg.title %></span>
+                    <span class="weekly-goal-date"><%= wg.start_date.strftime("%-m/%-d") %>〜</span>
+                  </li>
+                <% end %>
+              </ol>
+            <% end %>
+
+            <%= link_to "＋ 週目標を追加する",
+                  new_monthly_goal_weekly_goal_path(goal),
+                  class: "weekly-goals-add-btn" %>
           </section>
         </article>
       <% end %>

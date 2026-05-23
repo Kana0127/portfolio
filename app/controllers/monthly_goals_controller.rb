@@ -5,7 +5,7 @@ class MonthlyGoalsController < ApplicationController
 
   def index
     @monthly_goals = current_user.monthly_goals
-                                 .includes(:category)
+                                 .includes(:category, :weekly_goals)
                                  .order(target_month: :desc, created_at: :desc)
     @next_month_available = next_month_available?
 
@@ -18,6 +18,11 @@ class MonthlyGoalsController < ApplicationController
     # ビュー側の表示判定に使う
     @show_current_month_prompt = !@current_month_goal_registered
     @show_next_month_prompt    = @next_month_available && !@next_month_goal_registered
+
+    # 今月の週目標を強調表示するために、現在の週番号を算出
+    @today              = Date.current
+    @current_month_date = current_month_start
+    @current_week_number = WeeklyGoal.current_week_number(@today, current_month_start)
   end
 
   def new
