@@ -27,7 +27,7 @@ class WeeklyGoal < ApplicationRecord
     if first_day.sunday?
       sundays.first(MAX_WEEKS)
     else
-      ([first_day] + sundays).first(MAX_WEEKS)
+      ([ first_day ] + sundays).first(MAX_WEEKS)
     end
   end
 

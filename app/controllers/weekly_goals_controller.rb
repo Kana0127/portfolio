@@ -36,7 +36,7 @@ class WeeklyGoalsController < ApplicationController
     wday_names = %w[日 月 火 水 木 金 土]
     WeeklyGoal.start_date_candidates(@monthly_goal.target_month).map.with_index(1) do |date, week_num|
       label = "第#{week_num}週：#{date.strftime('%-m月%-d日')}（#{wday_names[date.wday]}）"
-      [label, date.to_s]
+      [ label, date.to_s ]
     end
   end
 end
