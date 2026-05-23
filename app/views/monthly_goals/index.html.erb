@@ -22,10 +22,16 @@
           <header class="goals-card-header">
             <p class="goals-card-month"><%= goal.target_month.strftime("%Y年%-m月") %></p>
             <div class="goals-card-actions">
-              <%# TODO: 月目標の編集機能を実装したら edit_monthly_goal_path(goal) にリンクを差し替える %>
-              <button type="button" class="goals-card-action-btn" aria-label="編集">編集</button>
-              <%# TODO: 月目標の削除機能を実装したら button_to monthly_goal_path(goal), method: :delete に差し替える %>
-              <button type="button" class="goals-card-action-btn goals-card-action-btn--danger" aria-label="削除">削除</button>
+              <%= link_to "編集", edit_monthly_goal_path(goal), class: "goals-card-action-btn", aria: { label: "#{goal.title}を編集" } %>
+              <%= button_to "削除",
+                    monthly_goal_path(goal),
+                    method: :delete,
+                    form: {
+                      class: "goals-card-action-form",
+                      data: { turbo_confirm: "「#{goal.title}」を削除しますか？" }
+                    },
+                    class: "goals-card-action-btn goals-card-action-btn--danger",
+                    aria: { label: "#{goal.title}を削除" } %>
             </div>
           </header>
 
