@@ -19,14 +19,43 @@
     <% else %>
       <% @monthly_goals.each do |goal| %>
         <article class="goals-card">
-          <p class="goals-card-month"><%= goal.target_month.strftime("%Y年%-m月") %></p>
+          <header class="goals-card-header">
+            <p class="goals-card-month"><%= goal.target_month.strftime("%Y年%-m月") %></p>
+            <div class="goals-card-actions">
+              <%# TODO: 月目標の編集機能を実装したら edit_monthly_goal_path(goal) にリンクを差し替える %>
+              <button type="button" class="goals-card-action-btn" aria-label="編集">編集</button>
+              <%# TODO: 月目標の削除機能を実装したら button_to monthly_goal_path(goal), method: :delete に差し替える %>
+              <button type="button" class="goals-card-action-btn goals-card-action-btn--danger" aria-label="削除">削除</button>
+            </div>
+          </header>
+
           <h2 class="goals-card-title"><%= goal.title %></h2>
+
           <div class="goals-card-meta">
             <span class="goals-card-chip goals-card-chip--category"><%= goal.category.name %></span>
             <span class="goals-card-chip goals-card-chip--kind">
               <%= goal.step? ? "週分解型" : "単発型" %>
             </span>
           </div>
+
+          <%# 週目標表示エリア
+              今後 WeeklyGoal モデル実装後は
+              goal.weekly_goals.order(:week_number).each do |w| ... end
+              のように差し替える %>
+          <section class="weekly-goals" aria-label="週目標">
+            <h3 class="weekly-goals-heading">週目標</h3>
+            <ol class="weekly-goals-list">
+              <% (1..5).each do |week_number| %>
+                <li class="weekly-goal-item">
+                  <span class="weekly-goal-week">第<%= week_number %>週</span>
+                  <span class="weekly-goal-placeholder">未設定</span>
+                </li>
+              <% end %>
+            </ol>
+
+            <%# TODO: 週目標作成機能を実装したら new_monthly_goal_weekly_goal_path(goal) などにリンクを差し替える %>
+            <button type="button" class="weekly-goals-add-btn">＋ 週目標を追加する</button>
+          </section>
         </article>
       <% end %>
     <% end %>
