@@ -1,0 +1,54 @@
+<% content_for :title, "週目標を編集 | Monthly Step" %>
+
+<main class="goal-new-page">
+  <header class="goal-new-header">
+    <%= link_to "←", monthly_goals_path, class: "goal-new-back", "aria-label": "月目標一覧に戻る" %>
+    <h1 class="goal-new-heading">週目標を編集する</h1>
+  </header>
+
+  <section class="goal-new-card" aria-labelledby="weekly-edit-card-label">
+    <p id="weekly-edit-card-label" class="goal-new-card-label">対象の月目標</p>
+    <p class="goal-new-target-month">
+      <%= @monthly_goal.target_month.strftime("%Y年%-m月") %>：<%= @monthly_goal.title %>
+    </p>
+    <p class="goal-new-target-month">
+      現在の週番号：<strong>第<%= @weekly_goal.week_number %>週</strong>
+    </p>
+
+    <% if @weekly_goal.errors.any? %>
+      <div class="goal-new-error" role="alert">
+        <p class="goal-new-error-title"><%= @weekly_goal.errors.count %>件のエラーがあります</p>
+        <ul class="goal-new-error-list">
+          <% @weekly_goal.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%# form_with model: [@monthly_goal, @weekly_goal] は永続化済みなので
+        自動で PATCH /monthly_goals/:monthly_goal_id/weekly_goals/:id に送信される %>
+    <%= form_with model: [@monthly_goal, @weekly_goal], local: true, class: "goal-new-form" do |f| %>
+      <div class="goal-new-form-group">
+        <%= f.label :title, "週目標の内容", class: "goal-new-form-label" %>
+        <%= f.text_field :title,
+              class: "goal-new-form-input",
+              placeholder: "例：単語1〜300の意味を覚える" %>
+      </div>
+
+      <div class="goal-new-form-group">
+        <%= f.label :start_date, "週の開始日", class: "goal-new-form-label" %>
+        <%= f.select :start_date,
+              @start_date_options,
+              { include_blank: "週を選んでください" },
+              class: "goal-new-form-input goal-new-form-select" %>
+        <p class="goal-new-form-hint">
+          週番号（第1週・第2週…）は開始日から自動で決まります。<br>
+          開始日を変更すると週番号も自動で再計算されます。
+        </p>
+      </div>
+
+      <%= f.submit "更新する", class: "goal-new-submit" %>
+    <% end %>
+  </section>
+</main>

@@ -77,9 +77,29 @@
                   <% is_current_week = is_current_month_card && wg.week_number == @current_week_number %>
                   <li class="weekly-goal-item <%= 'weekly-goal-item--current' if is_current_week %>"
                       <%= 'aria-current="true"'.html_safe if is_current_week %>>
-                    <span class="weekly-goal-week">第<%= wg.week_number %>週</span>
-                    <span class="weekly-goal-title"><%= wg.title %></span>
-                    <span class="weekly-goal-date"><%= wg.start_date.strftime("%-m/%-d") %>〜</span>
+                    <span class="weekly-goal-week">
+                      <span class="weekly-goal-week-label">Week</span>
+                      <span class="weekly-goal-week-number"><%= wg.week_number %></span>
+                    </span>
+                    <div class="weekly-goal-body">
+                      <span class="weekly-goal-title"><%= wg.title %></span>
+                      <span class="weekly-goal-date"><%= wg.start_date.strftime("%-m/%-d") %>〜</span>
+                    </div>
+                    <div class="weekly-goal-actions">
+                      <%= link_to "編集",
+                            edit_monthly_goal_weekly_goal_path(goal, wg),
+                            class: "weekly-goal-action-btn",
+                            aria: { label: "第#{wg.week_number}週「#{wg.title}」を編集" } %>
+                      <%= button_to "削除",
+                            monthly_goal_weekly_goal_path(goal, wg),
+                            method: :delete,
+                            form: {
+                              class: "weekly-goal-action-form",
+                              data: { turbo_confirm: "第#{wg.week_number}週「#{wg.title}」を削除しますか？" }
+                            },
+                            class: "weekly-goal-action-btn weekly-goal-action-btn--danger",
+                            aria: { label: "第#{wg.week_number}週「#{wg.title}」を削除" } %>
+                    </div>
                   </li>
                 <% end %>
               </ol>
