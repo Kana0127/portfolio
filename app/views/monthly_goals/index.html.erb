@@ -6,12 +6,31 @@
     <p class="goals-page-lead">今月・来月の目標を作って、小さな一歩を積み重ねましょう。</p>
   </header>
 
-  <div class="goals-actions">
-    <%= link_to "今月の目標を登録する", new_monthly_goal_path(target_month: "this"), class: "goals-btn goals-btn--primary" %>
-    <% if @next_month_available %>
-      <%= link_to "来月の目標を登録する", new_monthly_goal_path(target_month: "next"), class: "goals-btn goals-btn--secondary" %>
+  <%# 今月：未登録ならプロンプトカード、登録済みなら通常の追加ボタン %>
+  <% if @show_current_month_prompt %>
+    <section class="goals-prompt goals-prompt--primary" aria-label="今月の目標登録のお願い">
+      <p class="goals-prompt-text">今月の目標を登録しましょう</p>
+      <%= link_to "今月の目標を登録する", new_monthly_goal_path(target_month: "this"), class: "goals-btn goals-btn--primary" %>
+    </section>
+  <% else %>
+    <div class="goals-actions">
+      <%= link_to "今月の目標を登録する", new_monthly_goal_path(target_month: "this"), class: "goals-btn goals-btn--primary" %>
+    </div>
+  <% end %>
+
+  <%# 来月：25日以降のみ表示。未登録ならプロンプトカード、登録済みなら通常の追加ボタン %>
+  <% if @next_month_available %>
+    <% if @show_next_month_prompt %>
+      <section class="goals-prompt goals-prompt--secondary" aria-label="来月の目標登録のお願い">
+        <p class="goals-prompt-text">来月の目標を登録しましょう</p>
+        <%= link_to "来月の目標を登録する", new_monthly_goal_path(target_month: "next"), class: "goals-btn goals-btn--secondary" %>
+      </section>
+    <% else %>
+      <div class="goals-actions">
+        <%= link_to "来月の目標を登録する", new_monthly_goal_path(target_month: "next"), class: "goals-btn goals-btn--secondary" %>
+      </div>
     <% end %>
-  </div>
+  <% end %>
 
   <section class="goals-list">
     <% if @monthly_goals.empty? %>
