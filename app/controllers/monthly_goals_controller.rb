@@ -1,6 +1,8 @@
 class MonthlyGoalsController < ApplicationController
   NEXT_MONTH_AVAILABLE_DAY = 25
 
+  before_action :set_monthly_goal, only: %i[edit update destroy]
+
   def index
     @monthly_goals = current_user.monthly_goals
                                  .includes(:category)
@@ -36,9 +38,37 @@ class MonthlyGoalsController < ApplicationController
     end
   end
 
+  def edit
+    @categories = Category.order(:id)
+  end
+
+  def update
+    if @monthly_goal.update(monthly_goal_params)
+      flash[:notice] = "月目標を更新しました"
+      redirect_to monthly_goals_path
+    else
+      @categories = Category.order(:id)
+      flash.now[:alert] = "月目標を更新できませんでした"
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @monthly_goal.destroy!
+    flash[:notice] = "月目標を削除しました"
+    redirect_to monthly_goals_path
+  end
+
   private
 
+  # 本人の月目標だけを取得する。他ユーザーのIDを指定された場合は
+  # RecordNotFound → Rails が 404 を返すので情報が漏れない。
+  def set_monthly_goal
+    @monthly_goal = current_user.monthly_goals.find(params[:id])
+  end
+
   def monthly_goal_params
+    # user_id / target_month は Strong Parameters で受け取らない
     params.require(:monthly_goal).permit(:title, :category_id, :goal_kind)
   end
 

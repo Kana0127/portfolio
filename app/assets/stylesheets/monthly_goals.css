@@ -128,6 +128,7 @@
 }
 
 .goals-card-action-btn {
+  display: inline-block;
   padding: 4px 10px;
   background-color: #f4f7f1;
   color: #3f6b3a;
@@ -135,9 +136,17 @@
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
+  text-decoration: none;
   cursor: pointer;
   font-family: inherit;
+  line-height: 1.4;
   transition: background-color 0.15s ease;
+}
+
+/* button_to が生成する form 要素のデフォルト margin を消す */
+.goals-card-action-form {
+  display: inline-block;
+  margin: 0;
 }
 
 .goals-card-action-btn:hover {
