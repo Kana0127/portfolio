@@ -8,6 +8,16 @@ class MonthlyGoalsController < ApplicationController
                                  .includes(:category)
                                  .order(target_month: :desc, created_at: :desc)
     @next_month_available = next_month_available?
+
+    # 今月・来月の月目標が本人ぶんで存在するか判定
+    current_month_start = Date.current.beginning_of_month
+    next_month_start    = Date.current.next_month.beginning_of_month
+    @current_month_goal_registered = current_user.monthly_goals.exists?(target_month: current_month_start)
+    @next_month_goal_registered    = current_user.monthly_goals.exists?(target_month: next_month_start)
+
+    # ビュー側の表示判定に使う
+    @show_current_month_prompt = !@current_month_goal_registered
+    @show_next_month_prompt    = @next_month_available && !@next_month_goal_registered
   end
 
   def new
