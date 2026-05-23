@@ -258,9 +258,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 12px;
+  padding: 10px 12px;
   background-color: #f4f7f1;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 /* 現在の週の週目標を強調表示する */
@@ -275,6 +275,14 @@
   border-color: #ffffff;
 }
 
+.weekly-goal-item--current .weekly-goal-week-label {
+  color: #3f6b3a;
+}
+
+.weekly-goal-item--current .weekly-goal-week-number {
+  color: #3f6b3a;
+}
+
 .weekly-goal-item--current .weekly-goal-title {
   color: #ffffff;
 }
@@ -283,29 +291,105 @@
   color: #d8ecd0;
 }
 
+/* 週番号ラベル：左側に縦並びの「Week / 数字」表記 */
 .weekly-goal-week {
   flex-shrink: 0;
-  padding: 2px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  padding: 4px 0;
+  background-color: #ffffff;
+  border: 1px solid #cdd6c7;
+  border-radius: 10px;
+  line-height: 1.1;
+}
+
+.weekly-goal-week-label {
+  color: #6b7a64;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.weekly-goal-week-number {
+  color: #3f6b3a;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* タイトル＋日付の本文ブロック */
+.weekly-goal-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.weekly-goal-title {
+  color: #2f3b2a;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.weekly-goal-date {
+  color: #6b7a64;
+  font-size: 11px;
+}
+
+/* 週目標カード右側の編集・削除ボタン */
+.weekly-goal-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.weekly-goal-action-form {
+  display: inline-block;
+  margin: 0;
+}
+
+.weekly-goal-action-btn {
+  display: inline-block;
+  padding: 3px 8px;
   background-color: #ffffff;
   color: #3f6b3a;
   border: 1px solid #cdd6c7;
   border-radius: 999px;
   font-size: 11px;
-  font-weight: 700;
-}
-
-.weekly-goal-title {
-  flex: 1;
-  color: #2f3b2a;
-  font-size: 13px;
   font-weight: 600;
+  text-decoration: none;
   line-height: 1.4;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.15s ease;
 }
 
-.weekly-goal-date {
-  flex-shrink: 0;
-  color: #6b7a64;
-  font-size: 11px;
+.weekly-goal-action-btn:hover {
+  background-color: #eaf2e6;
+}
+
+.weekly-goal-action-btn--danger {
+  color: #8a2a22;
+  border-color: #f5c2bd;
+}
+
+.weekly-goal-action-btn--danger:hover {
+  background-color: #fdecea;
+}
+
+/* 現在週カード内のボタンも視認性を保つ */
+.weekly-goal-item--current .weekly-goal-action-btn {
+  background-color: rgba(255, 255, 255, 0.92);
+}
+
+.weekly-goal-item--current .weekly-goal-action-btn:hover {
+  background-color: #ffffff;
 }
 
 .weekly-goal-placeholder {
