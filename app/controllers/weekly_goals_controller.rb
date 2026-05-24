@@ -1,5 +1,9 @@
 class WeeklyGoalsController < ApplicationController
+  # MonthlyGoalsController と同じ「来月解禁日」のしきい値を使う
+  NEXT_MONTH_AVAILABLE_DAY = 25
+
   before_action :set_monthly_goal
+  before_action :restrict_next_month_weekly_goal_creation, only: %i[new create]
   before_action :set_weekly_goal, only: %i[edit update destroy]
 
   def new
@@ -52,6 +56,23 @@ class WeeklyGoalsController < ApplicationController
   # 他人の monthly_goal の配下にある週目標IDを直打ちしても RecordNotFound になる。
   def set_weekly_goal
     @weekly_goal = @monthly_goal.weekly_goals.find(params[:id])
+  end
+
+  # 来月の月目標に対する週目標は、25日以降のみ作成できるようにする。
+  # new / create の前段で動かすことで、URL直打ち・POST直打ちのどちらも弾く。
+  def restrict_next_month_weekly_goal_creation
+    return unless next_month_goal?
+    return if next_month_available?
+
+    redirect_to monthly_goals_path, alert: "来月の週目標は毎月25日以降に作成できます"
+  end
+
+  def next_month_goal?
+    @monthly_goal.target_month == Date.current.next_month.beginning_of_month
+  end
+
+  def next_month_available?
+    Date.current.day >= NEXT_MONTH_AVAILABLE_DAY
   end
 
   # week_number / monthly_goal_id はフォームから受け取らない

@@ -105,9 +105,14 @@
               </ol>
             <% end %>
 
-            <%= link_to "＋ 週目標を追加する",
-                  new_monthly_goal_weekly_goal_path(goal),
-                  class: "weekly-goals-add-btn" %>
+            <%# 来月の月目標、かつ25日以前は週目標追加ボタンを出さない（Controller 側でも同じ判定を実施） %>
+            <% is_next_month_card = goal.target_month == Date.current.next_month.beginning_of_month %>
+            <% can_add_weekly_goal = !is_next_month_card || @next_month_available %>
+            <% if can_add_weekly_goal %>
+              <%= link_to "＋ 週目標を追加する",
+                    new_monthly_goal_weekly_goal_path(goal),
+                    class: "weekly-goals-add-btn" %>
+            <% end %>
           </section>
         </article>
       <% end %>
