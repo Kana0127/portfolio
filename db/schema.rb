@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_23_072634) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_24_154611) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,6 +19,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_23_072634) do
     t.string "name", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_categories_on_name", unique: true
+  end
+
+  create_table "daily_records", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "memo"
+    t.date "record_date", null: false
+    t.integer "status", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "weekly_goal_id", null: false
+    t.index ["weekly_goal_id", "record_date"], name: "index_daily_records_on_wg_and_record_date", unique: true
+    t.index ["weekly_goal_id"], name: "index_daily_records_on_weekly_goal_id"
   end
 
   create_table "monthly_goals", force: :cascade do |t|
@@ -53,6 +64,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_23_072634) do
     t.index ["monthly_goal_id"], name: "index_weekly_goals_on_monthly_goal_id"
   end
 
+  add_foreign_key "daily_records", "weekly_goals"
   add_foreign_key "monthly_goals", "categories"
   add_foreign_key "monthly_goals", "users"
   add_foreign_key "weekly_goals", "monthly_goals"

@@ -3,6 +3,7 @@ class WeeklyGoal < ApplicationRecord
   MAX_WEEKS = 5
 
   belongs_to :monthly_goal
+  has_many :daily_records, dependent: :destroy
 
   before_validation :assign_week_number
 
