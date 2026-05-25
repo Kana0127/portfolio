@@ -1,0 +1,240 @@
+/*
+ * Monthly Step - マイページのスタイル
+ * 既存のパステルグリーン基調に合わせる
+ */
+
+.mypage {
+  min-height: calc(100vh - 60px);
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+  box-sizing: border-box;
+  background-color: #eaf2e6;
+  color: #2f3b2a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+  line-height: 1.6;
+}
+
+.mypage-header {
+  text-align: center;
+  margin: 8px 0 20px;
+}
+
+.mypage-heading {
+  margin: 0;
+  color: #3f6b3a;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* カード全般 */
+.mypage-card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 18px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(63, 107, 58, 0.08);
+}
+
+.mypage-card--monthly {
+  border-left: 4px solid #3f6b3a;
+}
+
+.mypage-card--weekly {
+  border-left: 4px solid #b7dcaa;
+}
+
+.mypage-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.mypage-card-label {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #2f3b2a;
+}
+
+.mypage-card-pin {
+  color: #3f6b3a;
+  font-size: 16px;
+}
+
+.mypage-card-week {
+  display: inline-block;
+  padding: 2px 10px;
+  background-color: #eaf2e6;
+  color: #3f6b3a;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.mypage-card-title {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #2f3b2a;
+}
+
+.mypage-card-sub {
+  margin: 0 0 12px;
+  color: #6b7a64;
+  font-size: 12px;
+}
+
+.mypage-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mypage-chip {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mypage-chip--category {
+  background-color: #eaf2e6;
+  color: #3f6b3a;
+}
+
+.mypage-chip--kind {
+  background-color: #f4f7f1;
+  color: #6b7a64;
+  border: 1px solid #cdd6c7;
+}
+
+/* ----------- 記録エリア ----------- */
+.mypage-card-record {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed #cdd6c7;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.mypage-record-prompt {
+  margin: 0;
+  font-size: 13px;
+  color: #2f3b2a;
+  font-weight: 600;
+  text-align: center;
+}
+
+.mypage-record-done {
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 12px;
+  border-radius: 12px;
+  background-color: #f4f7f1;
+  text-align: center;
+}
+
+.mypage-record-symbol {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: #3f6b3a;
+}
+
+.mypage-record-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2f3b2a;
+}
+
+.mypage-record-msg {
+  font-size: 11px;
+  color: #6b7a64;
+}
+
+/* 達成度ごとの色合い：◎=濃いピンク、○=薄いピンク、×=既定 */
+.mypage-record-done--perfect {
+  background-color: #ffd9e2;
+}
+.mypage-record-done--good {
+  background-color: #ffeef2;
+}
+.mypage-record-done--bad {
+  background-color: #f4f7f1;
+}
+
+/* ----------- ボタン共通 ----------- */
+.mypage-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 280px;
+  height: 44px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.15s ease;
+}
+
+.mypage-btn--primary {
+  background-color: #3f6b3a;
+  color: #ffffff;
+}
+
+.mypage-btn--primary:hover {
+  background-color: #345a30;
+}
+
+.mypage-btn--secondary {
+  background-color: #ffffff;
+  color: #3f6b3a;
+  border: 1px solid #cdd6c7;
+}
+
+.mypage-btn--secondary:hover {
+  background-color: #f4f7f1;
+}
+
+.mypage-btn--disabled {
+  background-color: #d6dfd1;
+  color: #8a9684;
+  cursor: not-allowed;
+}
+
+/* ----------- 空状態 ----------- */
+.mypage-card--empty {
+  text-align: center;
+  padding: 24px 18px;
+}
+
+.mypage-empty-text {
+  margin: 0 0 14px;
+  color: #6b7a64;
+  font-size: 13px;
+}
+
+/* 複数の月目標を区切る薄い罫線 */
+.mypage-divider {
+  border: none;
+  border-top: 1px dashed #cdd6c7;
+  margin: 24px 0 16px;
+}

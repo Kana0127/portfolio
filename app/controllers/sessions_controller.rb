@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
   def create
     if login(params[:email], params[:password])
       flash[:notice] = "ログインしました"
-      redirect_to root_path
+      redirect_to mypage_path
     else
       flash.now[:alert] = "メールアドレスまたはパスワードが正しくありません"
       render :new, status: :unprocessable_entity

@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#top"
 
+  get "mypage", to: "mypages#show", as: :mypage
+
   resources :users, only: %i[new create]
   resources :monthly_goals, only: %i[index new create edit update destroy] do
     resources :weekly_goals, only: %i[new create edit update destroy]
