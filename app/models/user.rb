@@ -2,6 +2,8 @@ class User < ApplicationRecord
   authenticates_with_sorcery!
 
   has_many :monthly_goals, dependent: :destroy
+  has_many :weekly_goals, through: :monthly_goals
+  has_many :daily_records, through: :weekly_goals
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
