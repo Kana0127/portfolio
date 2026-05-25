@@ -12,7 +12,7 @@ class DailyRecordsController < ApplicationController
 
     if @daily_record.save
       flash[:notice] = "今日の記録を保存しました"
-      redirect_to monthly_goals_path
+      redirect_to mypage_path
     else
       flash.now[:alert] = "記録を保存できませんでした"
       render :new, status: :unprocessable_entity

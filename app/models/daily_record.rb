@@ -19,4 +19,13 @@ class DailyRecord < ApplicationRecord
     when "bad"     then "×"
     end
   end
+
+  # ビュー表示用に日本語ラベルを返す
+  def status_label
+    case status
+    when "perfect" then "よくできた"
+    when "good"    then "できた"
+    when "bad"     then "おやすみ"
+    end
+  end
 end

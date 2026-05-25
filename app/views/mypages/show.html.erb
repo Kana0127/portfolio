@@ -1,0 +1,79 @@
+<% content_for :title, "マイページ | Monthly Step" %>
+
+<main class="mypage">
+  <header class="mypage-header">
+    <h1 class="mypage-heading">Monthly step</h1>
+  </header>
+
+  <% if @cards.empty? %>
+    <%# 今月の月目標が1件も無い場合の空状態 %>
+    <section class="mypage-card mypage-card--empty">
+      <p class="mypage-empty-text">今月の目標はまだ設定されていません。</p>
+      <%= link_to "今月の目標を登録する", new_monthly_goal_path(target_month: "this"), class: "mypage-btn mypage-btn--primary" %>
+    </section>
+  <% else %>
+    <% @cards.each_with_index do |card, idx| %>
+      <% monthly = card[:monthly_goal] %>
+      <% weekly  = card[:weekly_goal] %>
+      <% today_record = card[:today_record] %>
+
+      <%# 複数の月目標がある場合に視覚的に区切る %>
+      <% if idx > 0 %>
+        <hr class="mypage-divider" aria-hidden="true">
+      <% end %>
+
+      <%# ----------- 今月の目標カード ----------- %>
+      <section class="mypage-card mypage-card--monthly" aria-labelledby="mypage-monthly-title-<%= monthly.id %>">
+        <div class="mypage-card-head">
+          <p class="mypage-card-label">今月の目標</p>
+          <span class="mypage-card-pin" aria-hidden="true">⚑</span>
+        </div>
+        <p id="mypage-monthly-title-<%= monthly.id %>" class="mypage-card-title"><%= monthly.title %></p>
+        <div class="mypage-card-meta">
+          <span class="mypage-chip mypage-chip--category"><%= monthly.category.name %></span>
+          <span class="mypage-chip mypage-chip--kind">
+            <%= monthly.step? ? "週分解型" : "単発型" %>
+          </span>
+        </div>
+      </section>
+
+      <%# ----------- 今週の週目標カード ----------- %>
+      <% if weekly %>
+        <section class="mypage-card mypage-card--weekly" aria-labelledby="mypage-weekly-title-<%= weekly.id %>">
+          <div class="mypage-card-head">
+            <p class="mypage-card-label">今週の目標</p>
+            <span class="mypage-card-week">第<%= weekly.week_number %>週</span>
+          </div>
+          <p id="mypage-weekly-title-<%= weekly.id %>" class="mypage-card-title"><%= weekly.title %></p>
+          <p class="mypage-card-sub">
+            <%= weekly.start_date.strftime("%-m/%-d") %>〜<%= (weekly.start_date + 6.days).strftime("%-m/%-d") %>
+          </p>
+
+          <div class="mypage-card-record">
+            <% if today_record %>
+              <p class="mypage-record-done mypage-record-done--<%= today_record.status %>">
+                <span class="mypage-record-symbol"><%= today_record.status_symbol %></span>
+                <span class="mypage-record-label"><%= today_record.status_label %></span>
+                <span class="mypage-record-msg">今日は記録済みです</span>
+              </p>
+              <button type="button" class="mypage-btn mypage-btn--disabled" disabled>記録済み</button>
+            <% else %>
+              <p class="mypage-record-prompt">記録しましょう！</p>
+              <%= link_to "🌱 今日の記録を行う",
+                    new_weekly_goal_daily_record_path(weekly),
+                    class: "mypage-btn mypage-btn--primary" %>
+            <% end %>
+          </div>
+        </section>
+      <% else %>
+        <%# 今週の週目標が未設定の場合 %>
+        <section class="mypage-card mypage-card--empty">
+          <p class="mypage-empty-text">今週の目標はまだ設定されていません。</p>
+          <%= link_to "週目標を追加する",
+                new_monthly_goal_weekly_goal_path(monthly),
+                class: "mypage-btn mypage-btn--secondary" %>
+        </section>
+      <% end %>
+    <% end %>
+  <% end %>
+</main>
