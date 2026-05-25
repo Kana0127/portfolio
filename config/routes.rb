@@ -17,6 +17,11 @@ Rails.application.routes.draw do
     resources :weekly_goals, only: %i[new create edit update destroy]
   end
 
+  # daily_records は週目標から作成する。URL: /weekly_goals/:weekly_goal_id/daily_records/new
+  resources :weekly_goals, only: [] do
+    resources :daily_records, only: %i[new create]
+  end
+
   get    "login",  to: "sessions#new"
   post   "login",  to: "sessions#create"
   delete "logout", to: "sessions#destroy"

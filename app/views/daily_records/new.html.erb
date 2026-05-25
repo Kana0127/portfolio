@@ -1,0 +1,61 @@
+<% content_for :title, "今日の記録 | Monthly Step" %>
+
+<main class="record-page">
+  <header class="record-header">
+    <%= link_to "←", monthly_goals_path, class: "record-back", "aria-label": "月目標一覧に戻る" %>
+    <div class="record-header-titles">
+      <h1 class="record-heading">今日の記録</h1>
+      <p class="record-lead">あなたのペースで、少しずつ。</p>
+    </div>
+  </header>
+
+  <section class="record-target" aria-labelledby="record-target-title">
+    <p class="record-target-label">⚑ 今週の目標</p>
+    <p id="record-target-title" class="record-target-title"><%= @weekly_goal.title %></p>
+    <p class="record-target-month">
+      <%= @weekly_goal.monthly_goal.target_month.strftime("%Y年%-m月") %>　第<%= @weekly_goal.week_number %>週
+    </p>
+  </section>
+
+  <% if @daily_record.errors.any? %>
+    <div class="record-error" role="alert">
+      <p class="record-error-title"><%= @daily_record.errors.count %>件のエラーがあります</p>
+      <ul class="record-error-list">
+        <% @daily_record.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: [@weekly_goal, @daily_record], local: true, class: "record-form" do |f| %>
+    <fieldset class="record-statuses-group">
+      <legend class="record-section-heading">今日の達成度</legend>
+      <div class="record-statuses">
+        <% [
+          ["perfect", "◎", "できた！"],
+          ["good",    "○", "まあまあ"],
+          ["bad",     "×", "おやすみ"]
+        ].each do |val, sym, desc| %>
+          <label class="record-status">
+            <%= f.radio_button :status, val, class: "record-status-input" %>
+            <span class="record-status-card">
+              <span class="record-status-symbol"><%= sym %></span>
+              <span class="record-status-desc"><%= sym %> <%= desc %></span>
+            </span>
+          </label>
+        <% end %>
+      </div>
+    </fieldset>
+
+    <div class="record-memo-group">
+      <%= f.label :memo, "メモ（任意）", class: "record-memo-label" %>
+      <%= f.text_area :memo,
+            class: "record-memo-input",
+            rows: 4,
+            placeholder: "今日あった小さな良いことや、明日に向けての気持ちなどを残してみましょう。" %>
+    </div>
+
+    <%= f.submit "記録を保存する", class: "record-submit" %>
+  <% end %>
+</main>
