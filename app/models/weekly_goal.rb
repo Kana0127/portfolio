@@ -4,6 +4,7 @@ class WeeklyGoal < ApplicationRecord
 
   belongs_to :monthly_goal
   has_many :daily_records, dependent: :destroy
+  has_one :weekly_review, dependent: :destroy
 
   before_validation :assign_week_number
 
