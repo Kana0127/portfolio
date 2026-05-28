@@ -1,0 +1,88 @@
+<% content_for :title, "今週のふりかえり | Monthly Step" %>
+
+<main class="reviews-page">
+  <header class="reviews-header">
+    <%= link_to "←", reviews_path, class: "reviews-back", "aria-label": "振り返り一覧に戻る" %>
+    <h1 class="reviews-heading">今週のふりかえり</h1>
+  </header>
+
+  <% if @weekly_review.errors.any? %>
+    <div class="reviews-error" role="alert">
+      <p class="reviews-error-title"><%= @weekly_review.errors.count %>件のエラーがあります</p>
+      <ul class="reviews-error-list">
+        <% @weekly_review.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%# ============ カード1：今週の目標 ============ %>
+  <section class="reviews-card reviews-card--target">
+    <p class="reviews-card-label">今週の目標</p>
+    <p class="reviews-card-title"><%= @weekly_goal.title %></p>
+    <p class="reviews-card-meta">
+      <%= @weekly_goal.monthly_goal.target_month.strftime("%Y年%-m月") %> 第<%= @weekly_goal.week_number %>週
+    </p>
+  </section>
+
+  <%= form_with model: @weekly_review,
+              url: weekly_goal_weekly_review_path(@weekly_goal) do |f| %>
+    <%# fieldset の min-inline-size:min-content とグリッドが干渉するため、
+        section + role="radiogroup" の組み合わせに変更 %>
+    <section class="reviews-card reviews-card--rate" aria-labelledby="reviews-rate-heading">
+      <p id="reviews-rate-heading" class="reviews-card-label">達成度の評価</p>
+      <p class="reviews-card-sub">今週のがんばりを教えてください。</p>
+      <div class="reviews-rates" role="radiogroup" aria-labelledby="reviews-rate-heading">
+        <% [
+          [ 100, "◎", "素晴らしい" ],
+          [ 75,  "○", "できた" ],
+          [ 50,  "△", "まあまあ" ],
+          [ 25,  "·", "少しだけ" ],
+          [ 0,   "×", "これから" ]
+        ].each do |val, sym, label| %>
+          <label class="reviews-rate">
+            <%= f.radio_button :achievement_rate, val, class: "reviews-rate-input" %>
+            <span class="reviews-rate-card">
+              <span class="reviews-rate-symbol"><%= sym %></span>
+              <span class="reviews-rate-label"><%= label %></span>
+              <span class="reviews-rate-value"><%= val %>%</span>
+            </span>
+          </label>
+        <% end %>
+      </div>
+    </section>
+
+    <%# ============ カード3：振り返りコメント ============ %>
+    <section class="reviews-card reviews-card--comment">
+      <p class="reviews-card-label">今週の振り返りコメント</p>
+      <p class="reviews-card-sub">今週できたこと、来週への課題などを書きましょう。</p>
+
+      <div class="reviews-form-group">
+        <%= f.label :good_point, "今週できたこと", class: "reviews-form-label" %>
+        <%= f.text_area :good_point,
+              class: "reviews-form-input",
+              rows: 3,
+              placeholder: "例：毎朝30分の学習を継続できた" %>
+      </div>
+
+      <div class="reviews-form-group">
+        <%= f.label :improvement_point, "来週への課題", class: "reviews-form-label" %>
+        <%= f.text_area :improvement_point,
+              class: "reviews-form-input",
+              rows: 3,
+              placeholder: "例：週末の取り組み量を増やす" %>
+      </div>
+
+      <div class="reviews-form-group">
+        <%= f.label :memo, "メモ（任意）", class: "reviews-form-label" %>
+        <%= f.text_area :memo,
+              class: "reviews-form-input",
+              rows: 3,
+              placeholder: "気づいたことや感想を残せます。" %>
+      </div>
+    </section>
+
+    <%= f.submit "振り返りを登録する", class: "reviews-btn reviews-btn--primary reviews-btn--full" %>
+  <% end %>
+</main>
