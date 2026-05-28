@@ -29,6 +29,7 @@
         <% if logged_in? %>
           <%= link_to "マイページ", mypage_path, class: "app-header-link" %>
           <%= link_to "月目標一覧", monthly_goals_path, class: "app-header-link" %>
+          <%= link_to "振り返り", reviews_path, class: "app-header-link" %>
           <%= button_to "ログアウト", logout_path, method: :delete, class: "app-header-link app-header-link--logout", form: { class: "app-header-form" } %>
         <% else %>
           <%= link_to "ログイン", login_path, class: "app-header-link" %>

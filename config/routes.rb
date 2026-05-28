@@ -19,10 +19,15 @@ Rails.application.routes.draw do
     resources :weekly_goals, only: %i[new create edit update destroy]
   end
 
-  # daily_records は週目標から作成する。URL: /weekly_goals/:weekly_goal_id/daily_records/new
+  # daily_records / weekly_review は週目標配下にネスト
+  # URL: /weekly_goals/:weekly_goal_id/daily_records/new
+  # URL: /weekly_goals/:weekly_goal_id/weekly_review/new (singular: 1 weekly_goal に 1 review)
   resources :weekly_goals, only: [] do
     resources :daily_records, only: %i[new create]
+    resource :weekly_review, only: %i[new create show]
   end
+
+  get "reviews", to: "reviews#index", as: :reviews
 
   get    "login",  to: "sessions#new"
   post   "login",  to: "sessions#create"
