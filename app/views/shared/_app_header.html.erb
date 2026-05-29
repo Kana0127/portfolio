@@ -1,0 +1,9 @@
+<header class="app-header">
+  <%= link_to "Monthly step", mypage_path, class: "app-header__logo" %>
+
+  <%= button_to "ログアウト",
+                logout_path,
+                method: :delete,
+                class: "app-header__logout",
+                form: { class: "app-header__logout-form" } %>
+</header>

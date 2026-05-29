@@ -24,24 +24,23 @@
   </head>
 
   <body>
-    <header class="app-header">
-      <nav class="app-header-nav">
-        <% if logged_in? %>
-          <%= link_to "マイページ", mypage_path, class: "app-header-link" %>
-          <%= link_to "月目標一覧", monthly_goals_path, class: "app-header-link" %>
-          <%= link_to "振り返り", reviews_path, class: "app-header-link" %>
-          <%= button_to "ログアウト", logout_path, method: :delete, class: "app-header-link app-header-link--logout", form: { class: "app-header-form" } %>
-        <% else %>
-          <%= link_to "ログイン", login_path, class: "app-header-link" %>
-          <%= link_to "新規会員登録", new_user_path, class: "app-header-link" %>
-        <% end %>
-      </nav>
-    </header>
+    <%# ログイン中のみ共通ヘッダーを表示（issue28） %>
+    <% if logged_in? %>
+      <%= render "shared/app_header" %>
+    <% end %>
 
     <% flash.each do |key, message| %>
       <div class="flash flash--<%= key %>" role="alert"><%= message %></div>
     <% end %>
 
-    <%= yield %>
+    <%# 各 view が独自に <main> を持つため、ここは div で囲って二重 main を回避 %>
+    <div class="app-main">
+      <%= yield %>
+    </div>
+
+    <%# ログイン中のみ下部ナビを表示（issue28） %>
+    <% if logged_in? %>
+      <%= render "shared/bottom_nav" %>
+    <% end %>
   </body>
 </html>

@@ -8,3 +8,118 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+/* ============================================================
+ * 共通アプリ・クローム（issue28）
+ *  - 上部ヘッダー：Monthly step ロゴ + ログアウトボタン
+ *  - 下部ナビ：マイページ / 目標一覧 / ふりかえり
+ *  layouts/application.html.erb からログイン中のみ render される
+ * ============================================================ */
+
+/* yield をラップする div。下部ナビにかぶらないよう padding-bottom を確保 */
+.app-main {
+  padding-bottom: 88px;
+}
+
+/* ---------- 上部ヘッダー ---------- */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background-color: #eef7ea;
+  border-bottom: 1px solid #d7e5d2;
+  box-sizing: border-box;
+}
+
+.app-header__logo {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2f6b3a;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.app-header__logout-form {
+  margin: 0;
+}
+
+.app-header__logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid #cdd6c7;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #2f5f32;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.app-header__logout:hover {
+  background-color: #f4f7f1;
+}
+
+/* ---------- 下部ナビ ---------- */
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 30;
+  transform: translateX(-50%);
+  width: min(100%, 480px);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+  background-color: #ffffff;
+  border-top: 1px solid #d7e5d2;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+}
+
+.bottom-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 4px;
+  border-radius: 12px;
+  color: #466346;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.bottom-nav__item:hover {
+  background-color: #f4f7f1;
+}
+
+.bottom-nav__icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.bottom-nav__label {
+  line-height: 1.2;
+}
+
+.bottom-nav__item.is-active {
+  background-color: #91bd8b;
+  color: #ffffff;
+}
+
+.bottom-nav__item.is-active:hover {
+  background-color: #7fad7a;
+}
