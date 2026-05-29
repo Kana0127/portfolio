@@ -1,0 +1,29 @@
+<%#
+  下部ナビ（issue28）：マイページ / 目標一覧 / ふりかえり
+  controller_name で関連画面もアクティブ判定する（一覧だけでなく詳細・編集・週目標・日次・各振り返りも含める）
+%>
+<%
+  mypage_active  = controller_name == "mypages"
+  goals_active   = %w[monthly_goals weekly_goals daily_records].include?(controller_name)
+  reviews_active = %w[reviews weekly_reviews monthly_reviews].include?(controller_name)
+%>
+
+<nav class="bottom-nav" aria-label="主要ナビゲーション">
+  <%= link_to mypage_path,
+              class: "bottom-nav__item #{'is-active' if mypage_active}" do %>
+    <span class="bottom-nav__icon" aria-hidden="true">🏠</span>
+    <span class="bottom-nav__label">マイページ</span>
+  <% end %>
+
+  <%= link_to monthly_goals_path,
+              class: "bottom-nav__item #{'is-active' if goals_active}" do %>
+    <span class="bottom-nav__icon" aria-hidden="true">📋</span>
+    <span class="bottom-nav__label">目標一覧</span>
+  <% end %>
+
+  <%= link_to reviews_path,
+              class: "bottom-nav__item #{'is-active' if reviews_active}" do %>
+    <span class="bottom-nav__icon" aria-hidden="true">📝</span>
+    <span class="bottom-nav__label">ふりかえり</span>
+  <% end %>
+</nav>
