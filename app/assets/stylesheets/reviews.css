@@ -84,6 +84,66 @@
   width: 100%;
 }
 
+/* ============ タブ切替（issue27.5：CSSのみで実現） ============ */
+/* ラジオ本体は非表示。input → buttons → content の順で兄弟配置されている前提 */
+.reviews-tab-input {
+  display: none;
+}
+
+.reviews-tab-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+
+.reviews-tab-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+  background-color: #ffffff;
+  color: #3f6b3a;
+  border: 1px solid #cdd6c7;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  user-select: none;
+}
+
+.reviews-tab-label:hover {
+  background-color: #f4f7f1;
+}
+
+/* タブ内容：初期は両方非表示。:checked ~ で必要な方だけ表示 */
+.reviews-tab-content {
+  display: none;
+}
+
+/* 週次タブ選択時：週次ラベルがアクティブ、週次コンテンツ表示 */
+#reviews-tab-weekly:checked ~ .reviews-tab-buttons .reviews-tab-label--weekly {
+  background-color: #3f6b3a;
+  color: #ffffff;
+  border-color: #3f6b3a;
+}
+
+#reviews-tab-weekly:checked ~ .reviews-tab-content--weekly {
+  display: block;
+}
+
+/* 月次タブ選択時：月次ラベルがアクティブ、月次コンテンツ表示 */
+#reviews-tab-monthly:checked ~ .reviews-tab-buttons .reviews-tab-label--monthly {
+  background-color: #3f6b3a;
+  color: #ffffff;
+  border-color: #3f6b3a;
+}
+
+#reviews-tab-monthly:checked ~ .reviews-tab-content--monthly {
+  display: block;
+}
+
 /* ============ Section ============ */
 .reviews-section {
   margin-bottom: 28px;

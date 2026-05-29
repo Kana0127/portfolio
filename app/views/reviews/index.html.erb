@@ -4,230 +4,244 @@
   <header class="reviews-header reviews-header--stacked">
     <h1 class="reviews-heading">振り返り</h1>
     <p class="reviews-tagline">小さな積み重ねをふりかえって、次のステップにつなげましょう。</p>
-    
   </header>
 
-  <%# ============ 先週のふりかえり ============ %>
-  <%# 先週の週目標があるときだけ表示。優先度1：未登録なら催促、登録済みなら結果サマリ %>
-  <% if @last_weekly_goals.any? %>
-    <section class="reviews-section" aria-labelledby="reviews-last-heading">
-      <h2 id="reviews-last-heading" class="reviews-section-heading">先週のふりかえり</h2>
+  <%# ============ タブ切替（CSSのみ：input → buttons → content の順で兄弟配置） ============ %>
+  <input type="radio" id="reviews-tab-weekly" name="reviews-tab" class="reviews-tab-input" checked>
+  <input type="radio" id="reviews-tab-monthly" name="reviews-tab" class="reviews-tab-input">
 
-      <% @last_weekly_goals.each do |wg| %>
-        <% review = wg.weekly_review %>
-        <article class="reviews-card">
-          <div class="reviews-card-icon" aria-hidden="true">📅</div>
-          <div class="reviews-card-body">
-            <p class="reviews-card-meta">
-              <%= wg.monthly_goal.target_month.strftime("%Y年%-m月") %> 第<%= wg.week_number %>週
-            </p>
-            <p class="reviews-card-title"><%= wg.title %></p>
+  <div class="reviews-tab-buttons" role="tablist">
+    <label for="reviews-tab-weekly" class="reviews-tab-label reviews-tab-label--weekly">週次</label>
+    <label for="reviews-tab-monthly" class="reviews-tab-label reviews-tab-label--monthly">月次</label>
+  </div>
 
-            <% if review %>
-              <%# 登録済み %>
-              <dl class="reviews-card-summary">
-                <div class="reviews-card-summary-item">
-                  <dt>達成率</dt>
-                  <dd><strong><%= review.achievement_rate %>%</strong></dd>
-                </div>
-                <div class="reviews-card-summary-item">
-                  <dt>良かった点</dt>
-                  <dd><%= truncate(review.good_point, length: 40) %></dd>
-                </div>
-                <div class="reviews-card-summary-item">
-                  <dt>改善点</dt>
-                  <dd><%= truncate(review.improvement_point, length: 40) %></dd>
-                </div>
-              </dl>
-              <%= link_to "振り返りを見る",
-                    weekly_goal_weekly_review_path(wg),
-                    class: "reviews-btn reviews-btn--secondary" %>
-            <% else %>
-              <%# 未登録：優先度1の催促文言 %>
-              <p class="reviews-card-text">先週の目標のふりかえりをしましょう！</p>
-              <%= link_to "＋ 振り返りを登録する",
-                    new_weekly_goal_weekly_review_path(wg),
-                    class: "reviews-btn reviews-btn--primary" %>
-            <% end %>
-          </div>
-        </article>
-      <% end %>
-    </section>
-  <% end %>
+  <%# ============ 週次タブ内容 ============ %>
+  <div class="reviews-tab-content reviews-tab-content--weekly">
+    <%# ---- 先週のふりかえり ---- %>
+    <%# 先週の週目標があるときだけ表示。優先度1：未登録なら催促、登録済みなら結果サマリ %>
+    <% if @last_weekly_goals.any? %>
+      <section class="reviews-section" aria-labelledby="reviews-last-heading">
+        <h2 id="reviews-last-heading" class="reviews-section-heading">先週のふりかえり</h2>
 
-  <%# ============ 今週のふりかえり ============ %>
-  <section class="reviews-section" aria-labelledby="reviews-weekly-heading">
-    <h2 id="reviews-weekly-heading" class="reviews-section-heading">今週のふりかえり</h2>
-
-    <% if @current_weekly_goals.empty? %>
-      <%# 優先度4：今週の週目標が未登録 %>
-      <article class="reviews-card reviews-card--empty">
-        <div class="reviews-card-icon" aria-hidden="true">🎯</div>
-        <p class="reviews-card-text">
-          目標一覧から今月・今週の目標を<br>登録しましょう。
-        </p>
-        <%= link_to "目標一覧へ", monthly_goals_path, class: "reviews-btn reviews-btn--primary" %>
-      </article>
-    <% else %>
-      <% @current_weekly_goals.each do |wg| %>
-        <% review = wg.weekly_review %>
-        <article class="reviews-card">
-          <div class="reviews-card-icon" aria-hidden="true">📝</div>
-          <div class="reviews-card-body">
-            <p class="reviews-card-meta">
-              <%= wg.monthly_goal.target_month.strftime("%Y年%-m月") %> 第<%= wg.week_number %>週
-            </p>
-            <p class="reviews-card-title"><%= wg.title %></p>
-
-            <% if review %>
-              <%# 優先度3：登録済みなら結果サマリ %>
-              <dl class="reviews-card-summary">
-                <div class="reviews-card-summary-item">
-                  <dt>達成率</dt>
-                  <dd><strong><%= review.achievement_rate %>%</strong></dd>
-                </div>
-                <div class="reviews-card-summary-item">
-                  <dt>良かった点</dt>
-                  <dd><%= truncate(review.good_point, length: 40) %></dd>
-                </div>
-                <div class="reviews-card-summary-item">
-                  <dt>改善点</dt>
-                  <dd><%= truncate(review.improvement_point, length: 40) %></dd>
-                </div>
-              </dl>
-              <%= link_to "振り返りを見る",
-                    weekly_goal_weekly_review_path(wg),
-                    class: "reviews-btn reviews-btn--secondary" %>
-            <% elsif @encourage_current_review %>
-              <%# 優先度2：土曜日以降の今週催促 %>
-              <p class="reviews-card-text">今週の目標をふりかえりましょう</p>
-              <%= link_to "＋ 振り返りを登録する",
-                    new_weekly_goal_weekly_review_path(wg),
-                    class: "reviews-btn reviews-btn--primary" %>
-            <% else %>
-              <%# 月〜金：まだ振り返りの時期ではないので、進行中であることだけ受動的に伝える %>
-              <p class="reviews-card-text">
-                今週の目標に取り組み中です。<br>
-                <span class="reviews-card-text-sub">ふりかえりは週末（土曜日）から登録できます。</span>
+        <% @last_weekly_goals.each do |wg| %>
+          <% review = wg.weekly_review %>
+          <article class="reviews-card">
+            <div class="reviews-card-icon" aria-hidden="true">📅</div>
+            <div class="reviews-card-body">
+              <p class="reviews-card-meta">
+                <%= wg.monthly_goal.target_month.strftime("%Y年%-m月") %> 第<%= wg.week_number %>週
               </p>
-            <% end %>
-          </div>
-        </article>
-      <% end %>
+              <p class="reviews-card-title"><%= wg.title %></p>
+
+              <% if review %>
+                <%# 登録済み %>
+                <dl class="reviews-card-summary">
+                  <div class="reviews-card-summary-item">
+                    <dt>達成率</dt>
+                    <dd><strong><%= review.achievement_rate %>%</strong></dd>
+                  </div>
+                  <div class="reviews-card-summary-item">
+                    <dt>良かった点</dt>
+                    <dd><%= truncate(review.good_point, length: 40) %></dd>
+                  </div>
+                  <div class="reviews-card-summary-item">
+                    <dt>改善点</dt>
+                    <dd><%= truncate(review.improvement_point, length: 40) %></dd>
+                  </div>
+                </dl>
+                <%= link_to "振り返りを見る",
+                      weekly_goal_weekly_review_path(wg),
+                      class: "reviews-btn reviews-btn--secondary" %>
+              <% else %>
+                <%# 未登録：優先度1の催促文言 %>
+                <p class="reviews-card-text">先週の目標のふりかえりをしましょう！</p>
+                <%= link_to "＋ 振り返りを登録する",
+                      new_weekly_goal_weekly_review_path(wg),
+                      class: "reviews-btn reviews-btn--primary" %>
+              <% end %>
+            </div>
+          </article>
+        <% end %>
+      </section>
     <% end %>
-  </section>
 
-  <%# ============ 先月のふりかえり（月次） ============ %>
-  <%# 先月の月目標があるときだけセクション表示 %>
-  <% if @last_monthly_goals.any? %>
-    <section class="reviews-section" aria-labelledby="reviews-last-monthly-heading">
-      <h2 id="reviews-last-monthly-heading" class="reviews-section-heading">先月のふりかえり</h2>
+    <%# ---- 今週のふりかえり ---- %>
+    <section class="reviews-section" aria-labelledby="reviews-weekly-heading">
+      <h2 id="reviews-weekly-heading" class="reviews-section-heading">今週のふりかえり</h2>
 
-      <% @last_monthly_goals.each do |mg| %>
-        <% review = mg.monthly_review %>
-        <article class="reviews-card">
-          <div class="reviews-card-icon" aria-hidden="true">📆</div>
-          <div class="reviews-card-body">
-            <p class="reviews-card-meta">
-              <%= mg.target_month.strftime("%Y年%-m月") %>
-            </p>
-            <p class="reviews-card-title"><%= mg.title %></p>
-
-            <% if review %>
-              <%# 優先度3：登録済みなら結果サマリ %>
-              <dl class="reviews-card-summary">
-                <div class="reviews-card-summary-item">
-                  <dt>達成率</dt>
-                  <dd><strong><%= review.achievement_rate %>%</strong></dd>
-                </div>
-                <div class="reviews-card-summary-item">
-                  <dt>今月の自分への一言</dt>
-                  <dd><%= truncate(review.good_point, length: 40) %></dd>
-                </div>
-                <div class="reviews-card-summary-item">
-                  <dt>来月の自分への一言</dt>
-                  <dd><%= truncate(review.improvement_point, length: 40) %></dd>
-                </div>
-              </dl>
-              <%= link_to "振り返りを見る",
-                    monthly_goal_monthly_review_path(mg),
-                    class: "reviews-btn reviews-btn--secondary" %>
-            <% else %>
-              <%# 優先度1：先月の未登録 → いつでも催促 %>
-              <p class="reviews-card-text">先月の月目標に対して振り返りを行いましょう</p>
-              <%= link_to "＋ 振り返りを登録する",
-                    new_monthly_goal_monthly_review_path(mg),
-                    class: "reviews-btn reviews-btn--primary" %>
-            <% end %>
-          </div>
+      <% if @current_weekly_goals.empty? %>
+        <%# 優先度4：今週の週目標が未登録 %>
+        <article class="reviews-card reviews-card--empty">
+          <div class="reviews-card-icon" aria-hidden="true">🎯</div>
+          <p class="reviews-card-text">
+            目標一覧から今月・今週の目標を<br>登録しましょう。
+          </p>
+          <%= link_to "目標一覧へ", monthly_goals_path, class: "reviews-btn reviews-btn--primary" %>
         </article>
+      <% else %>
+        <% @current_weekly_goals.each do |wg| %>
+          <% review = wg.weekly_review %>
+          <article class="reviews-card">
+            <div class="reviews-card-icon" aria-hidden="true">📝</div>
+            <div class="reviews-card-body">
+              <p class="reviews-card-meta">
+                <%= wg.monthly_goal.target_month.strftime("%Y年%-m月") %> 第<%= wg.week_number %>週
+              </p>
+              <p class="reviews-card-title"><%= wg.title %></p>
+
+              <% if review %>
+                <%# 優先度3：登録済みなら結果サマリ %>
+                <dl class="reviews-card-summary">
+                  <div class="reviews-card-summary-item">
+                    <dt>達成率</dt>
+                    <dd><strong><%= review.achievement_rate %>%</strong></dd>
+                  </div>
+                  <div class="reviews-card-summary-item">
+                    <dt>良かった点</dt>
+                    <dd><%= truncate(review.good_point, length: 40) %></dd>
+                  </div>
+                  <div class="reviews-card-summary-item">
+                    <dt>改善点</dt>
+                    <dd><%= truncate(review.improvement_point, length: 40) %></dd>
+                  </div>
+                </dl>
+                <%= link_to "振り返りを見る",
+                      weekly_goal_weekly_review_path(wg),
+                      class: "reviews-btn reviews-btn--secondary" %>
+              <% elsif @encourage_current_review %>
+                <%# 優先度2：土曜日以降の今週催促 %>
+                <p class="reviews-card-text">今週の目標をふりかえりましょう</p>
+                <%= link_to "＋ 振り返りを登録する",
+                      new_weekly_goal_weekly_review_path(wg),
+                      class: "reviews-btn reviews-btn--primary" %>
+              <% else %>
+                <%# 月〜金：まだ振り返りの時期ではないので、進行中であることだけ受動的に伝える %>
+                <p class="reviews-card-text">
+                  今週の目標に取り組み中です。<br>
+                  <span class="reviews-card-text-sub">ふりかえりは週末（土曜日）から登録できます。</span>
+                </p>
+              <% end %>
+            </div>
+          </article>
+        <% end %>
       <% end %>
     </section>
-  <% end %>
+  </div>
 
-  <%# ============ 今月のふりかえり（月次） ============ %>
-  <section class="reviews-section" aria-labelledby="reviews-monthly-heading">
-    <h2 id="reviews-monthly-heading" class="reviews-section-heading">今月のふりかえり</h2>
+  <%# ============ 月次タブ内容 ============ %>
+  <div class="reviews-tab-content reviews-tab-content--monthly">
+    <%# ---- 先月のふりかえり ---- %>
+    <%# 先月の月目標があるときだけセクション表示 %>
+    <% if @last_monthly_goals.any? %>
+      <section class="reviews-section" aria-labelledby="reviews-last-monthly-heading">
+        <h2 id="reviews-last-monthly-heading" class="reviews-section-heading">先月のふりかえり</h2>
 
-    <% if @current_monthly_goals.empty? %>
-      <%# 優先度5：今月の月目標が未登録 %>
-      <article class="reviews-card reviews-card--empty">
-        <div class="reviews-card-icon" aria-hidden="true">🌙</div>
-        <p class="reviews-card-text">
-          目標一覧から今月の目標を<br>登録しましょう。
-        </p>
-        <%= link_to "目標一覧へ", monthly_goals_path, class: "reviews-btn reviews-btn--primary" %>
-      </article>
-    <% else %>
-      <% @current_monthly_goals.each do |mg| %>
-        <% review = mg.monthly_review %>
-        <article class="reviews-card">
+        <% @last_monthly_goals.each do |mg| %>
+          <% review = mg.monthly_review %>
+          <article class="reviews-card">
+            <div class="reviews-card-icon" aria-hidden="true">📆</div>
+            <div class="reviews-card-body">
+              <p class="reviews-card-meta">
+                <%= mg.target_month.strftime("%Y年%-m月") %>
+              </p>
+              <p class="reviews-card-title"><%= mg.title %></p>
+
+              <% if review %>
+                <%# 優先度3：登録済みなら結果サマリ %>
+                <dl class="reviews-card-summary">
+                  <div class="reviews-card-summary-item">
+                    <dt>達成率</dt>
+                    <dd><strong><%= review.achievement_rate %>%</strong></dd>
+                  </div>
+                  <div class="reviews-card-summary-item">
+                    <dt>今月の自分への一言</dt>
+                    <dd><%= truncate(review.good_point, length: 40) %></dd>
+                  </div>
+                  <div class="reviews-card-summary-item">
+                    <dt>来月の自分への一言</dt>
+                    <dd><%= truncate(review.improvement_point, length: 40) %></dd>
+                  </div>
+                </dl>
+                <%= link_to "振り返りを見る",
+                      monthly_goal_monthly_review_path(mg),
+                      class: "reviews-btn reviews-btn--secondary" %>
+              <% else %>
+                <%# 優先度1：先月の未登録 → いつでも催促 %>
+                <p class="reviews-card-text">先月の月目標に対して振り返りを行いましょう</p>
+                <%= link_to "＋ 振り返りを登録する",
+                      new_monthly_goal_monthly_review_path(mg),
+                      class: "reviews-btn reviews-btn--primary" %>
+              <% end %>
+            </div>
+          </article>
+        <% end %>
+      </section>
+    <% end %>
+
+    <%# ---- 今月のふりかえり ---- %>
+    <section class="reviews-section" aria-labelledby="reviews-monthly-heading">
+      <h2 id="reviews-monthly-heading" class="reviews-section-heading">今月のふりかえり</h2>
+
+      <% if @current_monthly_goals.empty? %>
+        <%# 優先度5：今月の月目標が未登録 %>
+        <article class="reviews-card reviews-card--empty">
           <div class="reviews-card-icon" aria-hidden="true">🌙</div>
-          <div class="reviews-card-body">
-            <p class="reviews-card-meta">
-              <%= mg.target_month.strftime("%Y年%-m月") %>
-            </p>
-            <p class="reviews-card-title"><%= mg.title %></p>
-
-            <% if review %>
-              <%# 優先度3：登録済みなら結果サマリ %>
-              <dl class="reviews-card-summary">
-                <div class="reviews-card-summary-item">
-                  <dt>達成率</dt>
-                  <dd><strong><%= review.achievement_rate %>%</strong></dd>
-                </div>
-                <div class="reviews-card-summary-item">
-                  <dt>今月の自分への一言</dt>
-                  <dd><%= truncate(review.good_point, length: 40) %></dd>
-                </div>
-                <div class="reviews-card-summary-item">
-                  <dt>来月の自分への一言</dt>
-                  <dd><%= truncate(review.improvement_point, length: 40) %></dd>
-                </div>
-              </dl>
-              <%= link_to "振り返りを見る",
-                    monthly_goal_monthly_review_path(mg),
-                    class: "reviews-btn reviews-btn--secondary" %>
-            <% elsif @encourage_current_month_review %>
-              <%# 優先度2：25日以降の今月催促 %>
-              <p class="reviews-card-text">今月の目標をふりかえりましょう</p>
-              <%= link_to "＋ 振り返りを登録する",
-                    new_monthly_goal_monthly_review_path(mg),
-                    class: "reviews-btn reviews-btn--primary" %>
-            <% else %>
-              <%# 優先度4：24日以前の今月未登録 → 受動メッセージのみ、ボタンなし %>
-              <p class="reviews-card-text">
-                25日以降に今月の振り返りを<br>
-                <span class="reviews-card-text-sub">することができます。</span>
-              </p>
-            <% end %>
-          </div>
+          <p class="reviews-card-text">
+            目標一覧から今月の目標を<br>登録しましょう。
+          </p>
+          <%= link_to "目標一覧へ", monthly_goals_path, class: "reviews-btn reviews-btn--primary" %>
         </article>
-      <% end %>
-    <% end %>
-  </section>
+      <% else %>
+        <% @current_monthly_goals.each do |mg| %>
+          <% review = mg.monthly_review %>
+          <article class="reviews-card">
+            <div class="reviews-card-icon" aria-hidden="true">🌙</div>
+            <div class="reviews-card-body">
+              <p class="reviews-card-meta">
+                <%= mg.target_month.strftime("%Y年%-m月") %>
+              </p>
+              <p class="reviews-card-title"><%= mg.title %></p>
 
-  <%# ============ 過去のふりかえり（プレースホルダー） ============ %>
+              <% if review %>
+                <%# 優先度3：登録済みなら結果サマリ %>
+                <dl class="reviews-card-summary">
+                  <div class="reviews-card-summary-item">
+                    <dt>達成率</dt>
+                    <dd><strong><%= review.achievement_rate %>%</strong></dd>
+                  </div>
+                  <div class="reviews-card-summary-item">
+                    <dt>今月の自分への一言</dt>
+                    <dd><%= truncate(review.good_point, length: 40) %></dd>
+                  </div>
+                  <div class="reviews-card-summary-item">
+                    <dt>来月の自分への一言</dt>
+                    <dd><%= truncate(review.improvement_point, length: 40) %></dd>
+                  </div>
+                </dl>
+                <%= link_to "振り返りを見る",
+                      monthly_goal_monthly_review_path(mg),
+                      class: "reviews-btn reviews-btn--secondary" %>
+              <% elsif @encourage_current_month_review %>
+                <%# 優先度2：25日以降の今月催促 %>
+                <p class="reviews-card-text">今月の目標をふりかえりましょう</p>
+                <%= link_to "＋ 振り返りを登録する",
+                      new_monthly_goal_monthly_review_path(mg),
+                      class: "reviews-btn reviews-btn--primary" %>
+              <% else %>
+                <%# 優先度4：24日以前の今月未登録 → 受動メッセージのみ、ボタンなし %>
+                <p class="reviews-card-text">
+                  25日以降に今月の振り返りを<br>
+                  <span class="reviews-card-text-sub">することができます。</span>
+                </p>
+              <% end %>
+            </div>
+          </article>
+        <% end %>
+      <% end %>
+    </section>
+  </div>
+
+  <%# ============ 過去のふりかえり（プレースホルダー：タブ外、常に表示） ============ %>
   <section class="reviews-section">
     <a href="#" class="reviews-past-btn" aria-disabled="true">過去のふりかえりを見る →</a>
   </section>
