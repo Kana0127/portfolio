@@ -1,0 +1,93 @@
+<% content_for :title, "今月のふりかえり | Monthly Step" %>
+
+<main class="reviews-page">
+  <header class="reviews-header">
+    <%= link_to "←", reviews_path, class: "reviews-back", "aria-label": "振り返り一覧に戻る" %>
+    <h1 class="reviews-heading">今月のふりかえり</h1>
+  </header>
+
+  <% if @monthly_review.errors.any? %>
+    <div class="reviews-error" role="alert">
+      <p class="reviews-error-title"><%= @monthly_review.errors.count %>件のエラーがあります</p>
+      <ul class="reviews-error-list">
+        <% @monthly_review.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%# ============ カード1：今月の目標 ============ %>
+  <section class="reviews-card reviews-card--target">
+    <p class="reviews-card-label">今月の目標</p>
+    <p class="reviews-card-title"><%= @monthly_goal.title %></p>
+    <p class="reviews-card-meta">
+      <%= @monthly_goal.target_month.strftime("%Y年%-m月") %>
+    </p>
+  </section>
+
+  <%= form_with model: @monthly_review,
+                url: monthly_goal_monthly_review_path(@monthly_goal),
+                local: true do |f| %>
+
+    <%# ============ カード2：達成度の評価 ============ %>
+    <section class="reviews-card reviews-card--rate" aria-labelledby="monthly-rate-heading">
+      <p id="monthly-rate-heading" class="reviews-card-label">達成度の評価</p>
+      <p class="reviews-card-sub">今月のがんばりを教えてください。</p>
+      <div class="reviews-rates" role="radiogroup" aria-labelledby="monthly-rate-heading">
+        <% [
+          [ 100, "◎", "最高！" ],
+          [ 75,  "○", "できた" ],
+          [ 50,  "△", "あと少し" ],
+          [ 25,  "·", "次へ" ],
+          [ 0,   "×", "これから" ]
+        ].each do |val, sym, label| %>
+          <label class="reviews-rate">
+            <%= f.radio_button :achievement_rate, val, class: "reviews-rate-input" %>
+            <span class="reviews-rate-card">
+              <span class="reviews-rate-symbol"><%= sym %></span>
+              <span class="reviews-rate-label"><%= label %></span>
+              <span class="reviews-rate-value"><%= val %>%</span>
+            </span>
+          </label>
+        <% end %>
+      </div>
+    </section>
+
+    <%# ============ カード3：振り返りコメント ============ %>
+    <section class="reviews-card reviews-card--comment">
+      <p class="reviews-card-label">今月のふりかえりコメント</p>
+      <p class="reviews-card-sub">1ヶ月をふりかえって、来月への気持ちを書きましょう。</p>
+
+      <div class="reviews-form-group">
+        <%= f.label :good_point, "今月の自分への一言", class: "reviews-form-label" %>
+        <%= f.text_area :good_point,
+              class: "reviews-form-input",
+              rows: 3,
+              placeholder: "今月1ヶ月を振り返って、自分を褒めてあげましょう" %>
+      </div>
+
+      <div class="reviews-form-group">
+        <%= f.label :improvement_point, "来月の自分への一言", class: "reviews-form-label" %>
+        <%= f.text_area :improvement_point,
+              class: "reviews-form-input",
+              rows: 3,
+              placeholder: "来月はどう過ごしたいですか？" %>
+      </div>
+
+      <div class="reviews-form-group">
+        <%= f.label :memo, "メモ（任意）", class: "reviews-form-label" %>
+        <%= f.text_area :memo,
+              class: "reviews-form-input",
+              rows: 3,
+              placeholder: "気づいたことや感想を残せます。" %>
+      </div>
+    </section>
+
+    <%= f.submit "振り返りを登録する", class: "reviews-btn reviews-btn--primary reviews-btn--full" %>
+  <% end %>
+
+  <p class="reviews-back-link">
+    <%= link_to "振り返り一覧に戻る", reviews_path, class: "reviews-btn reviews-btn--secondary reviews-btn--full" %>
+  </p>
+</main>
