@@ -3,6 +3,7 @@ class MonthlyGoal < ApplicationRecord
   belongs_to :category
 
   has_many :weekly_goals, dependent: :destroy
+  has_one :monthly_review, dependent: :destroy
 
   enum :goal_kind, { step: 0, single: 1 }
 
