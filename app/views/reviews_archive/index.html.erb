@@ -1,0 +1,135 @@
+<% content_for :title, "振り返りアーカイブ | Monthly Step" %>
+
+<main class="archive-page">
+  <header class="archive-header">
+    <h1 class="archive-heading">振り返りアーカイブ</h1>
+    <p class="archive-tagline">深呼吸して、これまでの歩みを振り返ってみましょう。</p>
+  </header>
+
+  <% if @total_count.zero? %>
+    <%# 空状態 %>
+    <section class="archive-empty">
+      <div class="archive-empty-icon" aria-hidden="true">🌱</div>
+      <p class="archive-empty-text">
+        まだ過去のふりかえりはありません。<br>
+        ふりかえりを記録すると、ここに表示されます。
+      </p>
+      <%= link_to "振り返りページへ戻る", reviews_path,
+            class: "archive-btn archive-btn--secondary" %>
+    </section>
+  <% else %>
+    <% @month_groups.each do |group| %>
+      <% month = group[:target_month] %>
+      <section class="archive-month" aria-labelledby="archive-month-<%= month.strftime('%Y%m') %>">
+        <h2 id="archive-month-<%= month.strftime('%Y%m') %>" class="archive-month-heading">
+          <span class="archive-month-icon" aria-hidden="true">📅</span>
+          <%= month.strftime("%Y年 %-m月") %>
+        </h2>
+
+        <ul class="archive-list">
+
+          <%# ===== 月次：その月の月次レビューを1枚のカードにまとめる ===== %>
+          <% if group[:monthly_reviews].any? %>
+            <li class="archive-card archive-card--monthly">
+              <div class="archive-card-head">
+                <span class="archive-badge archive-badge--monthly">月次</span>
+                <p class="archive-card-title">
+                  <%= month.strftime("%-m月") %> 月次振り返り
+                </p>
+              </div>
+
+              <ul class="archive-card-items">
+                <% group[:monthly_reviews].each do |review| %>
+                  <% mg = review.monthly_goal %>
+                  <li class="archive-card-item">
+                    <p class="archive-card-item-title"><%= mg.title %></p>
+
+                    <dl class="archive-card-summary">
+                      <div class="archive-card-summary-item">
+                        <dt>達成率</dt>
+                        <dd><strong><%= review.achievement_rate %>%</strong></dd>
+                      </div>
+                      <div class="archive-card-summary-item">
+                        <dt>今月の自分への一言</dt>
+                        <dd><%= truncate(review.good_point, length: 60) %></dd>
+                      </div>
+                      <div class="archive-card-summary-item">
+                        <dt>来月の自分への一言</dt>
+                        <dd><%= truncate(review.improvement_point, length: 60) %></dd>
+                      </div>
+                      <% if review.memo.present? %>
+                        <div class="archive-card-summary-item">
+                          <dt>メモ</dt>
+                          <dd><%= truncate(review.memo, length: 60) %></dd>
+                        </div>
+                      <% end %>
+                    </dl>
+
+                    <%= link_to "詳細を見る",
+                          monthly_goal_monthly_review_path(mg),
+                          class: "archive-card-link" %>
+                  </li>
+                <% end %>
+              </ul>
+            </li>
+          <% end %>
+
+          <%# ===== 週次：その月の週次レビューを「週ごと」にカードにまとめる ===== %>
+          <% group[:weekly_groups].each do |wg| %>
+            <li class="archive-card archive-card--weekly">
+              <div class="archive-card-head">
+                <span class="archive-badge archive-badge--weekly">週次</span>
+                <p class="archive-card-title">
+                  <%= month.strftime("%-m月") %> 第<%= wg[:week_number] %>週
+                </p>
+              </div>
+              <p class="archive-card-period">
+                <%= wg[:start_date].strftime("%-m/%-d") %>〜<%= (wg[:start_date] + 6.days).strftime("%-m/%-d") %>
+              </p>
+
+              <ul class="archive-card-items">
+                <% wg[:reviews].each do |review| %>
+                  <% weekly = review.weekly_goal %>
+                  <li class="archive-card-item">
+                    <p class="archive-card-item-title"><%= weekly.title %></p>
+
+                    <dl class="archive-card-summary">
+                      <div class="archive-card-summary-item">
+                        <dt>達成率</dt>
+                        <dd><strong><%= review.achievement_rate %>%</strong></dd>
+                      </div>
+                      <div class="archive-card-summary-item">
+                        <dt>良かった点</dt>
+                        <dd><%= truncate(review.good_point, length: 50) %></dd>
+                      </div>
+                      <div class="archive-card-summary-item">
+                        <dt>改善点</dt>
+                        <dd><%= truncate(review.improvement_point, length: 50) %></dd>
+                      </div>
+                      <% if review.memo.present? %>
+                        <div class="archive-card-summary-item">
+                          <dt>メモ</dt>
+                          <dd><%= truncate(review.memo, length: 50) %></dd>
+                        </div>
+                      <% end %>
+                    </dl>
+
+                    <%= link_to "詳細を見る",
+                          weekly_goal_weekly_review_path(weekly),
+                          class: "archive-card-link" %>
+                  </li>
+                <% end %>
+              </ul>
+            </li>
+          <% end %>
+
+        </ul>
+      </section>
+    <% end %>
+  <% end %>
+
+  <p class="archive-back-link">
+    <%= link_to "振り返りページへ戻る", reviews_path,
+          class: "archive-btn archive-btn--secondary archive-btn--full" %>
+  </p>
+</main>

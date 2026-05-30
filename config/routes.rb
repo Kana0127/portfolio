@@ -29,7 +29,8 @@ Rails.application.routes.draw do
     resource :weekly_review, only: %i[new create show]
   end
 
-  get "reviews", to: "reviews#index", as: :reviews
+  get "reviews",         to: "reviews#index",          as: :reviews
+  get "reviews/archive", to: "reviews_archive#index",  as: :reviews_archive
 
   get    "login",  to: "sessions#new"
   post   "login",  to: "sessions#create"

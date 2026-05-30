@@ -241,8 +241,8 @@
     </section>
   </div>
 
-  <%# ============ 過去のふりかえり（プレースホルダー：タブ外、常に表示） ============ %>
+  <%# ============ 過去のふりかえりへの導線（タブ外、常に表示） ============ %>
   <section class="reviews-section">
-    <a href="#" class="reviews-past-btn" aria-disabled="true">過去のふりかえりを見る →</a>
+    <%= link_to "過去のふりかえりを見る →", reviews_archive_path, class: "reviews-past-btn" %>
   </section>
 </main>

@@ -1,0 +1,301 @@
+/*
+ * Monthly Step - 振り返りアーカイブ画面（issue30）
+ * 既存のパステルグリーン基調に揃え、月ごとに月次/週次振り返りを並べる
+ */
+
+.archive-page {
+  min-height: calc(100vh - 60px);
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px 16px 24px;
+  box-sizing: border-box;
+  background-color: #eaf2e6;
+  color: #2f3b2a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+  line-height: 1.6;
+}
+
+/* ============ ページヘッダー ============ */
+.archive-header {
+  margin: 8px 0 20px;
+  text-align: left;
+}
+
+.archive-heading {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #2f3b2a;
+}
+
+.archive-tagline {
+  margin: 0;
+  font-size: 13px;
+  color: #6b7a64;
+  line-height: 1.6;
+}
+
+/* ============ 月ごとのグループ ============ */
+.archive-month {
+  margin-bottom: 28px;
+}
+
+.archive-month-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #3f6b3a;
+  letter-spacing: 0.02em;
+}
+
+.archive-month-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.archive-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ============ カード共通 ============ */
+.archive-card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 4px 12px rgba(63, 107, 58, 0.06);
+  border: 1px solid transparent;
+}
+
+/* 月次カード：淡いグリーン背景で差別化 */
+.archive-card--monthly {
+  background-color: #e6f0e0;
+  border-color: #c6dabd;
+}
+
+/* 週次カードは白背景のまま（base 定義のまま） */
+
+.archive-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.archive-card-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #2f3b2a;
+  line-height: 1.4;
+}
+
+.archive-card-period {
+  margin: 2px 0 8px;
+  font-size: 12px;
+  color: #6b7a64;
+  letter-spacing: 0.02em;
+}
+
+.archive-card-goal {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: #2f3b2a;
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ============ バッジ ============ */
+.archive-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+}
+
+.archive-badge--monthly {
+  background-color: #3f6b3a;
+  color: #ffffff;
+}
+
+.archive-badge--weekly {
+  background-color: #f4f7f1;
+  color: #3f6b3a;
+  border: 1px solid #cdd6c7;
+}
+
+/* ============ カード内の複数レビューを束ねるリスト ============ */
+.archive-card-items {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.archive-card-item {
+  display: block;
+}
+
+/* 2件目以降に薄い破線の区切りを入れる */
+.archive-card-item + .archive-card-item {
+  border-top: 1px dashed #cdd6c7;
+  padding-top: 14px;
+}
+
+/* 月次カード内の区切り線は背景が淡い緑なので、合わせて少しトーン調整 */
+.archive-card--monthly .archive-card-item + .archive-card-item {
+  border-top-color: #b7dcaa;
+}
+
+.archive-card-item-title {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #2f3b2a;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+/* ============ サマリ ============ */
+.archive-card-summary {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.archive-card-summary-item {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.archive-card-summary-item dt {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: #6b7a64;
+  letter-spacing: 0.02em;
+}
+
+.archive-card-summary-item dd {
+  margin: 0;
+  font-size: 13px;
+  color: #2f3b2a;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.archive-card-summary-item dd strong {
+  font-size: 17px;
+  font-weight: 700;
+  color: #3f6b3a;
+}
+
+/* 月次カード内の達成率は白抜きにせず、地の文字色のまま見やすく */
+.archive-card--monthly .archive-card-summary-item dt {
+  color: #3f6b3a;
+}
+
+/* ============ 詳細リンク ============ */
+.archive-card-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 10px;
+  padding: 4px 0;
+  color: #3f6b3a;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.archive-card-link::after {
+  content: " →";
+}
+
+.archive-card-link:hover {
+  opacity: 0.7;
+}
+
+/* ============ 空状態 ============ */
+.archive-empty {
+  margin: 24px 0;
+  padding: 32px 20px;
+  background-color: #ffffff;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(63, 107, 58, 0.06);
+}
+
+.archive-empty-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.archive-empty-text {
+  margin: 0 0 18px;
+  font-size: 14px;
+  color: #6b7a64;
+  line-height: 1.7;
+}
+
+/* ============ 戻りボタン ============ */
+.archive-back-link {
+  margin: 24px 0 0;
+}
+
+.archive-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 44px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.15s ease;
+}
+
+.archive-btn--secondary {
+  background-color: #ffffff;
+  color: #3f6b3a;
+  border: 1px solid #cdd6c7;
+}
+
+.archive-btn--secondary:hover {
+  background-color: #f4f7f1;
+}
+
+.archive-btn--full {
+  width: 100%;
+}
+
+/* ============ PC幅オーバーライド ============ */
+@media (min-width: 768px) {
+  .archive-page {
+    max-width: 760px;
+  }
+}
