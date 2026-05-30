@@ -14,9 +14,8 @@
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="icon" href="<%= asset_path('monthly-step-icon2.png') %>" type="image/png">
+    <link rel="apple-touch-icon" href="<%= asset_path('monthly-step-icon2.png') %>">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
@@ -29,9 +28,7 @@
       <%= render "shared/app_header" %>
     <% end %>
 
-    <% flash.each do |key, message| %>
-      <div class="flash flash--<%= key %>" role="alert"><%= message %></div>
-    <% end %>
+    <%= render "shared/flash" %>
 
     <%# 各 view が独自に <main> を持つため、ここは div で囲って二重 main を回避 %>
     <div class="app-main">

@@ -1,9 +1,38 @@
-<header class="app-header">
-  <%= link_to "Monthly step", mypage_path, class: "app-header__logo" %>
+<%#
+  共通ヘッダー（issue28 + issue29）
+  - 左：Monthly step ロゴ
+  - 右：[PC のみ] マイページ / 目標一覧 / ふりかえり ナビ + ログアウト
+  - スマホ・タブレットでは右側ナビは非表示（下部ナビが代替）
+  PC用 active 判定は _bottom_nav と同じロジック（controller_name ベース）
+%>
+<%
+  mypage_active  = controller_name == "mypages"
+  goals_active   = %w[monthly_goals weekly_goals daily_records].include?(controller_name)
+  reviews_active = %w[reviews weekly_reviews monthly_reviews].include?(controller_name)
+%>
 
-  <%= button_to "ログアウト",
-                logout_path,
-                method: :delete,
-                class: "app-header__logout",
-                form: { class: "app-header__logout-form" } %>
+<header class="app-header">
+  <%= link_to mypage_path, class: "app-header__brand" do %>
+    <%= image_tag "monthly-step-icon2.png",
+                  alt: "Monthly Step",
+                  class: "app-header__icon" %>
+    <span class="app-header__logo">Monthly step</span>
+  <% end %>
+
+  <div class="app-header__right">
+    <nav class="app-header__nav" aria-label="主要ナビゲーション（PC）">
+      <%= link_to "マイページ", mypage_path,
+                  class: class_names("app-header__nav-item", "is-active": mypage_active) %>
+      <%= link_to "目標一覧", monthly_goals_path,
+                  class: class_names("app-header__nav-item", "is-active": goals_active) %>
+      <%= link_to "ふりかえり", reviews_path,
+                  class: class_names("app-header__nav-item", "is-active": reviews_active) %>
+    </nav>
+
+    <%= button_to "ログアウト",
+                  logout_path,
+                  method: :delete,
+                  class: "app-header__logout",
+                  form: { class: "app-header__logout-form" } %>
+  </div>
 </header>
