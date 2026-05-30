@@ -196,6 +196,35 @@
   background-color: #f4f7f1;
 }
 
+/* ----------- 今日のメモ表示 ----------- */
+/* 達成度カードの下にそっと添える、淡いグリーン基調のメモ枠 */
+.mypage-record-memo {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  background-color: #f4f7f1;
+  border-left: 3px solid #b7dcaa;
+  border-radius: 10px;
+  text-align: left;
+}
+
+.mypage-record-memo__label {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #3f6b3a;
+  letter-spacing: 0.04em;
+}
+
+.mypage-record-memo__text {
+  margin: 0;
+  font-size: 13px;
+  color: #2f3b2a;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 /* ----------- ボタン共通 ----------- */
 .mypage-btn {
   display: inline-flex;

@@ -7,7 +7,7 @@
       <span class="mypage-greeting-name"><%= current_user.name %></span>さん　今日もおつかれさまです。
     </p>
     <p class="mypage-greeting-lead">
-      今月の目標に向かって、今日も少しずつ進んでいきましょう。
+      今月の目標に向かって、 今日も少しずつ進んでいきましょう。
     </p>
   </header>
 
@@ -62,6 +62,13 @@
                 <span class="mypage-record-label"><%= today_record.status_label %></span>
                 <span class="mypage-record-msg">今日は記録済みです</span>
               </p>
+
+              <% if today_record.memo.present? %>
+                 <div class="mypage-record-memo">
+                  <p class="mypage-record-memo__label">今日のメモ</p>
+                  <p class="mypage-record-memo__text"><%= today_record.memo %></p>
+                 </div>
+               <% end %>
               <button type="button" class="mypage-btn mypage-btn--disabled" disabled>記録済み</button>
             <% else %>
               <p class="mypage-record-prompt">記録しましょう！</p>
