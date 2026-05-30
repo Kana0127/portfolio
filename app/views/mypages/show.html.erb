@@ -3,6 +3,12 @@
 <main class="mypage">
   <header class="mypage-header">
     <h1 class="mypage-heading">Monthly step</h1>
+    <p class="mypage-greeting">
+      <span class="mypage-greeting-name"><%= current_user.name %></span>さん　今日もおつかれさまです。
+    </p>
+    <p class="mypage-greeting-lead">
+      今月の目標に向かって、今日も少しずつ進んでいきましょう。
+    </p>
   </header>
 
   <% if @cards.empty? %>

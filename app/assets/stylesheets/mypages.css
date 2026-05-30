@@ -29,6 +29,27 @@
   letter-spacing: 0.04em;
 }
 
+/* ようこそメッセージ：名前 + ねぎらい + 励まし */
+.mypage-greeting {
+  margin: 12px 0 4px;
+  color: #2f3b2a;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.mypage-greeting-name {
+  color: #3f6b3a;
+  font-weight: 700;
+}
+
+.mypage-greeting-lead {
+  margin: 0;
+  color: #6b7a64;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
 /* カード全般 */
 .mypage-card {
   background-color: #ffffff;

@@ -1,125 +1,422 @@
 /*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+
+* This is a manifest file that'll be compiled into application.css.
+*
+* With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+* application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+* cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+* depending on specificity.
+*
+* Consider organizing styles into separate files for maintainability.
+  */
 
 /* ============================================================
- * 共通アプリ・クローム（issue28）
- *  - 上部ヘッダー：Monthly step ロゴ + ログアウトボタン
- *  - 下部ナビ：マイページ / 目標一覧 / ふりかえり
- *  layouts/application.html.erb からログイン中のみ render される
- * ============================================================ */
+
+* 共通デザイントークン（issue29）
+* 既存ページCSSは既にハードコードされた色で書かれているため、
+* トークン化は新規追加するクラスから順次適用する方針。
+* ============================================================ */
+  :root {
+  --ms-bg-base:        #eaf2e6;  /* 背景：淡いグリーン */
+  --ms-bg-header:      #eef7ea;  /* ヘッダー：さらに淡い */
+  --ms-bg-card:        #ffffff;  /* カード */
+  --ms-bg-soft:        #f4f7f1;  /* 控えめなホバー */
+  --ms-bg-tint:        #eaf2e6;  /* チップ・タグ等 */
+
+--ms-primary:        #3f6b3a;  /* メインのグリーン */
+--ms-primary-dark:   #345a30;  /* hover */
+--ms-primary-soft:   #91bd8b;  /* サブ的なグリーン */
+--ms-accent:         #b7dcaa;  /* アクセント／薄グリーン */
+
+--ms-text:           #2f3b2a;  /* 通常テキスト */
+--ms-text-muted:     #6b7a64;  /* 補足テキスト */
+--ms-text-light:     #8a9684;  /* さらに薄い */
+
+--ms-border:         #cdd6c7;  /* 一般の枠線 */
+--ms-border-soft:    #d7e5d2;  /* ヘッダー/ナビの境界 */
+
+--ms-danger-bg:      #fdecea;
+--ms-danger-border:  #f5c2bd;
+--ms-danger-text:    #8a2a22;
+
+--ms-shadow-card:    0 4px 12px rgba(63, 107, 58, 0.08);
+--ms-shadow-pop:     0 8px 20px rgba(63, 107, 58, 0.12);
+--ms-shadow-nav:     0 -4px 16px rgba(0, 0, 0, 0.06);
+
+--ms-radius-card:    18px;
+--ms-radius-input:   12px;
+--ms-radius-pill:    999px;
+
+--ms-content-mobile: 480px;   /* スマホ・タブレットの最大幅 */
+--ms-content-pc:     960px;   /* PC で広げる最大幅 */
+}
+
+/* ============================================================
+
+* アプリ全体のベース
+* ============================================================ */
+  html {
+  min-height: 100%;
+  }
+
+body {
+min-height: 100%;
+margin: 0;
+background-color: var(--ms-bg-base);
+color: var(--ms-text);
+}
+
+/* ============================================================
+
+* 共通アプリ・クローム（issue28 ベース）
+* * 上部ヘッダー：Monthly step ロゴ + ログアウトボタン
+* * 下部ナビ：マイページ / 目標一覧 / ふりかえり
+* layouts/application.html.erb からログイン中のみ render される
+* ============================================================ */
 
 /* yield をラップする div。下部ナビにかぶらないよう padding-bottom を確保 */
 .app-main {
-  padding-bottom: 88px;
+padding-bottom: 88px;
 }
 
 /* ---------- 上部ヘッダー ---------- */
 .app-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 20px;
-  background-color: #eef7ea;
-  border-bottom: 1px solid #d7e5d2;
-  box-sizing: border-box;
+position: sticky;
+top: 0;
+z-index: 20;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+padding: 12px 20px;
+background-color: var(--ms-bg-header);
+border-bottom: 1px solid var(--ms-border-soft);
+box-sizing: border-box;
+}
+
+/* アイコン画像 + Monthly step 文字をまとめたブランドリンク */
+.app-header__brand {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+color: inherit;
+text-decoration: none;
+flex-shrink: 0;
+transition: opacity 0.15s ease;
+}
+
+.app-header__brand:hover {
+opacity: 0.85;
+}
+
+/* ヘッダー左上のアイコン画像 */
+.app-header__icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
 }
 
 .app-header__logo {
-  font-size: 16px;
-  font-weight: 700;
-  color: #2f6b3a;
-  text-decoration: none;
-  letter-spacing: 0.02em;
+font-size: 16px;
+font-weight: 700;
+color: var(--ms-primary);
+text-decoration: none;
+letter-spacing: 0.02em;
+transition: opacity 0.15s ease;
+}
+
+.app-header__logo:hover {
+opacity: 0.85;
+}
+
+.app-header__right {
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+/* PC用ナビ（スマホ・タブレットでは非表示） */
+.app-header__nav {
+display: none;
+gap: 4px;
+align-items: center;
+}
+
+.app-header__nav-item {
+display: inline-flex;
+align-items: center;
+padding: 6px 14px;
+border-radius: var(--ms-radius-pill);
+color: var(--ms-text);
+font-size: 13px;
+font-weight: 700;
+text-decoration: none;
+transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.app-header__nav-item:hover {
+background-color: var(--ms-bg-soft);
+}
+
+.app-header__nav-item.is-active {
+background-color: var(--ms-primary);
+color: #ffffff;
+}
+
+.app-header__nav-item.is-active:hover {
+background-color: var(--ms-primary-dark);
 }
 
 .app-header__logout-form {
-  margin: 0;
+margin: 0;
 }
 
 .app-header__logout {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 32px;
-  padding: 0 14px;
-  border: 1px solid #cdd6c7;
-  border-radius: 999px;
-  background-color: #ffffff;
-  color: #2f5f32;
-  font-size: 13px;
-  font-weight: 700;
-  font-family: inherit;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+height: 32px;
+padding: 0 14px;
+border: 1px solid var(--ms-border);
+border-radius: var(--ms-radius-pill);
+background-color: #ffffff;
+color: #2f5f32;
+font-size: 13px;
+font-weight: 700;
+font-family: inherit;
+text-decoration: none;
+cursor: pointer;
+transition: background-color 0.15s ease, transform 0.05s ease;
 }
 
 .app-header__logout:hover {
-  background-color: #f4f7f1;
+background-color: var(--ms-bg-soft);
 }
 
-/* ---------- 下部ナビ ---------- */
+.app-header__logout:active {
+transform: scale(0.97);
+}
+
+/* ---------- 下部ナビ（スマホ・タブレット用） ---------- */
 .bottom-nav {
-  position: fixed;
-  left: 50%;
-  bottom: 0;
-  z-index: 30;
-  transform: translateX(-50%);
-  width: min(100%, 480px);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
-  padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
-  background-color: #ffffff;
-  border-top: 1px solid #d7e5d2;
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
-  box-sizing: border-box;
+position: fixed;
+left: 50%;
+bottom: 0;
+z-index: 30;
+transform: translateX(-50%);
+width: min(100%, 480px);
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 4px;
+padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+background-color: #ffffff;
+border-top: 1px solid var(--ms-border-soft);
+box-shadow: var(--ms-shadow-nav);
+box-sizing: border-box;
 }
 
 .bottom-nav__item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 8px 4px;
-  border-radius: 12px;
-  color: #466346;
-  font-size: 11px;
-  font-weight: 700;
-  text-decoration: none;
-  text-align: center;
-  transition: background-color 0.15s ease, color 0.15s ease;
+position: relative;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
+padding: 8px 4px;
+border-radius: var(--ms-radius-input);
+color: #466346;
+font-size: 11px;
+font-weight: 700;
+text-decoration: none;
+text-align: center;
+transition: background-color 0.15s ease, color 0.15s ease, transform 0.05s ease;
 }
 
 .bottom-nav__item:hover {
-  background-color: #f4f7f1;
+background-color: var(--ms-bg-soft);
+}
+
+.bottom-nav__item:active {
+transform: scale(0.97);
 }
 
 .bottom-nav__icon {
-  font-size: 18px;
-  line-height: 1;
+font-size: 18px;
+line-height: 1;
+transition: transform 0.15s ease;
 }
 
 .bottom-nav__label {
-  line-height: 1.2;
+line-height: 1.2;
 }
 
 .bottom-nav__item.is-active {
-  background-color: #91bd8b;
-  color: #ffffff;
+background-color: var(--ms-primary-soft);
+color: #ffffff;
 }
 
 .bottom-nav__item.is-active:hover {
-  background-color: #7fad7a;
+background-color: #7fad7a;
 }
+
+/* アクティブ時に上部の小さなインジケータでさらに視認性を上げる */
+.bottom-nav__item.is-active::before {
+content: "";
+position: absolute;
+top: 3px;
+left: 50%;
+transform: translateX(-50%);
+width: 22px;
+height: 3px;
+background-color: #ffffff;
+border-radius: var(--ms-radius-pill);
+}
+
+.bottom-nav__item.is-active .bottom-nav__icon {
+transform: scale(1.08);
+}
+
+/* ============================================================
+
+* フラッシュメッセージ（issue29）
+* * shared/_flash.html.erb から layouts/application.html.erb 直下に挿入
+* * notice 系：緑、alert 系：赤
+* ============================================================ */
+  .flash-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px 0;
+  max-width: var(--ms-content-mobile);
+  margin: 0 auto;
+  box-sizing: border-box;
+  }
+
+.flash {
+display: flex;
+align-items: flex-start;
+gap: 10px;
+padding: 12px 16px;
+border-radius: var(--ms-radius-input);
+font-size: 14px;
+font-weight: 600;
+line-height: 1.5;
+box-shadow: var(--ms-shadow-card);
+border: 1px solid transparent;
+animation: ms-flash-in 0.2s ease-out;
+}
+
+@keyframes ms-flash-in {
+from {
+opacity: 0;
+transform: translateY(-4px);
+}
+
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+.flash__icon {
+flex-shrink: 0;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 22px;
+height: 22px;
+border-radius: var(--ms-radius-pill);
+font-size: 13px;
+font-weight: 700;
+}
+
+.flash__text {
+flex: 1;
+min-width: 0;
+word-break: break-word;
+}
+
+.flash--notice {
+background-color: #e6f0e0;
+color: var(--ms-primary);
+border-color: var(--ms-accent);
+}
+
+.flash--notice .flash__icon {
+background-color: var(--ms-primary);
+color: #ffffff;
+}
+
+.flash--alert {
+background-color: var(--ms-danger-bg);
+color: var(--ms-danger-text);
+border-color: var(--ms-danger-border);
+}
+
+.flash--alert .flash__icon {
+background-color: var(--ms-danger-text);
+color: #ffffff;
+}
+
+/* ============================================================
+
+* PC レイアウト切替（issue29）
+* 768px 以上：
+* * 下部ナビを非表示
+* * ヘッダー右にナビを表示
+* * メインコンテンツの最大幅を広げる
+* ============================================================ */
+  @media (min-width: 768px) {
+  /* 下部ナビは消す */
+  .bottom-nav {
+  display: none;
+  }
+
+/* 下部余白を縮める（ナビが消えるため） */
+.app-main {
+padding-bottom: 32px;
+}
+
+/* ヘッダー右ナビを表示 */
+.app-header__nav {
+display: flex;
+}
+
+/* ヘッダー自体も内側を中央寄せにしてゆとりを */
+.app-header {
+padding: 14px 32px;
+}
+
+/* ============================================================
+
+* PC 時の各ページ最大幅オーバーライド
+* 既存ページは max-width: 480px で固定されているため、
+* PCでスマホ幅のまま中央寄せにならないよう一段広げる。
+* 既存の中身の縦並びレイアウトは保ったまま、左右の余白だけ広がる。
+* ============================================================ */
+  .mypage,
+  .goals-page,
+  .goal-new-page,
+  .reviews-page,
+  .record-page {
+  max-width: var(--ms-content-pc);
+  }
+
+/* フラッシュもPC幅に合わせて広げる */
+.flash-stack {
+max-width: var(--ms-content-pc);
+padding: 16px 32px 0;
+}
+}
+
+/* ============================================================
+
+* Wider PC: 1080px 以上 — もう少しだけゆとりを足す
+* （既存のカード幅は固定要素もあるため抑えめに）
+* ============================================================ */
+  @media (min-width: 1080px) {
+  .app-header {
+  padding: 16px 48px;
+  }
+  }
