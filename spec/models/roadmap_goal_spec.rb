@@ -41,7 +41,58 @@ RSpec.describe RoadmapGoal, type: :model do
     end
   end
 
-  describe "enum" do
+  describe "期間バリデーション（2〜6か月）" do
+    it "1か月以内のロードマップゴールは無効" do
+      roadmap_goal = build(
+        :roadmap_goal,
+        start_month: Date.new(2026, 7, 1),
+        target_month: Date.new(2026, 8, 1)
+      )
+
+      expect(roadmap_goal).not_to be_valid
+      expect(roadmap_goal.errors[:target_month]).to be_present
+    end
+
+    it "2か月のロードマップゴールは有効" do
+      roadmap_goal = build(
+        :roadmap_goal,
+        start_month: Date.new(2026, 7, 1),
+        target_month: Date.new(2026, 9, 1)
+      )
+
+      expect(roadmap_goal).to be_valid
+    end
+
+    it "6か月のロードマップゴールは有効" do
+      roadmap_goal = build(
+        :roadmap_goal,
+        start_month: Date.new(2026, 7, 1),
+        target_month: Date.new(2027, 1, 1)
+      )
+
+      expect(roadmap_goal).to be_valid
+    end
+
+    it "7か月以上のロードマップゴールは無効" do
+      roadmap_goal = build(
+        :roadmap_goal,
+        start_month: Date.new(2026, 7, 1),
+        target_month: Date.new(2027, 2, 1)
+      )
+
+      expect(roadmap_goal).not_to be_valid
+      expect(roadmap_goal.errors[:target_month]).to be_present
+    end
+  end
+
+  describe "status" do
+    it "初期値がactiveになる" do
+      roadmap_goal = RoadmapGoal.new
+
+      expect(roadmap_goal.status).to eq("active")
+      expect(roadmap_goal).to be_active
+    end
+
     it "statusをenumで管理できる" do
       roadmap_goal = create(:roadmap_goal)
 
