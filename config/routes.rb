@@ -16,8 +16,8 @@ Rails.application.routes.draw do
 
   resources :users, only: %i[new create]
 
-  # ロードマップ目標（中期目標）。編集・削除は次以降のIssueで実装予定
-  resources :roadmap_goals, only: %i[index new create show]
+  # ロードマップ目標（中期目標）
+  resources :roadmap_goals, only: %i[index new create show edit update destroy]
 
   resources :monthly_goals, only: %i[index new create edit update destroy] do
     resources :weekly_goals, only: %i[new create edit update destroy]

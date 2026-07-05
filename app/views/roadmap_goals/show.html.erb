@@ -42,6 +42,22 @@
     </dl>
   </section>
 
+  <div class="roadmap-detail-actions">
+    <%= link_to "編集する", edit_roadmap_goal_path(@roadmap_goal),
+          class: "goals-btn goals-btn--primary roadmap-action-btn" %>
+
+    <%= button_to "削除する",
+          roadmap_goal_path(@roadmap_goal),
+          method: :delete,
+          form: {
+            class: "roadmap-action-form",
+            data: {
+              turbo_confirm: "削除するとロードマップゴールにひもづく月目標・週目標も消えてしまいます。本当に削除しますか？"
+            }
+          },
+          class: "goals-btn goals-btn--danger roadmap-action-btn" %>
+  </div>
+
   <p class="roadmap-back-link">
     <%= link_to "目標一覧へ戻る", monthly_goals_path,
           class: "goals-btn goals-btn--secondary roadmap-back-btn" %>

@@ -98,4 +98,80 @@ RSpec.describe "RoadmapGoals", type: :request do
       expect(response).to have_http_status(:not_found)
     end
   end
+
+  describe "GET /roadmap_goals/:id/edit" do
+    it "自分のRoadmapGoal編集画面を表示できる" do
+      login_as(user)
+      roadmap_goal = create(:roadmap_goal, user: user, category: category)
+
+      get edit_roadmap_goal_path(roadmap_goal)
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(roadmap_goal.title)
+    end
+
+    it "他ユーザーのRoadmapGoal編集画面にはアクセスできない" do
+      others_goal = create(:roadmap_goal, user: create(:user))
+
+      login_as(user)
+      get edit_roadmap_goal_path(others_goal)
+
+      # current_user.roadmap_goals.find が RecordNotFound → 404
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
+  describe "PATCH /roadmap_goals/:id" do
+    it "自分のRoadmapGoalを更新でき、内容が反映される" do
+      login_as(user)
+      roadmap_goal = create(:roadmap_goal, user: user, category: category, title: "更新前タイトル")
+
+      patch roadmap_goal_path(roadmap_goal), params: {
+        roadmap_goal: { title: "更新後タイトル" }
+      }
+
+      expect(response).to redirect_to(roadmap_goal_path(roadmap_goal))
+      expect(roadmap_goal.reload.title).to eq("更新後タイトル")
+
+      follow_redirect!
+      expect(response.body).to include("更新後タイトル")
+    end
+
+    it "他ユーザーのRoadmapGoalは更新できない" do
+      others_goal = create(:roadmap_goal, user: create(:user), title: "他人の目標")
+
+      login_as(user)
+      patch roadmap_goal_path(others_goal), params: {
+        roadmap_goal: { title: "書き換え" }
+      }
+
+      expect(response).to have_http_status(:not_found)
+      expect(others_goal.reload.title).to eq("他人の目標")
+    end
+  end
+
+  describe "DELETE /roadmap_goals/:id" do
+    it "自分のRoadmapGoalを削除でき、件数が減る" do
+      login_as(user)
+      roadmap_goal = create(:roadmap_goal, user: user, category: category)
+
+      expect do
+        delete roadmap_goal_path(roadmap_goal)
+      end.to change(user.roadmap_goals, :count).by(-1)
+
+      expect(response).to redirect_to(monthly_goals_path)
+    end
+
+    it "他ユーザーのRoadmapGoalは削除できない" do
+      others_goal = create(:roadmap_goal, user: create(:user))
+
+      login_as(user)
+
+      expect do
+        delete roadmap_goal_path(others_goal)
+      end.not_to change(RoadmapGoal, :count)
+
+      expect(response).to have_http_status(:not_found)
+    end
+  end
 end
