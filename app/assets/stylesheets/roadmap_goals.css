@@ -1,0 +1,468 @@
+/*
+ * Monthly Step - ロードマップ目標（issue34）
+ *  - 目標一覧上部の「＋ 新規目標作成」ボタンとボトムシート
+ *  - ロードマップ目標のサマリカード（月目標一覧に表示）
+ *  - ロードマップ新規作成フォームの拡張、詳細ページ
+ * 既存のパステルグリーン基調に合わせる
+ */
+
+/* ============================================================
+ *  ＋ 新規目標作成 ＆ ボトムシート
+ * ============================================================ */
+.goals-create {
+  margin-bottom: 16px;
+}
+
+.goals-create-trigger {
+  width: 100%;
+}
+
+/* オーバーレイ（初期は非表示） */
+.bottom-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  background-color: rgba(30, 40, 26, 0.45);
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.bottom-sheet.is-open {
+  display: flex;
+  animation: bottom-sheet-fade 0.15s ease-out;
+}
+
+@keyframes bottom-sheet-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* 背後のスクロールを止める */
+body.is-bottom-sheet-open {
+  overflow: hidden;
+}
+
+.bottom-sheet-panel {
+  width: 100%;
+  max-width: 480px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border-radius: 24px 24px 0 0;
+  padding: 12px 18px calc(24px + env(safe-area-inset-bottom));
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.12);
+  animation: bottom-sheet-slide 0.2s ease-out;
+}
+
+@keyframes bottom-sheet-slide {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.bottom-sheet-handle {
+  display: block;
+  width: 40px;
+  height: 4px;
+  margin: 0 auto 16px;
+  border-radius: 999px;
+  background-color: #cdd6c7;
+}
+
+.bottom-sheet-title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #2f3b2a;
+}
+
+.bottom-sheet-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  background-color: #f4f7f1;
+  border: 1px solid #cdd6c7;
+  border-radius: 14px;
+  text-decoration: none;
+  color: #2f3b2a;
+  transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+.bottom-sheet-option:hover {
+  background-color: #eaf2e6;
+}
+
+.bottom-sheet-option:active {
+  transform: scale(0.99);
+}
+
+/* ロードマップの選択肢だけ淡い黄系で強調 */
+.bottom-sheet-option--roadmap {
+  background-color: #fdf6e3;
+  border-color: #ecd9a6;
+}
+
+.bottom-sheet-option--roadmap:hover {
+  background-color: #faf0d4;
+}
+
+.bottom-sheet-option-icon {
+  font-size: 24px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.bottom-sheet-option-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bottom-sheet-option-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #2f3b2a;
+}
+
+.bottom-sheet-option-desc {
+  font-size: 12px;
+  color: #6b7a64;
+}
+
+.bottom-sheet-option-arrow {
+  color: #3f6b3a;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.bottom-sheet-cancel {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background-color: transparent;
+  color: #6b7a64;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.bottom-sheet-cancel:hover {
+  background-color: #f4f7f1;
+}
+
+/* ============================================================
+ *  ロードマップ目標サマリカード（月目標一覧上部）
+ * ============================================================ */
+.roadmap-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.roadmap-summary-card {
+  background-color: #fdf6e3;
+  border: 1px solid #ecd9a6;
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 12px rgba(63, 107, 58, 0.05);
+}
+
+.roadmap-summary-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.roadmap-summary-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #b8860b;
+}
+
+.roadmap-summary-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.roadmap-summary-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background-color: #f6e6b8;
+  color: #8a6d1a;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.roadmap-summary-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #6b4e12;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.roadmap-summary-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: #8a7135;
+}
+
+.roadmap-summary-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #b8860b;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.roadmap-summary-link:hover {
+  opacity: 0.7;
+}
+
+/* ============================================================
+ *  ロードマップ 詳細 / 一覧ページ
+ * ============================================================ */
+.roadmap-page {
+  min-height: calc(100vh - 60px);
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px 16px 24px;
+  box-sizing: border-box;
+  background-color: #eaf2e6;
+  color: #2f3b2a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+  line-height: 1.6;
+}
+
+.roadmap-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 20px;
+}
+
+.roadmap-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #3f6b3a;
+  text-decoration: none;
+  font-size: 16px;
+  border: 1px solid #cdd6c7;
+  flex-shrink: 0;
+}
+
+.roadmap-back:hover {
+  background-color: #f4f7f1;
+}
+
+.roadmap-heading {
+  margin: 0;
+  flex: 1;
+  font-size: 20px;
+  font-weight: 700;
+  color: #2f3b2a;
+  text-align: center;
+}
+
+.roadmap-detail-card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 22px 20px;
+  box-shadow: 0 4px 12px rgba(63, 107, 58, 0.08);
+}
+
+.roadmap-detail-head {
+  margin-bottom: 10px;
+}
+
+.roadmap-detail-title {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #2f3b2a;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.roadmap-detail-period {
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: #3f6b3a;
+  font-weight: 600;
+}
+
+.roadmap-detail-reason {
+  display: flex;
+  gap: 10px;
+  padding: 14px;
+  margin-bottom: 18px;
+  background-color: #f4f7f1;
+  border-radius: 12px;
+}
+
+.roadmap-detail-reason-icon {
+  flex-shrink: 0;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.roadmap-detail-reason-text {
+  margin: 0;
+  font-size: 13px;
+  color: #2f3b2a;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.roadmap-detail-list {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.roadmap-detail-item {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.roadmap-detail-item dt {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7a64;
+}
+
+.roadmap-detail-item dd {
+  margin: 0;
+  font-size: 14px;
+  color: #2f3b2a;
+  word-break: break-word;
+}
+
+.roadmap-back-link {
+  margin: 20px 0 0;
+}
+
+.roadmap-back-btn {
+  width: 100%;
+}
+
+/* ============================================================
+ *  新規作成フォームの拡張（reason / month / status）
+ * ============================================================ */
+.roadmap-note {
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  background-color: #fdf6e3;
+  border: 1px solid #ecd9a6;
+  border-radius: 12px;
+}
+
+.roadmap-note-title {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #b8860b;
+}
+
+.roadmap-note-text {
+  margin: 0;
+  font-size: 12px;
+  color: #8a7135;
+  line-height: 1.6;
+}
+
+.roadmap-form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.roadmap-form-row .goal-new-form-group {
+  flex: 1;
+  min-width: 0;
+}
+
+/* textarea / select / month input を既存の goal-new-form-input と同じトーンに */
+.goal-new-form-textarea {
+  height: auto;
+  padding: 12px 14px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.goal-new-form-select {
+  height: 44px;
+  appearance: auto;
+}
+
+/* ============================================================
+ *  レスポンシブ調整（issue34）
+ *   - 768px 以上：目標作成の誘導を「下部ボトムシート」→「中央モーダル」へ
+ *   - 目標一覧のコンテンツ幅も PC でゆとりを持たせる
+ * ============================================================ */
+@media (min-width: 768px) {
+  /* オーバーレイ内でパネルを中央寄せにする（スマホは flex-end のまま） */
+  .bottom-sheet {
+    align-items: center;
+  }
+
+  /* 下部固定シート → 画面中央モーダル */
+  .bottom-sheet-panel {
+    width: min(100% - 48px, 560px);
+    max-width: 560px;
+    border-radius: 24px;
+    padding: 20px 24px 24px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+    animation: modal-pop 0.18s ease-out;
+  }
+
+  /* スマホ用のドラッグハンドルは PC モーダルでは不要 */
+  .bottom-sheet-handle {
+    display: none;
+  }
+
+  /* 目標一覧を PC 幅に広げる（月/週/Roadmap カード・新規作成ボタンは親幅に追従） */
+  .goals-page {
+    max-width: 840px;
+  }
+}
+
+/* 中央モーダルの登場アニメ（下からスライドではなく、軽くフェード＋拡大） */
+@keyframes modal-pop {
+  from { opacity: 0; transform: scale(0.98); }
+  to   { opacity: 1; transform: scale(1); }
+}
