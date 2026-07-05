@@ -6,19 +6,79 @@
     <p class="goals-page-lead">今月・来月の目標を作って、小さな一歩を積み重ねましょう。</p>
   </header>
 
-  <%# 今月：未登録ならプロンプトカード、登録済みなら通常の追加ボタン %>
-  <% if @show_current_month_prompt %>
-    <section class="goals-prompt goals-prompt--primary" aria-label="今月の目標登録のお願い">
-      <p class="goals-prompt-text">今月の目標を登録しましょう</p>
-      <%= link_to "今月の目標を登録する", new_monthly_goal_path(target_month: "this"), class: "goals-btn goals-btn--primary" %>
-    </section>
-  <% else %>
-    <div class="goals-actions">
-      <%= link_to "今月の目標を登録する", new_monthly_goal_path(target_month: "this"), class: "goals-btn goals-btn--primary" %>
+  <%# ＋ 新規目標作成 ＆ ボトムシート（ロードマップ/今月/今週 の選択） %>
+  <div class="goals-create" data-controller="bottom-sheet">
+    <button type="button"
+            class="goals-btn goals-btn--primary goals-create-trigger"
+            data-action="bottom-sheet#open">
+      ＋ 新規目標作成
+    </button>
+
+    <div class="bottom-sheet"
+         data-bottom-sheet-target="sheet"
+         data-action="click->bottom-sheet#closeFromOverlay">
+      <div class="bottom-sheet-panel" role="dialog" aria-modal="true" aria-label="作成する目標の種類を選ぶ">
+        <span class="bottom-sheet-handle" aria-hidden="true"></span>
+        <h2 class="bottom-sheet-title">何を作りますか？</h2>
+
+        <%= link_to new_roadmap_goal_path, class: "bottom-sheet-option bottom-sheet-option--roadmap" do %>
+          <span class="bottom-sheet-option-icon" aria-hidden="true">📖</span>
+          <span class="bottom-sheet-option-body">
+            <span class="bottom-sheet-option-title">ロードマップ目標を作る</span>
+            <span class="bottom-sheet-option-desc">2か月以上の大きな目標</span>
+          </span>
+          <span class="bottom-sheet-option-arrow" aria-hidden="true">→</span>
+        <% end %>
+
+        <%= link_to new_monthly_goal_path(target_month: "this"), class: "bottom-sheet-option" do %>
+          <span class="bottom-sheet-option-icon" aria-hidden="true">📅</span>
+          <span class="bottom-sheet-option-body">
+            <span class="bottom-sheet-option-title">今月の目標を作る</span>
+            <span class="bottom-sheet-option-desc">ひと月で完結する目標</span>
+          </span>
+          <span class="bottom-sheet-option-arrow" aria-hidden="true">→</span>
+        <% end %>
+
+        <%# 今週の目標は月目標配下に作るため、月目標一覧セクションへ誘導する %>
+        <a href="#goals-list" class="bottom-sheet-option" data-action="bottom-sheet#close">
+          <span class="bottom-sheet-option-icon" aria-hidden="true">📝</span>
+          <span class="bottom-sheet-option-body">
+            <span class="bottom-sheet-option-title">今週の目標を作る</span>
+            <span class="bottom-sheet-option-desc">月目標の中から週目標を追加できます</span>
+          </span>
+          <span class="bottom-sheet-option-arrow" aria-hidden="true">→</span>
+        </a>
+
+        <button type="button" class="bottom-sheet-cancel" data-action="bottom-sheet#close">
+          キャンセル
+        </button>
+      </div>
     </div>
+  </div>
+
+  <%# ロードマップ目標（本人ぶん）。任意機能なので登録があるときだけ表示 %>
+  <% if @roadmap_goals.present? %>
+    <section class="roadmap-summary" aria-label="ロードマップ目標">
+      <% @roadmap_goals.each do |roadmap| %>
+        <article class="roadmap-summary-card">
+          <div class="roadmap-summary-head">
+            <span class="roadmap-summary-label">
+              <span class="roadmap-summary-icon" aria-hidden="true">📖</span>
+              ロードマップ目標
+            </span>
+            <span class="roadmap-summary-badge">任意</span>
+          </div>
+          <p class="roadmap-summary-title"><%= roadmap.title %></p>
+          <p class="roadmap-summary-meta">
+            <%= roadmap.start_month.strftime("%Y年%-m月") %> 〜 <%= roadmap.target_month.strftime("%Y年%-m月") %>
+          </p>
+          <%= link_to "ロードマップを見る →", roadmap_goal_path(roadmap), class: "roadmap-summary-link" %>
+        </article>
+      <% end %>
+    </section>
   <% end %>
 
-  <%# 来月：25日以降のみ表示。未登録ならプロンプトカード、登録済みなら通常の追加ボタン %>
+  <%# 来月：25日以降のみ表示。登録済みなら追加ボタンだけ出す %>
   <% if @next_month_available %>
     <% if @show_next_month_prompt %>
       <section class="goals-prompt goals-prompt--secondary" aria-label="来月の目標登録のお願い">
@@ -32,9 +92,9 @@
     <% end %>
   <% end %>
 
-  <section class="goals-list">
+  <section class="goals-list" id="goals-list">
     <% if @monthly_goals.empty? %>
-      <p class="goals-empty">まだ月目標がありません。<br>「今月の目標を登録する」からはじめましょう。</p>
+      <p class="goals-empty">まだ月目標がありません。<br>「＋ 新規目標作成」からはじめましょう。</p>
     <% else %>
       <% @monthly_goals.each do |goal| %>
         <article class="goals-card">

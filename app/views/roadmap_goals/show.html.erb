@@ -1,0 +1,49 @@
+<% content_for :title, "ロードマップ詳細 | Monthly Step" %>
+
+<main class="roadmap-page">
+  <header class="roadmap-header">
+    <%= link_to "←", monthly_goals_path, class: "roadmap-back", "aria-label": "目標一覧に戻る" %>
+    <h1 class="roadmap-heading">ロードマップ詳細</h1>
+  </header>
+
+  <section class="roadmap-detail-card">
+    <div class="roadmap-detail-head">
+      <span class="roadmap-summary-badge"><%= @roadmap_goal.status_label %></span>
+    </div>
+
+    <h2 class="roadmap-detail-title"><%= @roadmap_goal.title %></h2>
+
+    <p class="roadmap-detail-period">
+      <%= @roadmap_goal.start_month.strftime("%Y年%-m月") %>
+      〜
+      <%= @roadmap_goal.target_month.strftime("%Y年%-m月") %>
+    </p>
+
+    <% if @roadmap_goal.reason.present? %>
+      <div class="roadmap-detail-reason">
+        <span class="roadmap-detail-reason-icon" aria-hidden="true">💬</span>
+        <p class="roadmap-detail-reason-text"><%= simple_format(@roadmap_goal.reason) %></p>
+      </div>
+    <% end %>
+
+    <dl class="roadmap-detail-list">
+      <div class="roadmap-detail-item">
+        <dt>カテゴリ</dt>
+        <dd><%= @roadmap_goal.category.name %></dd>
+      </div>
+      <div class="roadmap-detail-item">
+        <dt>ステータス</dt>
+        <dd><%= @roadmap_goal.status_label %></dd>
+      </div>
+      <div class="roadmap-detail-item">
+        <dt>作成日</dt>
+        <dd><%= @roadmap_goal.created_at.strftime("%Y年%-m月%-d日") %></dd>
+      </div>
+    </dl>
+  </section>
+
+  <p class="roadmap-back-link">
+    <%= link_to "目標一覧へ戻る", monthly_goals_path,
+          class: "goals-btn goals-btn--secondary roadmap-back-btn" %>
+  </p>
+</main>

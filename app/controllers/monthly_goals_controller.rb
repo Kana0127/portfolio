@@ -7,6 +7,12 @@ class MonthlyGoalsController < ApplicationController
     @monthly_goals = current_user.monthly_goals
                                  .includes(:category, :weekly_goals)
                                  .order(target_month: :desc, created_at: :desc)
+
+    # 本人のロードマップ目標（任意機能）。新しい順で一覧上部に表示する
+    @roadmap_goals = current_user.roadmap_goals
+                                 .includes(:category)
+                                 .order(created_at: :desc)
+
     @next_month_available = next_month_available?
 
     # 今月・来月の月目標が本人ぶんで存在するか判定

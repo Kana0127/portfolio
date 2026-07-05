@@ -1,0 +1,31 @@
+<% content_for :title, "ロードマップ目標一覧 | Monthly Step" %>
+
+<main class="roadmap-page">
+  <header class="roadmap-header">
+    <%= link_to "←", monthly_goals_path, class: "roadmap-back", "aria-label": "目標一覧に戻る" %>
+    <h1 class="roadmap-heading">ロードマップ目標一覧</h1>
+  </header>
+
+  <% if @roadmap_goals.empty? %>
+    <p class="goals-empty">まだロードマップ目標がありません。<br>目標一覧の「＋ 新規目標作成」から作成できます。</p>
+  <% else %>
+    <section class="roadmap-summary">
+      <% @roadmap_goals.each do |roadmap| %>
+        <article class="roadmap-summary-card">
+          <div class="roadmap-summary-head">
+            <span class="roadmap-summary-label">
+              <span class="roadmap-summary-icon" aria-hidden="true">📖</span>
+              ロードマップ目標
+            </span>
+            <span class="roadmap-summary-badge">任意</span>
+          </div>
+          <p class="roadmap-summary-title"><%= roadmap.title %></p>
+          <p class="roadmap-summary-meta">
+            <%= roadmap.start_month.strftime("%Y年%-m月") %> 〜 <%= roadmap.target_month.strftime("%Y年%-m月") %>
+          </p>
+          <%= link_to "ロードマップを見る →", roadmap_goal_path(roadmap), class: "roadmap-summary-link" %>
+        </article>
+      <% end %>
+    </section>
+  <% end %>
+</main>
