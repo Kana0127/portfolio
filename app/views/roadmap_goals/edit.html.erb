@@ -1,0 +1,15 @@
+<% content_for :title, "ロードマップ目標を編集 | Monthly Step" %>
+
+<main class="goal-new-page">
+  <header class="goal-new-header">
+    <%= link_to "←", roadmap_goal_path(@roadmap_goal), class: "goal-new-back", "aria-label": "ロードマップ詳細に戻る" %>
+    <h1 class="goal-new-heading">ロードマップ目標を編集</h1>
+  </header>
+
+  <section class="goal-new-card">
+    <%= render "form",
+          roadmap_goal: @roadmap_goal,
+          categories: @categories,
+          submit_label: "更新する" %>
+  </section>
+</main>

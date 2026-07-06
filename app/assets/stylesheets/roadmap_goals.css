@@ -382,6 +382,36 @@ body.is-bottom-sheet-open {
 }
 
 /* ============================================================
+ *  詳細画面の編集・削除アクション（issue35）
+ * ============================================================ */
+.roadmap-detail-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* button_to が生成する form のデフォルト margin を消す */
+.roadmap-action-form {
+  margin: 0;
+}
+
+.roadmap-action-btn {
+  width: 100%;
+}
+
+/* 削除ボタン：淡い赤系。既存の goals-btn 形状を継承する */
+.goals-btn--danger {
+  background-color: #f8d7da;
+  color: #842029;
+  border: 1px solid #f5c2c7;
+}
+
+.goals-btn--danger:hover {
+  background-color: #f1bfc5;
+}
+
+/* ============================================================
  *  新規作成フォームの拡張（reason / month / status）
  * ============================================================ */
 .roadmap-note {

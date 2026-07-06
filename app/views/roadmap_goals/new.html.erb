@@ -15,70 +15,9 @@
       </p>
     </div>
 
-    <% if @roadmap_goal.errors.any? %>
-      <div class="goal-new-error" role="alert">
-        <p class="goal-new-error-title"><%= @roadmap_goal.errors.count %>件のエラーがあります</p>
-        <ul class="goal-new-error-list">
-          <% @roadmap_goal.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
-    <%= form_with model: @roadmap_goal, url: roadmap_goals_path, local: true, class: "goal-new-form" do |f| %>
-      <div class="goal-new-form-group">
-        <%= f.label :title, "ロードマップ目標名", class: "goal-new-form-label" %>
-        <%= f.text_field :title,
-              class: "goal-new-form-input",
-              placeholder: "例：ITエンジニアとしてのスキルアップ" %>
-      </div>
-
-      <div class="goal-new-form-group">
-        <%= f.label :reason, "理由・目的（任意）", class: "goal-new-form-label" %>
-        <%= f.text_area :reason,
-              class: "goal-new-form-input goal-new-form-textarea",
-              rows: 3,
-              placeholder: "なぜこの目標を達成したいですか？" %>
-      </div>
-
-      <div class="roadmap-form-row">
-        <div class="goal-new-form-group">
-          <%= f.label :start_month, "開始月", class: "goal-new-form-label" %>
-          <%= f.month_field :start_month,
-                value: @roadmap_goal.start_month&.strftime("%Y-%m"),
-                class: "goal-new-form-input" %>
-        </div>
-
-        <div class="goal-new-form-group">
-          <%= f.label :target_month, "目標達成月", class: "goal-new-form-label" %>
-          <%= f.month_field :target_month,
-                value: @roadmap_goal.target_month&.strftime("%Y-%m"),
-                class: "goal-new-form-input" %>
-        </div>
-      </div>
-
-      <div class="goal-new-form-group">
-        <span class="goal-new-form-label">目標カテゴリ</span>
-        <div class="goal-new-chips" role="radiogroup" aria-label="目標カテゴリ">
-          <% @categories.each do |category| %>
-            <label class="goal-new-chip">
-              <%= f.radio_button :category_id, category.id, class: "goal-new-chip-input" %>
-              <span class="goal-new-chip-label"><%= category.name %></span>
-            </label>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="goal-new-form-group">
-        <%= f.label :status, "ステータス", class: "goal-new-form-label" %>
-        <%= f.select :status,
-              RoadmapGoal.status_options,
-              {},
-              class: "goal-new-form-input goal-new-form-select" %>
-      </div>
-
-      <%= f.submit "保存する", class: "goal-new-submit" %>
-    <% end %>
+    <%= render "form",
+          roadmap_goal: @roadmap_goal,
+          categories: @categories,
+          submit_label: "保存する" %>
   </section>
 </main>
