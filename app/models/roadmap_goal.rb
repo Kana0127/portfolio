@@ -6,6 +6,8 @@ class RoadmapGoal < ApplicationRecord
   belongs_to :user
   belongs_to :category
 
+  has_many :monthly_goals, dependent: :destroy
+
   enum :status, {
     active: 0,
     achieved: 1,

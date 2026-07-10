@@ -103,4 +103,52 @@ RSpec.describe RoadmapGoal, type: :model do
       expect(roadmap_goal).to be_achieved
     end
   end
+
+  describe "月目標との関連" do
+    it "ロードマップ目標を削除すると紐づく月目標も削除される" do
+      user = create(:user)
+      category = create(:category)
+
+      roadmap_goal = create(
+        :roadmap_goal,
+        user: user,
+        category: category
+      )
+
+      create(
+        :monthly_goal,
+        user: user,
+        category: category,
+        roadmap_goal: roadmap_goal
+      )
+
+      expect {
+        roadmap_goal.destroy
+      }.to change(MonthlyGoal, :count).by(-1)
+    end
+
+    it "ロードマップに紐づかない月目標は削除されない" do
+      user = create(:user)
+      category = create(:category)
+
+      roadmap_goal = create(
+        :roadmap_goal,
+        user: user,
+        category: category
+      )
+
+      standalone_monthly_goal = create(
+        :monthly_goal,
+        user: user,
+        category: category,
+        roadmap_goal: nil
+      )
+
+      roadmap_goal.destroy
+
+      expect(
+        MonthlyGoal.exists?(standalone_monthly_goal.id)
+      ).to be true
+    end
+  end
 end

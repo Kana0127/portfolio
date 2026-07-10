@@ -2,6 +2,7 @@ class MonthlyGoalsController < ApplicationController
   NEXT_MONTH_AVAILABLE_DAY = 25
 
   before_action :set_monthly_goal, only: %i[edit update destroy]
+  before_action :set_roadmap_goals, only: %i[new create edit update]
 
   def index
     @monthly_goals = current_user.monthly_goals
@@ -90,7 +91,7 @@ class MonthlyGoalsController < ApplicationController
 
   def monthly_goal_params
     # user_id / target_month は Strong Parameters で受け取らない
-    params.require(:monthly_goal).permit(:title, :category_id, :goal_kind)
+    params.require(:monthly_goal).permit(:title, :category_id, :goal_kind, :roadmap_goal_id)
   end
 
   def render_new_with_error
@@ -103,6 +104,11 @@ class MonthlyGoalsController < ApplicationController
 
   def current_target_month_param
     params[:target_month] == "next" ? "next" : "this"
+  end
+
+  def set_roadmap_goals
+  @roadmap_goals =
+    current_user.roadmap_goals.order(created_at: :desc)
   end
 
   def next_month_request?
