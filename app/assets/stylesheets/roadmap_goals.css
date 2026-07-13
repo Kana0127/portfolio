@@ -436,6 +436,74 @@ body.is-bottom-sheet-open {
   line-height: 1.6;
 }
 
+/* ============================================================
+ *  月目標設定画面（issue37）
+ * ============================================================ */
+.roadmap-setup-goal {
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  background-color: #fdf6e3;
+  border: 1px solid #ecd9a6;
+  border-radius: 12px;
+}
+
+.roadmap-setup-goal-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #b8860b;
+}
+
+.roadmap-setup-goal-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #6b4e12;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.roadmap-setup-lead {
+  margin-bottom: 16px;
+}
+
+.roadmap-setup-heading {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2f3b2a;
+}
+
+.roadmap-setup-note {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7a64;
+  line-height: 1.6;
+}
+
+.roadmap-setup-month {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.roadmap-setup-month-label {
+  flex-shrink: 0;
+  width: 40px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #3f6b3a;
+}
+
+.roadmap-setup-month-input {
+  flex: 1;
+  min-width: 0;
+}
+
 .roadmap-form-row {
   display: flex;
   gap: 12px;

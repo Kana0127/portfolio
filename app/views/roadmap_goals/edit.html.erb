@@ -10,6 +10,7 @@
     <%= render "form",
           roadmap_goal: @roadmap_goal,
           categories: @categories,
+          url: roadmap_goal_path(@roadmap_goal),
           submit_label: "更新する" %>
   </section>
 </main>

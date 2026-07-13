@@ -1,0 +1,54 @@
+<% content_for :title, "月目標を設定する | Monthly Step" %>
+
+<main class="goal-new-page">
+  <header class="goal-new-header">
+    <%= link_to "←", new_roadmap_goal_path, class: "goal-new-back", "aria-label": "ロードマップ作成に戻る" %>
+    <h1 class="goal-new-heading">ロードマップ目標を作る</h1>
+  </header>
+
+  <section class="goal-new-card">
+    <%# 作成予定のロードマップ目標名（まだ未保存） %>
+    <div class="roadmap-setup-goal">
+      <p class="roadmap-setup-goal-label">
+        <span class="roadmap-summary-icon" aria-hidden="true">📖</span>
+        ロードマップ目標
+      </p>
+      <p class="roadmap-setup-goal-title"><%= @roadmap_goal.title %></p>
+    </div>
+
+    <div class="roadmap-setup-lead">
+      <h2 class="roadmap-setup-heading">各月の目標を設定しましょう</h2>
+      <p class="roadmap-setup-note">あとから追加・編集できます。ざっくりでOKです。</p>
+    </div>
+
+    <% if @form_errors.present? %>
+      <div class="goal-new-error" role="alert">
+        <p class="goal-new-error-title"><%= @form_errors.count %>件のエラーがあります</p>
+        <ul class="goal-new-error-list">
+          <% @form_errors.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with url: complete_creation_roadmap_goals_path, method: :post, local: true,
+                  data: { turbo: false }, class: "goal-new-form" do %>
+      <% @target_months.each do |month| %>
+        <div class="roadmap-setup-month">
+          <span class="roadmap-setup-month-label"><%= month.strftime("%-m月") %></span>
+          <%= text_field_tag(
+                "monthly_goals[#{month}][title]",
+                params.dig(:monthly_goals, month.to_s, :title),
+                required: true,
+                class: "goal-new-form-input roadmap-setup-month-input",
+                placeholder: "#{month.strftime('%-m月')}の目標（任意）",
+                "aria-label": "#{month.strftime('%Y年%-m月')}の目標"
+              ) %>
+        </div>
+      <% end %>
+
+      <%= submit_tag "保存して完了", class: "goal-new-submit" %>
+    <% end %>
+  </section>
+</main>
