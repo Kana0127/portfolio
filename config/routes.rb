@@ -17,7 +17,13 @@ Rails.application.routes.draw do
   resources :users, only: %i[new create]
 
   # ロードマップ目標（中期目標）
-  resources :roadmap_goals, only: %i[index new create show edit update destroy]
+  resources :roadmap_goals, only: %i[index new create show edit update destroy] do
+    collection do
+      # 新規作成の2段階フロー：入力値検証→月目標設定画面、月目標も含めて一括保存
+      post :monthly_goals_setup
+      post :complete_creation
+    end
+  end
 
   resources :monthly_goals, only: %i[index new create edit update destroy] do
     resources :weekly_goals, only: %i[new create edit update destroy]
