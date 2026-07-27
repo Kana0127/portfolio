@@ -1,6 +1,6 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
-ENV['RAILS_ENV'] ||= 'test'
+ENV['RAILS_ENV'] = 'test'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
@@ -45,6 +45,8 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
   config.include FactoryBot::Syntax::Methods
+  # travel_to / travel_back を使って「今月」判定を固定できるようにする
+  config.include ActiveSupport::Testing::TimeHelpers
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
