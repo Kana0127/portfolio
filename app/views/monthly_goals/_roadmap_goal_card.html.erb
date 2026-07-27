@@ -1,0 +1,36 @@
+<%# ロードマップゴールカードと、その直下に紐づく今月の月目標 %>
+<div class="roadmap-group">
+  <article class="roadmap-summary-card">
+    <div class="roadmap-summary-head">
+      <span class="roadmap-summary-label">
+        <span class="roadmap-summary-icon" aria-hidden="true">📖</span>
+        ロードマップ目標
+      </span>
+      <span class="roadmap-summary-badge"><%= roadmap_goal.status_label %></span>
+    </div>
+    <p class="roadmap-summary-title"><%= roadmap_goal.title %></p>
+    <p class="roadmap-summary-meta">
+      <span><%= roadmap_goal.start_month.strftime("%Y年%-m月") %> 〜 <%= roadmap_goal.target_month.strftime("%Y年%-m月") %></span>
+      <span class="roadmap-summary-remaining"><%= roadmap_remaining_label(roadmap_goal) %></span>
+    </p>
+    <p class="roadmap-summary-category">
+      <span class="goals-card-chip goals-card-chip--category"><%= roadmap_goal.category.name %></span>
+    </p>
+    <%= link_to "ロードマップを見る →", roadmap_goal_path(roadmap_goal), class: "roadmap-summary-link" %>
+  </article>
+
+  <%# 親子関係が分かるよう、ロードマップカードの直下にぶら下げて表示する %>
+  <section class="roadmap-group-children" aria-label="<%= roadmap_goal.title %>に紐づく今月の月目標">
+    <h3 class="roadmap-group-children-heading">今月の目標</h3>
+
+    <% if monthly_goals.empty? %>
+      <p class="roadmap-group-empty">
+        このロードマップに紐づく今月の目標はまだありません。
+      </p>
+    <% else %>
+      <% monthly_goals.each do |goal| %>
+        <%= render "monthly_goals/monthly_goal_card", goal: goal %>
+      <% end %>
+    <% end %>
+  </section>
+</div>

@@ -1,0 +1,79 @@
+<%# 月目標カード（ロードマップ配下・ロードマップなし の両方で共用） %>
+<article class="goals-card">
+  <header class="goals-card-header">
+    <p class="goals-card-month"><%= goal.target_month.strftime("%Y年%-m月") %></p>
+    <div class="goals-card-actions">
+      <%= link_to "編集", edit_monthly_goal_path(goal), class: "goals-card-action-btn", aria: { label: "#{goal.title}を編集" } %>
+      <%= button_to "削除",
+            monthly_goal_path(goal),
+            method: :delete,
+            form: {
+              class: "goals-card-action-form",
+              data: { turbo_confirm: "「#{goal.title}」を削除しますか？" }
+            },
+            class: "goals-card-action-btn goals-card-action-btn--danger",
+            aria: { label: "#{goal.title}を削除" } %>
+    </div>
+  </header>
+
+  <h2 class="goals-card-title"><%= goal.title %></h2>
+
+  <div class="goals-card-meta">
+    <span class="goals-card-chip goals-card-chip--category"><%= goal.category.name %></span>
+    <span class="goals-card-chip goals-card-chip--kind">
+      <%= goal.step? ? "週分解型" : "単発型" %>
+    </span>
+  </div>
+
+  <%# 週目標表示エリア（実データ）。並びは week_number 昇順、start_date 昇順 %>
+  <section class="weekly-goals" aria-label="週目標">
+    <h3 class="weekly-goals-heading">週目標</h3>
+
+    <% sorted_weekly_goals = goal.weekly_goals.to_a.sort_by { |w| [ w.week_number, w.start_date ] } %>
+    <% is_current_month_card = goal.target_month == @current_month_date %>
+    <% if sorted_weekly_goals.empty? %>
+      <p class="weekly-goals-empty">週目標はまだありません。</p>
+    <% else %>
+      <ol class="weekly-goals-list">
+        <% sorted_weekly_goals.each do |wg| %>
+          <% is_current_week = is_current_month_card && wg.week_number == @current_week_number %>
+          <li class="weekly-goal-item <%= 'weekly-goal-item--current' if is_current_week %>"
+              <%= 'aria-current="true"'.html_safe if is_current_week %>>
+            <span class="weekly-goal-week">
+              <span class="weekly-goal-week-label">Week</span>
+              <span class="weekly-goal-week-number"><%= wg.week_number %></span>
+            </span>
+            <div class="weekly-goal-body">
+              <span class="weekly-goal-title"><%= wg.title %></span>
+              <span class="weekly-goal-date"><%= wg.start_date.strftime("%-m/%-d") %>〜</span>
+            </div>
+            <div class="weekly-goal-actions">
+              <%= link_to "編集",
+                    edit_monthly_goal_weekly_goal_path(goal, wg),
+                    class: "weekly-goal-action-btn",
+                    aria: { label: "第#{wg.week_number}週「#{wg.title}」を編集" } %>
+              <%= button_to "削除",
+                    monthly_goal_weekly_goal_path(goal, wg),
+                    method: :delete,
+                    form: {
+                      class: "weekly-goal-action-form",
+                      data: { turbo_confirm: "第#{wg.week_number}週「#{wg.title}」を削除しますか？" }
+                    },
+                    class: "weekly-goal-action-btn weekly-goal-action-btn--danger",
+                    aria: { label: "第#{wg.week_number}週「#{wg.title}」を削除" } %>
+            </div>
+          </li>
+        <% end %>
+      </ol>
+    <% end %>
+
+    <%# 来月の月目標、かつ25日以前は週目標追加ボタンを出さない（Controller 側でも同じ判定を実施） %>
+    <% is_next_month_card = goal.target_month == Date.current.next_month.beginning_of_month %>
+    <% can_add_weekly_goal = !is_next_month_card || @next_month_available %>
+    <% if can_add_weekly_goal %>
+      <%= link_to "＋ 週目標を追加する",
+            new_monthly_goal_weekly_goal_path(goal),
+            class: "weekly-goals-add-btn" %>
+    <% end %>
+  </section>
+</article>
