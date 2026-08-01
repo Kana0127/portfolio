@@ -5,20 +5,39 @@ class MonthlyGoalsController < ApplicationController
   before_action :set_roadmap_goals, only: %i[new create edit update]
 
   def index
+    current_month_start = Date.current.beginning_of_month
+
+    # 進行中かつ、今月が開始月〜終了月の期間内にあるロードマップだけを一覧上部に表示する。
+    # 紐づく今月の月目標とその週目標まで一括で事前読み込みして N+1 を防ぐ。
+    @roadmap_goals = current_user.roadmap_goals
+                                 .active
+                                 .where(start_month: ..current_month_start)
+                                 .where(target_month: current_month_start..)
+                                 .includes(:category)
+                                 .preload(
+                                   monthly_goals: [ :category, :weekly_goals ]
+                                 )
+                                 .order(start_month: :asc, created_at: :desc)
+
+    # ロードマップカード直下に出す「今月の月目標」。
+    # preload 済みの関連を Ruby 側で絞り込むことで追加クエリを発生させない。
+    @roadmap_monthly_goals = @roadmap_goals.each_with_object({}) do |roadmap, hash|
+      hash[roadmap.id] = roadmap.monthly_goals
+                                .select { |goal| goal.target_month == current_month_start }
+                                .sort_by(&:created_at)
+                                .reverse
+    end
+
+    # ロードマップに紐づかない月目標（既存仕様どおり別セクションで表示）
     @monthly_goals = current_user.monthly_goals
+                                 .where(roadmap_goal_id: nil)
                                  .includes(:category, :weekly_goals)
                                  .order(target_month: :desc, created_at: :desc)
-
-    # 本人のロードマップ目標（任意機能）。新しい順で一覧上部に表示する
-    @roadmap_goals = current_user.roadmap_goals
-                                 .includes(:category)
-                                 .order(created_at: :desc)
 
     @next_month_available = next_month_available?
 
     # 今月・来月の月目標が本人ぶんで存在するか判定
-    current_month_start = Date.current.beginning_of_month
-    next_month_start    = Date.current.next_month.beginning_of_month
+    next_month_start = Date.current.next_month.beginning_of_month
     @current_month_goal_registered = current_user.monthly_goals.exists?(target_month: current_month_start)
     @next_month_goal_registered    = current_user.monthly_goals.exists?(target_month: next_month_start)
 
