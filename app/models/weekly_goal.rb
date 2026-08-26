@@ -2,7 +2,6 @@
 # ApplicationRecordを継承しているため、
 # weekly_goalsテーブルのデータをRubyのオブジェクトとして扱える
 class WeeklyGoal < ApplicationRecord
-
   # ============================================================
   # 定数
   # ============================================================
@@ -172,7 +171,6 @@ class WeeklyGoal < ApplicationRecord
   #
   # のようにWeeklyGoalクラスそのものから呼び出す。
   def self.start_date_candidates(target_month)
-
     # target_monthがnilや空の場合、
     # 日付候補を計算できないので空配列[]を返して終了する。
     #
@@ -281,7 +279,7 @@ class WeeklyGoal < ApplicationRecord
       # ↓
       #
       # [8/1, 8/2, 8/9, 8/16, 8/23]
-      ([first_day] + sundays).first(MAX_WEEKS)
+      ([ first_day ] + sundays).first(MAX_WEEKS)
     end
   end
 
@@ -320,7 +318,6 @@ class WeeklyGoal < ApplicationRecord
   #
   # として第4週を返す。
   def self.calc_week_number(start_date, target_month)
-
     # start_date_candidates(target_month)
     #
     # で対象月の日付候補一覧を取得する。
@@ -388,7 +385,6 @@ class WeeklyGoal < ApplicationRecord
   #
   # → 第4週
   def self.current_week_number(today, target_month)
-
     # 対象月が存在しなければ計算できないのでnilを返す。
     return nil if target_month.blank?
 
@@ -471,7 +467,6 @@ class WeeklyGoal < ApplicationRecord
   # このWeeklyGoalが第何週なのかを計算し、
   # week_numberに代入する。
   def assign_week_number
-
     # start_dateがない場合、
     # 週番号を計算できないためここで終了。
     #
@@ -564,7 +559,6 @@ class WeeklyGoal < ApplicationRecord
   #
   # のいずれかであることを確認する。
   def start_date_must_be_valid_candidate
-
     # start_dateが空の場合、
     # ここではチェックしない。
     #
