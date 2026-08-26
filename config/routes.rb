@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   # daily_records / weekly_review は週目標配下にネスト
   # URL: /weekly_goals/:weekly_goal_id/daily_records/new
   # URL: /weekly_goals/:weekly_goal_id/weekly_review/new (singular: 1 weekly_goal に 1 review)
-  resources :weekly_goals, only: [] do
+  resources :weekly_goals, only: %i[index new create edit update destroy] do
     resources :daily_records, only: %i[new create]
     resource :weekly_review, only: %i[new create show]
   end

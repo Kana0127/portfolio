@@ -1,137 +1,132 @@
 /*
- * Monthly Step - ログイン兼TOP画面のスタイル
- * パステルグリーン基調、スマホ縦長レイアウト前提。PCではカード幅を制限して中央寄せ。
+ * Monthly Step - TOP / ログイン画面
+ *
+ * 色・文字色・フォント・ボタン等の共通デザインは
+ * application.css のデザイントークン・共通クラスを使用する。
+ *
+ * このファイルではTOP画面固有の
+ * レイアウト・カード・文字配置を管理する。
  */
 
-:root {
-  --top-color-bg: #eaf2e6;
-  --top-color-card: #ffffff;
-  --top-color-text: #2f3b2a;
-  --top-color-text-muted: #6b7a64;
-  --top-color-primary: #3f6b3a;
-  --top-color-primary-hover: #345a30;
-  --top-color-border: #cdd6c7;
-  --top-radius-lg: 28px;
-  --top-radius-md: 999px;
-  --top-shadow-card: 0 12px 32px rgba(63, 107, 58, 0.12);
-}
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--top-color-bg);
-  color: var(--top-color-text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
-    "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
-  line-height: 1.6;
-}
+/* ============================================================
+   TOP Page
+============================================================ */
 
 .top-page {
   min-height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   padding: 24px 16px 40px;
+
   box-sizing: border-box;
 }
+
+
+/* ============================================================
+   Main Card
+============================================================ */
 
 .top-card {
   width: 100%;
   max-width: 440px;
-  background-color: var(--top-color-card);
-  border-radius: var(--top-radius-lg);
-  box-shadow: var(--top-shadow-card);
+
   padding: 40px 28px;
+
+  background-color: var(--ms-bg-card);
+
+  border: 1px solid var(--ms-border);
+  border-radius: var(--ms-radius-card);
+
+  box-shadow: var(--ms-shadow-pop);
+
   box-sizing: border-box;
 }
 
-.top-app-name {
-  margin: 0 0 32px;
-  text-align: center;
-  color: var(--top-color-primary);
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
+
+
+/* ============================================================
+   Header
+============================================================ */
 
 .top-header {
-  text-align: center;
   margin-bottom: 36px;
+
+  text-align: center;
 }
+
 
 .top-heading {
   margin: 0 0 16px;
+
   font-size: 22px;
   font-weight: 700;
+
   line-height: 1.5;
   letter-spacing: 0.02em;
 }
 
+
 .top-lead {
   margin: 0;
-  color: var(--top-color-text-muted);
+
+  color: var(--ms-text-muted);
+
   font-size: 14px;
   line-height: 1.7;
 }
 
+
+/* ============================================================
+   Actions
+============================================================ */
+
 .top-actions {
   display: flex;
   flex-direction: column;
+
   gap: 12px;
 }
 
-.top-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+
+/*
+ * TOP画面ではボタンをカード幅いっぱいに表示する。
+ * ボタン自体のデザインは application.css で管理する。
+ */
+
+.top-actions .btn-primary,
+.top-actions .btn-secondary {
   width: 100%;
-  height: 52px;
-  border-radius: var(--top-radius-md);
-  font-size: 15px;
-  font-weight: 700;
-  text-decoration: none;
-  box-sizing: border-box;
-  cursor: pointer;
-  transition: background-color 0.15s ease, transform 0.05s ease;
 }
 
-.top-btn:active {
-  transform: scale(0.99);
-}
 
-.top-btn--primary {
-  background-color: var(--top-color-primary);
-  color: #ffffff;
-}
+/* ============================================================
+   Responsive
+============================================================ */
 
-.top-btn--primary:hover {
-  background-color: var(--top-color-primary-hover);
-}
-
-.top-btn--secondary {
-  background-color: #ffffff;
-  color: var(--top-color-primary);
-  border: 1px solid var(--top-color-border);
-}
-
-.top-btn--secondary:hover {
-  background-color: #f4f7f1;
-}
-
-/* スマホ幅では画面いっぱいに自然に表示する */
 @media (max-width: 480px) {
+
   .top-page {
     padding: 16px 12px 32px;
+
     align-items: flex-start;
   }
 
+
   .top-card {
-    box-shadow: none;
-    border-radius: 0;
-    background-color: transparent;
     padding: 24px 4px;
+
+    border: none;
+    border-radius: 0;
+
+    background-color: transparent;
+
+    box-shadow: none;
   }
+
 
   .top-heading {
     font-size: 20px;

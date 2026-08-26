@@ -1,422 +1,938 @@
 /*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps.
+ * CSSは後に書かれたものが優先されるため、上書き順に注意する。
+ */
 
-* This is a manifest file that'll be compiled into application.css.
-*
-* With Propshaft, assets are served efficiently without preprocessing steps. You can still include
-* application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
-* cascading order, meaning styles declared later in the document or manifest will override earlier ones,
-* depending on specificity.
-*
-* Consider organizing styles into separate files for maintainability.
-  */
 
 /* ============================================================
+   共通デザイントークン
+   色・角丸・横幅など、アプリ全体で共通利用する値
+============================================================ */
 
-* 共通デザイントークン（issue29）
-* 既存ページCSSは既にハードコードされた色で書かれているため、
-* トークン化は新規追加するクラスから順次適用する方針。
-* ============================================================ */
-  :root {
-  --ms-bg-base:        #eaf2e6;  /* 背景：淡いグリーン */
-  --ms-bg-header:      #eef7ea;  /* ヘッダー：さらに淡い */
-  --ms-bg-card:        #ffffff;  /* カード */
-  --ms-bg-soft:        #f4f7f1;  /* 控えめなホバー */
-  --ms-bg-tint:        #eaf2e6;  /* チップ・タグ等 */
+:root {
+  /* ---------- Brand Colors ---------- */
 
---ms-primary:        #3f6b3a;  /* メインのグリーン */
---ms-primary-dark:   #345a30;  /* hover */
---ms-primary-soft:   #91bd8b;  /* サブ的なグリーン */
---ms-accent:         #b7dcaa;  /* アクセント／薄グリーン */
+  --ms-primary:        #42d674;  /* メインカラー */
+  --ms-primary-dark:   #2fbe60;  /* hover等の濃いグリーン */
+  --ms-primary-strong: #1fae50;  /* 強調CTA用 */
+  --ms-primary-soft:   #80ef80;  /* 明るいアクセント */
+  --ms-accent:         #BADBA2;  /* くすみグリーン */
+  --ms-highlight:      #E3F0A3;  /* ハイライト */
 
---ms-text:           #2f3b2a;  /* 通常テキスト */
---ms-text-muted:     #6b7a64;  /* 補足テキスト */
---ms-text-light:     #8a9684;  /* さらに薄い */
 
---ms-border:         #cdd6c7;  /* 一般の枠線 */
---ms-border-soft:    #d7e5d2;  /* ヘッダー/ナビの境界 */
+  /* ---------- Background ---------- */
 
---ms-danger-bg:      #fdecea;
---ms-danger-border:  #f5c2bd;
---ms-danger-text:    #8a2a22;
+  --ms-bg-base:   #f8f8f3;  /* ページ全体 */
+  --ms-bg-header: #f4f9ec;  /* ヘッダー */
+  --ms-bg-card:   #ffffff;  /* カード */
+  --ms-bg-soft:   #f1f7ec;  /* hover等 */
+  --ms-bg-tint:   #eaf6df;  /* タグ等 */
 
---ms-shadow-card:    0 4px 12px rgba(63, 107, 58, 0.08);
---ms-shadow-pop:     0 8px 20px rgba(63, 107, 58, 0.12);
---ms-shadow-nav:     0 -4px 16px rgba(0, 0, 0, 0.06);
 
---ms-radius-card:    18px;
---ms-radius-input:   12px;
---ms-radius-pill:    999px;
+  /* ---------- Text ---------- */
 
---ms-content-mobile: 480px;   /* スマホ・タブレットの最大幅 */
---ms-content-pc:     960px;   /* PC で広げる最大幅 */
+  --ms-text:       #183b24;  /* 基本文字 */
+  --ms-text-muted: #5d7162;  /* 補足文字 */
+  --ms-text-light: #87958a;  /* 薄い補足文字 */
+
+
+  /* ---------- Border ---------- */
+
+  --ms-border:      #d9e5e5;
+  --ms-border-soft: #e5ede2;
+
+
+  /* ---------- Danger ---------- */
+
+  --ms-danger-bg:     #fdecea;
+  --ms-danger-border: #f5c2bd;
+  --ms-danger-text:   #8a2a22;
+
+
+  /* ---------- Shadow ---------- */
+
+  --ms-shadow-card: 0 4px 12px rgba(24, 59, 36, 0.07);
+  --ms-shadow-pop:  0 8px 20px rgba(24, 59, 36, 0.11);
+  --ms-shadow-nav:  0 -4px 16px rgba(24, 59, 36, 0.06);
+
+
+  /* ---------- Radius ---------- */
+
+  --ms-radius-card:  18px;
+  --ms-radius-input: 12px;
+  --ms-radius-pill:  999px;
+
+
+  /* ---------- Layout ---------- */
+
+  /* 実際のコンテンツが広がれる最大幅 */
+  --ms-content-mobile: 480px;
+  --ms-content-pc:     1200px;
+
+  /* 画面端とコンテンツの最低余白 */
+  --ms-page-padding-mobile: 16px;
+  --ms-page-padding-pc:     32px;
 }
 
-/* ============================================================
 
-* アプリ全体のベース
-* ============================================================ */
-  html {
+/* ============================================================
+   アプリ全体
+============================================================ */
+
+html {
   min-height: 100%;
-  }
+}
 
 body {
-min-height: 100%;
-margin: 0;
-background-color: var(--ms-bg-base);
-color: var(--ms-text);
+  min-height: 100%;
+  margin: 0;
+
+  background-color: var(--ms-bg-base);
+  color: var(--ms-text);
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN",
+    "Noto Sans JP",
+    Meiryo,
+    sans-serif;
+}
+
+
+/* ============================================================
+   メイン領域
+   application.html.erb の yield を囲む領域
+============================================================ */
+
+.app-main {
+  width: 100%;
+
+  /* スマホ下部ナビに最後のコンテンツが隠れないための余白 */
+  padding-bottom: 88px;
+
+  box-sizing: border-box;
+}
+
+
+/* ============================================================
+   各ページの外枠
+   ページ自体は画面幅いっぱい使用する
+============================================================ */
+
+.mypage,
+.goals-page,
+.goal-new-page,
+.reviews-page,
+.record-page {
+  width: 100%;
+
+  /* 横幅制限は .ms-container が担当するため、ここでは制限しない */
+  max-width: none;
+
+  box-sizing: border-box;
 }
 
 /* ============================================================
+   Brandロゴ
+============================================================ */
 
-* 共通アプリ・クローム（issue28 ベース）
-* * 上部ヘッダー：Monthly step ロゴ + ログアウトボタン
-* * 下部ナビ：マイページ / 目標一覧 / ふりかえり
-* layouts/application.html.erb からログイン中のみ render される
-* ============================================================ */
+.top-app-name {
+  margin: 0 0 32px;
 
-/* yield をラップする div。下部ナビにかぶらないよう padding-bottom を確保 */
-.app-main {
-padding-bottom: 88px;
+  text-align: center;
+
+  color: var(--ms-primary-strong);
+
+  font-size: 26px;
+  font-weight: 700;
+
+  letter-spacing: 0.04em;
 }
 
-/* ---------- 上部ヘッダー ---------- */
+
+/* ============================================================
+   共通ボタン
+============================================================ */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 50px;
+  padding: 0 24px;
+
+  border: none;
+  border-radius: var(--ms-radius-pill);
+
+  background-color: var(--ms-primary-strong);
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+
+  text-decoration: none;
+  box-sizing: border-box;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 10px rgba(66, 214, 116, 0.20);
+
+  transition:
+    background-color 0.15s ease,
+    transform 0.05s ease,
+    box-shadow 0.15s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--ms-primary-dark);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* ============================================================
+   第二選択ボタン（ボタンにメリハリをつけたい時用）
+============================================================ */
+.btn--secondary {
+  background-color: #ffffff;
+
+  color: var(--ms-primary-strong);
+
+  border: 2px solid var(--ms-primary);
+}
+
+.btn--secondary:hover {
+  background-color: var(--ms-bg-header);
+}
+
+/* ============================================================
+   共通コンテンツ幅
+   モバイルファースト
+============================================================ */
+
+/*
+ * ページ内のカード・文字・フォーム等を入れるコンテナ。
+ *
+ * スマホ：
+ *   左右16pxの余白
+ *   最大480px
+ *
+ * PC：
+ *   @media内で最大1200pxに変更
+ */
+.ms-container {
+  width: calc(
+    100% - (var(--ms-page-padding-mobile) * 2)
+  );
+
+  max-width: var(--ms-content-mobile);
+
+  /* max-widthで余った左右の空間を均等にして中央寄せ */
+  margin-inline: auto;
+
+  box-sizing: border-box;
+}
+
+
+/* ============================================================
+   上部ヘッダー
+============================================================ */
+
 .app-header {
-position: sticky;
-top: 0;
-z-index: 20;
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 12px;
-padding: 12px 20px;
-background-color: var(--ms-bg-header);
-border-bottom: 1px solid var(--ms-border-soft);
-box-sizing: border-box;
+  /* スクロールしても画面上部に残す */
+  position: sticky;
+  top: 0;
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+
+  /* 左：ブランド / 右：ナビ・ログアウト */
+  justify-content: space-between;
+
+  gap: 12px;
+
+  width: 100%;
+  padding: 12px 20px;
+
+  background-color: var(--ms-bg-header);
+
+  border-bottom: 1px solid var(--ms-border-soft);
+
+  box-sizing: border-box;
 }
 
-/* アイコン画像 + Monthly step 文字をまとめたブランドリンク */
+
+/* ============================================================
+   ヘッダー：ブランド
+============================================================ */
+
+/* アイコン + Monthly Step の文字 */
 .app-header__brand {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-color: inherit;
-text-decoration: none;
-flex-shrink: 0;
-transition: opacity 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+
+  gap: 8px;
+
+  color: inherit;
+  text-decoration: none;
+
+  flex-shrink: 0;
+
+  transition: opacity 0.15s ease;
 }
 
 .app-header__brand:hover {
-opacity: 0.85;
+  opacity: 0.85;
 }
 
-/* ヘッダー左上のアイコン画像 */
+
+/* ヘッダー左上のアイコン */
 .app-header__icon {
+  display: block;
+
   width: 40px;
   height: 40px;
+
   object-fit: contain;
+
   flex-shrink: 0;
-  display: block;
 }
 
+
+/* Monthly Step のロゴ文字 */
 .app-header__logo {
-font-size: 16px;
-font-weight: 700;
-color: var(--ms-primary);
-text-decoration: none;
-letter-spacing: 0.02em;
-transition: opacity 0.15s ease;
+  color: var(--ms-primary-strong);
+
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+
+  text-decoration: none;
+
+  transition: opacity 0.15s ease;
 }
 
 .app-header__logo:hover {
-opacity: 0.85;
+  opacity: 0.85;
 }
 
-.app-header__right {
-display: flex;
-align-items: center;
-gap: 8px;
-}
-
-/* PC用ナビ（スマホ・タブレットでは非表示） */
-.app-header__nav {
-display: none;
-gap: 4px;
-align-items: center;
-}
-
-.app-header__nav-item {
-display: inline-flex;
-align-items: center;
-padding: 6px 14px;
-border-radius: var(--ms-radius-pill);
-color: var(--ms-text);
-font-size: 13px;
-font-weight: 700;
-text-decoration: none;
-transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-.app-header__nav-item:hover {
-background-color: var(--ms-bg-soft);
-}
-
-.app-header__nav-item.is-active {
-background-color: var(--ms-primary);
-color: #ffffff;
-}
-
-.app-header__nav-item.is-active:hover {
-background-color: var(--ms-primary-dark);
-}
-
-.app-header__logout-form {
-margin: 0;
-}
-
-.app-header__logout {
-display: inline-flex;
-align-items: center;
-justify-content: center;
-height: 32px;
-padding: 0 14px;
-border: 1px solid var(--ms-border);
-border-radius: var(--ms-radius-pill);
-background-color: #ffffff;
-color: #2f5f32;
-font-size: 13px;
-font-weight: 700;
-font-family: inherit;
-text-decoration: none;
-cursor: pointer;
-transition: background-color 0.15s ease, transform 0.05s ease;
-}
-
-.app-header__logout:hover {
-background-color: var(--ms-bg-soft);
-}
-
-.app-header__logout:active {
-transform: scale(0.97);
-}
-
-/* ---------- 下部ナビ（スマホ・タブレット用） ---------- */
-.bottom-nav {
-position: fixed;
-left: 50%;
-bottom: 0;
-z-index: 30;
-transform: translateX(-50%);
-width: min(100%, 480px);
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 4px;
-padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
-background-color: #ffffff;
-border-top: 1px solid var(--ms-border-soft);
-box-shadow: var(--ms-shadow-nav);
-box-sizing: border-box;
-}
-
-.bottom-nav__item {
-position: relative;
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 4px;
-padding: 8px 4px;
-border-radius: var(--ms-radius-input);
-color: #466346;
-font-size: 11px;
-font-weight: 700;
-text-decoration: none;
-text-align: center;
-transition: background-color 0.15s ease, color 0.15s ease, transform 0.05s ease;
-}
-
-.bottom-nav__item:hover {
-background-color: var(--ms-bg-soft);
-}
-
-.bottom-nav__item:active {
-transform: scale(0.97);
-}
-
-.bottom-nav__icon {
-font-size: 18px;
-line-height: 1;
-transition: transform 0.15s ease;
-}
-
-.bottom-nav__label {
-line-height: 1.2;
-}
-
-.bottom-nav__item.is-active {
-background-color: var(--ms-primary-soft);
-color: #ffffff;
-}
-
-.bottom-nav__item.is-active:hover {
-background-color: #7fad7a;
-}
-
-/* アクティブ時に上部の小さなインジケータでさらに視認性を上げる */
-.bottom-nav__item.is-active::before {
-content: "";
-position: absolute;
-top: 3px;
-left: 50%;
-transform: translateX(-50%);
-width: 22px;
-height: 3px;
-background-color: #ffffff;
-border-radius: var(--ms-radius-pill);
-}
-
-.bottom-nav__item.is-active .bottom-nav__icon {
-transform: scale(1.08);
-}
 
 /* ============================================================
+   ヘッダー：右側
+============================================================ */
 
-* フラッシュメッセージ（issue29）
-* * shared/_flash.html.erb から layouts/application.html.erb 直下に挿入
-* * notice 系：緑、alert 系：赤
-* ============================================================ */
-  .flash-stack {
+.app-header__right {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+/* ============================================================
+   ヘッダー：PC用ナビ
+============================================================ */
+
+/*
+ * スマホでは非表示。
+ * 768px以上で display: flex に変更する。
+ */
+.app-header__nav {
+  display: none;
+
+  align-items: center;
+
+  gap: 4px;
+}
+
+
+.app-header__nav-item {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 6px 14px;
+
+  border-radius: var(--ms-radius-pill);
+
+  color: var(--ms-text);
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+
+.app-header__nav-item:hover {
+  background-color: var(--ms-bg-soft);
+}
+
+
+/* 現在表示中のページ */
+.app-header__nav-item.is-active {
+  background-color: var(--ms-primary);
+  color: #ffffff;
+}
+
+
+.app-header__nav-item.is-active:hover {
+  background-color: var(--ms-primary-dark);
+}
+
+
+/* ============================================================
+   ヘッダー：ログアウト
+============================================================ */
+
+.app-header__logout-form {
+  margin: 0;
+}
+
+
+.app-header__logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 32px;
+  padding: 0 14px;
+
+  border: 1px solid var(--ms-border);
+  border-radius: var(--ms-radius-pill);
+
+  background-color: #ffffff;
+  color: #2f5f32;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    transform 0.05s ease;
+}
+
+
+.app-header__logout:hover {
+  background-color: var(--ms-bg-soft);
+}
+
+
+/* クリック時に少し縮めて押下感を出す */
+.app-header__logout:active {
+  transform: scale(0.97);
+}
+
+
+/* ============================================================
+   下部ナビ
+   スマホ・タブレット用
+============================================================ */
+
+.bottom-nav {
+  /* スクロールしても画面下に固定 */
+  position: fixed;
+
+  left: 50%;
+  bottom: 0;
+
+  z-index: 30;
+
+  /* left: 50% と組み合わせて中央配置 */
+  transform: translateX(-50%);
+
+  /* 画面幅100%、ただし最大480px */
+  width: min(100%, 480px);
+
+  display: grid;
+
+  /* 3項目を同じ幅で配置 */
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 4px;
+
+  padding:
+    8px
+    10px
+    calc(8px + env(safe-area-inset-bottom));
+
+  background-color: #ffffff;
+
+  border-top: 1px solid var(--ms-border-soft);
+
+  box-shadow: var(--ms-shadow-nav);
+
+  box-sizing: border-box;
+}
+
+
+/* ============================================================
+   下部ナビ：各項目
+============================================================ */
+
+.bottom-nav__item {
+  /* ::before の位置基準 */
+  position: relative;
+
+  display: flex;
+
+  /* アイコン → 文字 の縦並び */
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 4px;
+
+  padding: 8px 4px;
+
+  border-radius: var(--ms-radius-input);
+
+  color: #466346;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-align: center;
+  text-decoration: none;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.05s ease;
+}
+
+
+.bottom-nav__item:hover {
+  background-color: var(--ms-bg-soft);
+}
+
+
+.bottom-nav__item:active {
+  transform: scale(0.97);
+}
+
+
+/* ============================================================
+   下部ナビ：アイコン・文字
+============================================================ */
+
+.bottom-nav__icon {
+  font-size: 18px;
+  line-height: 1;
+
+  transition: transform 0.15s ease;
+}
+
+
+.bottom-nav__label {
+  line-height: 1.2;
+}
+
+
+/* ============================================================
+   下部ナビ：現在表示中
+============================================================ */
+
+.bottom-nav__item.is-active {
+  background-color: var(--ms-primary-soft);
+  color: #ffffff;
+}
+
+
+.bottom-nav__item.is-active:hover {
+  background-color: #7fad7a;
+}
+
+
+/*
+ * 選択中項目の上に白いバーを表示。
+ * ::before はHTMLを増やさずCSSだけで作る擬似要素。
+ */
+.bottom-nav__item.is-active::before {
+  content: "";
+
+  position: absolute;
+
+  top: 3px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 22px;
+  height: 3px;
+
+  background-color: #ffffff;
+
+  border-radius: var(--ms-radius-pill);
+}
+
+
+/* 選択中のアイコンを少し拡大 */
+.bottom-nav__item.is-active .bottom-nav__icon {
+  transform: scale(1.08);
+}
+
+
+/* ============================================================
+   フラッシュメッセージ
+   Railsの notice / alert を表示する領域
+============================================================ */
+
+.flash-stack {
+  display: flex;
+
+  /* 複数メッセージを縦に並べる */
+  flex-direction: column;
+
+  gap: 8px;
+
+  /* スマホでは .ms-container と同じ横幅設計 */
+  width: calc(
+    100% - (var(--ms-page-padding-mobile) * 2)
+  );
+
+  max-width: var(--ms-content-mobile);
+
+  margin-inline: auto;
+
+  padding-top: 12px;
+
+  box-sizing: border-box;
+}
+
+
+/* フラッシュメッセージ1件 */
+.flash {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 10px;
+
+  padding: 12px 16px;
+
+  border: 1px solid transparent;
+  border-radius: var(--ms-radius-input);
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+
+  box-shadow: var(--ms-shadow-card);
+
+  animation: ms-flash-in 0.2s ease-out;
+}
+
+
+/* ============================================================
+   フラッシュ表示アニメーション
+============================================================ */
+
+/* 少し上からフェードインする */
+@keyframes ms-flash-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ============================================================
+   フラッシュ：アイコン・本文
+============================================================ */
+
+.flash__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 22px;
+  height: 22px;
+
+  /* 文章が長くてもアイコンを縮ませない */
+  flex-shrink: 0;
+
+  border-radius: var(--ms-radius-pill);
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+.flash__text {
+  /* アイコン以外の残り幅を使う */
+  flex: 1;
+
+  /* 長文による横方向のはみ出し防止 */
+  min-width: 0;
+
+  word-break: break-word;
+}
+
+
+/* ============================================================
+   フラッシュ：notice
+============================================================ */
+
+.flash--notice {
+  background-color: #e6f0e0;
+  color: var(--ms-primary);
+
+  border-color: var(--ms-accent);
+}
+
+
+.flash--notice .flash__icon {
+  background-color: var(--ms-primary);
+  color: #ffffff;
+}
+
+
+/* ============================================================
+   フラッシュ：alert
+============================================================ */
+
+.flash--alert {
+  background-color: var(--ms-danger-bg);
+  color: var(--ms-danger-text);
+
+  border-color: var(--ms-danger-border);
+}
+
+
+.flash--alert .flash__icon {
+  background-color: var(--ms-danger-text);
+  color: #ffffff;
+}
+
+
+/* ============================================================
+   共通フォーム
+============================================================ */
+
+.ms-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+
+  margin: 0 0 20px;
+}
+
+
+/* ============================================================
+   フォーム1項目
+============================================================ */
+
+.ms-form-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 12px 16px 0;
-  max-width: var(--ms-content-mobile);
-  margin: 0 auto;
+}
+
+/* ============================================================
+   ラベル
+============================================================ */
+
+
+.ms-form-label {
+  color: var(--ms-text);
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+/* ============================================================
+   入力欄
+============================================================ */
+
+.ms-form-input {
+  width: 100%;
+  min-height: 50px;
+
+  padding: 0 16px;
+
+  background-color: #ffffff;
+
+  border: 1px solid var(--ms-border);
+  border-radius: var(--ms-radius-input);
+
+  color: var(--ms-text);
+
+  font-family: inherit;
+  font-size: 15px;
+
   box-sizing: border-box;
-  }
 
-.flash {
-display: flex;
-align-items: flex-start;
-gap: 10px;
-padding: 12px 16px;
-border-radius: var(--ms-radius-input);
-font-size: 14px;
-font-weight: 600;
-line-height: 1.5;
-box-shadow: var(--ms-shadow-card);
-border: 1px solid transparent;
-animation: ms-flash-in 0.2s ease-out;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-@keyframes ms-flash-in {
-from {
-opacity: 0;
-transform: translateY(-4px);
+
+.ms-form-input::placeholder {
+  color: var(--ms-text-light);
 }
 
-to {
-opacity: 1;
-transform: translateY(0);
-}
+
+/* 入力中 */
+.ms-form-input:focus {
+  outline: none;
+
+  border-color: var(--ms-primary);
+
+  box-shadow: 0 0 0 3px rgba(66, 214, 116, 0.15);
 }
 
-.flash__icon {
-flex-shrink: 0;
-display: inline-flex;
-align-items: center;
-justify-content: center;
-width: 22px;
-height: 22px;
-border-radius: var(--ms-radius-pill);
-font-size: 13px;
-font-weight: 700;
-}
-
-.flash__text {
-flex: 1;
-min-width: 0;
-word-break: break-word;
-}
-
-.flash--notice {
-background-color: #e6f0e0;
-color: var(--ms-primary);
-border-color: var(--ms-accent);
-}
-
-.flash--notice .flash__icon {
-background-color: var(--ms-primary);
-color: #ffffff;
-}
-
-.flash--alert {
-background-color: var(--ms-danger-bg);
-color: var(--ms-danger-text);
-border-color: var(--ms-danger-border);
-}
-
-.flash--alert .flash__icon {
-background-color: var(--ms-danger-text);
-color: #ffffff;
-}
 
 /* ============================================================
+   入力欄の補足説明
+============================================================ */
 
-* PC レイアウト切替（issue29）
-* 768px 以上：
-* * 下部ナビを非表示
-* * ヘッダー右にナビを表示
-* * メインコンテンツの最大幅を広げる
-* ============================================================ */
-  @media (min-width: 768px) {
-  /* 下部ナビは消す */
+.ms-form-hint {
+  margin: 0;
+
+  color: var(--ms-text-muted);
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* ============================================================
+   戻るリンク
+============================================================ */
+
+.ms-back-link {
+  margin: 24px 0 0;
+
+  text-align: center;
+
+  color: var(--ms-text-muted);
+
+  font-size: 13px;
+}
+
+
+.ms-back-link-anchor {
+  color: var(--ms-primary);
+
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+
+.ms-back-link-anchor:hover {
+  text-decoration: underline;
+}
+
+
+
+/* ============================================================
+   PCレイアウト
+   画面幅768px以上で以下を追加・上書きする
+============================================================ */
+
+@media (min-width: 768px) {
+
+  /*
+   * PCではスマホ用下部ナビを非表示にする。
+   */
   .bottom-nav {
-  display: none;
+    display: none;
   }
 
-/* 下部余白を縮める（ナビが消えるため） */
-.app-main {
-padding-bottom: 32px;
-}
 
-/* ヘッダー右ナビを表示 */
-.app-header__nav {
-display: flex;
-}
-
-/* ヘッダー自体も内側を中央寄せにしてゆとりを */
-.app-header {
-padding: 14px 32px;
-}
-
-/* ============================================================
-
-* PC 時の各ページ最大幅オーバーライド
-* 既存ページは max-width: 480px で固定されているため、
-* PCでスマホ幅のまま中央寄せにならないよう一段広げる。
-* 既存の中身の縦並びレイアウトは保ったまま、左右の余白だけ広がる。
-* ============================================================ */
-  .mypage,
-  .goals-page,
-  .goal-new-page,
-  .reviews-page,
-  .record-page {
-  max-width: var(--ms-content-pc);
+  /*
+   * 下部ナビが消えるため、
+   * メイン領域の下余白を88px → 32pxにする。
+   */
+  .app-main {
+    padding-bottom: 32px;
   }
 
-/* フラッシュもPC幅に合わせて広げる */
-.flash-stack {
-max-width: var(--ms-content-pc);
-padding: 16px 32px 0;
-}
-}
 
-/* ============================================================
+  /*
+   * スマホでは非表示だった
+   * ヘッダー右側のPCナビを表示する。
+   */
+  .app-header__nav {
+    display: flex;
+  }
 
-* Wider PC: 1080px 以上 — もう少しだけゆとりを足す
-* （既存のカード幅は固定要素もあるため抑えめに）
-* ============================================================ */
-  @media (min-width: 1080px) {
+
+  /*
+   * PCではヘッダーの余白を少し広げる。
+   */
   .app-header {
-  padding: 16px 48px;
+    padding: 14px 32px;
   }
+
+
+  /*
+   * PCではコンテンツを最大1200pxまで広げる。
+   *
+   * 画面端には最低32pxずつ余白を残す。
+   */
+  .ms-container {
+    width: calc(
+      100% - (var(--ms-page-padding-pc) * 2)
+    );
+
+    max-width: var(--ms-content-pc);
   }
+
+
+  /*
+   * フラッシュメッセージも
+   * PC用の横幅に合わせる。
+   */
+  .flash-stack {
+    width: calc(
+      100% - (var(--ms-page-padding-pc) * 2)
+    );
+
+    max-width: var(--ms-content-pc);
+
+    padding-top: 16px;
+  }
+}
+
+
+/* ============================================================
+   大きめPC
+   1080px以上
+============================================================ */
+
+@media (min-width: 1080px) {
+
+  /*
+   * 大きな画面では
+   * ヘッダー左右の余白をさらに広げる。
+   */
+  .app-header {
+    padding: 16px 48px;
+  }
+}

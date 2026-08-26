@@ -1,290 +1,458 @@
 /*
- * Monthly Step - マイページのスタイル
- * 既存のパステルグリーン基調に合わせる
+ * ============================================================
+ * Monthly Step - マイページ
+ * ============================================================
+ *
+ * アプリ全体で共通する色・横幅・角丸・影などは
+ * application.css で管理する。
+ *
+ * このファイルではマイページ固有の表示のみ定義する。
  */
 
+
+/* ============================================================
+   マイページ全体
+============================================================ */
+
 .mypage {
-  min-height: calc(100vh - 60px);
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 16px;
-  box-sizing: border-box;
-  background-color: #eaf2e6;
-  color: #2f3b2a;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
-    "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
   line-height: 1.6;
 }
 
+
+/* ============================================================
+   ページ上部
+============================================================ */
+
 .mypage-header {
-  text-align: center;
   margin: 8px 0 20px;
+  text-align: center;
 }
+
 
 .mypage-heading {
   margin: 0;
-  color: #3f6b3a;
+
+  color: var(--ms-text);
+
   font-size: 22px;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
 
-/* ようこそメッセージ：名前 + ねぎらい + 励まし */
+
+/* ============================================================
+   ようこそメッセージ
+============================================================ */
+
 .mypage-greeting {
   margin: 12px 0 4px;
-  color: #2f3b2a;
+
+  color: var(--ms-text);
+
   font-size: 14px;
   font-weight: 600;
   line-height: 1.6;
 }
 
+
 .mypage-greeting-name {
-  color: #3f6b3a;
+  color: var(--ms-primary-strong);
   font-weight: 700;
 }
 
+
 .mypage-greeting-lead {
   margin: 0;
-  color: #6b7a64;
+
+  color: var(--ms-text-muted);
+
   font-size: 12px;
   line-height: 1.6;
 }
 
-/* カード全般 */
+
+/* ============================================================
+   カード
+============================================================ */
+
 .mypage-card {
-  background-color: #ffffff;
-  border-radius: 18px;
-  padding: 18px 18px;
   margin-bottom: 16px;
-  box-shadow: 0 4px 12px rgba(63, 107, 58, 0.08);
+  padding: 18px;
+
+  background-color: var(--ms-bg-card);
+
+  border-radius: var(--ms-radius-card);
+
+  box-shadow: var(--ms-shadow-card);
 }
 
+
+/* 今月の目標 */
 .mypage-card--monthly {
-  border-left: 4px solid #3f6b3a;
+  border-left: 4px solid var(--ms-primary-strong);
 }
 
+
+/* 今週の目標 */
 .mypage-card--weekly {
-  border-left: 4px solid #b7dcaa;
+  border-left: 4px solid var(--ms-accent);
 }
 
+
+/* カード上部 */
 .mypage-card-head {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+
   margin-bottom: 10px;
 }
 
+
 .mypage-card-label {
   margin: 0;
+
+  color: var(--ms-text);
+
   font-size: 14px;
   font-weight: 700;
-  color: #2f3b2a;
 }
 
+
 .mypage-card-pin {
-  color: #3f6b3a;
+  color: var(--ms-primary-strong);
+
   font-size: 16px;
 }
 
+
 .mypage-card-week {
   display: inline-block;
+
   padding: 2px 10px;
-  background-color: #eaf2e6;
-  color: #3f6b3a;
-  border-radius: 999px;
+
+  background-color: var(--ms-bg-tint);
+  color: var(--ms-primary-strong);
+
+  border-radius: var(--ms-radius-pill);
+
   font-size: 11px;
   font-weight: 700;
 }
 
+
 .mypage-card-title {
   margin: 0 0 10px;
+
+  color: var(--ms-text);
+
   font-size: 16px;
   font-weight: 700;
   line-height: 1.5;
-  color: #2f3b2a;
 }
+
 
 .mypage-card-sub {
   margin: 0 0 12px;
-  color: #6b7a64;
+
+  color: var(--ms-text-muted);
+
   font-size: 12px;
 }
+
 
 .mypage-card-meta {
   display: flex;
   flex-wrap: wrap;
+
   gap: 8px;
 }
 
+
+/* ============================================================
+   チップ・タグ
+============================================================ */
+
 .mypage-chip {
   display: inline-block;
+
   padding: 4px 12px;
-  border-radius: 999px;
+
+  border-radius: var(--ms-radius-pill);
+
   font-size: 12px;
   font-weight: 600;
 }
 
+
+/* カテゴリ */
 .mypage-chip--category {
-  background-color: #eaf2e6;
-  color: #3f6b3a;
+  background-color: var(--ms-bg-tint);
+  color: var(--ms-primary-strong);
 }
 
+
+/* 目標の種類 */
 .mypage-chip--kind {
-  background-color: #f4f7f1;
-  color: #6b7a64;
-  border: 1px solid #cdd6c7;
+  background-color: var(--ms-bg-soft);
+  color: var(--ms-text-muted);
+
+  border: 1px solid var(--ms-border);
 }
 
-/* ----------- 記録エリア ----------- */
+
+/* ============================================================
+   記録エリア
+============================================================ */
+
 .mypage-card-record {
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px dashed #cdd6c7;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   align-items: center;
+
+  gap: 10px;
+
+  margin-top: 14px;
+  padding-top: 14px;
+
+  border-top: 1px dashed var(--ms-border);
 }
+
 
 .mypage-record-prompt {
   margin: 0;
+
+  color: var(--ms-text);
+
   font-size: 13px;
-  color: #2f3b2a;
   font-weight: 600;
+
   text-align: center;
 }
 
+
+/* ============================================================
+   記録済み表示
+============================================================ */
+
 .mypage-record-done {
-  margin: 0;
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  width: 100%;
+
   gap: 4px;
+
+  margin: 0;
   padding: 14px 12px;
-  border-radius: 12px;
-  background-color: #f4f7f1;
+
+  background-color: var(--ms-bg-soft);
+
+  border-radius: var(--ms-radius-input);
+
   text-align: center;
+
+  box-sizing: border-box;
 }
 
+
 .mypage-record-symbol {
+  color: var(--ms-primary-strong);
+
   font-size: 28px;
   font-weight: 700;
   line-height: 1;
-  color: #3f6b3a;
 }
+
 
 .mypage-record-label {
+  color: var(--ms-text);
+
   font-size: 14px;
   font-weight: 700;
-  color: #2f3b2a;
 }
+
 
 .mypage-record-msg {
+  color: var(--ms-text-muted);
+
   font-size: 11px;
-  color: #6b7a64;
 }
 
-/* 達成度ごとの色合い：◎=濃いピンク、○=薄いピンク、×=既定 */
+
+/* ============================================================
+   達成度ごとの色
+============================================================ */
+
+/* ◎ */
 .mypage-record-done--perfect {
   background-color: #ffd9e2;
 }
+
+
+/* ○ */
 .mypage-record-done--good {
   background-color: #ffeef2;
 }
+
+
+/* × */
 .mypage-record-done--bad {
-  background-color: #f4f7f1;
+  background-color: var(--ms-bg-soft);
 }
 
-/* ----------- 今日のメモ表示 ----------- */
-/* 達成度カードの下にそっと添える、淡いグリーン基調のメモ枠 */
+
+/* ============================================================
+   今日のメモ
+============================================================ */
+
 .mypage-record-memo {
   width: 100%;
-  box-sizing: border-box;
+
   padding: 12px 14px;
-  background-color: #f4f7f1;
-  border-left: 3px solid #b7dcaa;
+
+  background-color: var(--ms-bg-soft);
+
+  border-left: 3px solid var(--ms-accent);
   border-radius: 10px;
+
   text-align: left;
+
+  box-sizing: border-box;
 }
+
 
 .mypage-record-memo__label {
   margin: 0 0 4px;
+
+  color: var(--ms-primary-strong);
+
   font-size: 11px;
   font-weight: 700;
-  color: #3f6b3a;
   letter-spacing: 0.04em;
 }
 
+
 .mypage-record-memo__text {
   margin: 0;
+
+  color: var(--ms-text);
+
   font-size: 13px;
-  color: #2f3b2a;
   line-height: 1.6;
+
   white-space: pre-wrap;
   word-break: break-word;
 }
 
-/* ----------- ボタン共通 ----------- */
+
+/* ============================================================
+   マイページ用ボタン
+============================================================ */
+
 .mypage-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-sizing: border-box;
+
   width: 100%;
   max-width: 280px;
   height: 44px;
+
   padding: 0 18px;
+
   border: none;
-  border-radius: 999px;
+  border-radius: var(--ms-radius-pill);
+
+  font-family: inherit;
   font-size: 14px;
   font-weight: 700;
+
   text-decoration: none;
+
   cursor: pointer;
-  font-family: inherit;
-  transition: background-color 0.15s ease;
+
+  transition:
+    background-color 0.15s ease,
+    transform 0.05s ease;
+
+  box-sizing: border-box;
 }
 
+
+.mypage-btn:active {
+  transform: scale(0.98);
+}
+
+
+/* メインボタン */
 .mypage-btn--primary {
-  background-color: #3f6b3a;
+  background-color: var(--ms-primary);
   color: #ffffff;
 }
 
+
 .mypage-btn--primary:hover {
-  background-color: #345a30;
+  background-color: var(--ms-primary-dark);
 }
 
+
+/* サブボタン */
 .mypage-btn--secondary {
-  background-color: #ffffff;
-  color: #3f6b3a;
-  border: 1px solid #cdd6c7;
+  background-color: var(--ms-bg-card);
+  color: var(--ms-primary-strong);
+
+  border: 1px solid var(--ms-border);
 }
+
 
 .mypage-btn--secondary:hover {
-  background-color: #f4f7f1;
+  background-color: var(--ms-bg-soft);
 }
 
+
+/* 使用不可 */
 .mypage-btn--disabled {
-  background-color: #d6dfd1;
-  color: #8a9684;
+  background-color: var(--ms-border);
+  color: var(--ms-text-light);
+
   cursor: not-allowed;
 }
 
-/* ----------- 空状態 ----------- */
-.mypage-card--empty {
-  text-align: center;
-  padding: 24px 18px;
+
+.mypage-btn--disabled:active {
+  transform: none;
 }
+
+
+/* ============================================================
+   空状態
+============================================================ */
+
+.mypage-card--empty {
+  padding: 24px 18px;
+
+  text-align: center;
+}
+
 
 .mypage-empty-text {
   margin: 0 0 14px;
-  color: #6b7a64;
+
+  color: var(--ms-text-muted);
+
   font-size: 13px;
 }
 
-/* 複数の月目標を区切る薄い罫線 */
+
+/* ============================================================
+   月目標同士の区切り
+============================================================ */
+
 .mypage-divider {
-  border: none;
-  border-top: 1px dashed #cdd6c7;
   margin: 24px 0 16px;
+
+  border: none;
+  border-top: 1px dashed var(--ms-border);
 }
