@@ -8,11 +8,15 @@ class WeeklyGoalsController < ApplicationController
 
   def new
     @weekly_goal = @monthly_goal.weekly_goals.build
+    @weekly_goal.user = @monthly_goal.user
+    @weekly_goal.category = @monthly_goal.category
     @start_date_options = build_start_date_options
   end
 
   def create
     @weekly_goal = @monthly_goal.weekly_goals.build(weekly_goal_params)
+    @weekly_goal.user = @monthly_goal.user
+    @weekly_goal.category = @monthly_goal.category
 
     if @weekly_goal.save
       flash[:notice] = "週目標を作成しました"

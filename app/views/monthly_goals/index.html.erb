@@ -1,98 +1,435 @@
-<% content_for :title, "月目標一覧 | Monthly Step" %>
+<% content_for :title, "目標一覧 | Monthly Step" %>
 
 <main class="goals-page">
+
+  <%# ============================================================
+      ページ上部
+  ============================================================ %>
+
   <header class="goals-page-header">
-    <h1 class="goals-page-heading">月目標一覧</h1>
-    <p class="goals-page-lead">今月・来月の目標を作って、小さな一歩を積み重ねましょう。</p>
-  </header>
+    <div class="goals-page-header__text">
+      <h1 class="goals-page-heading">目標一覧</h1>
 
-  <%# ＋ 新規目標作成 ＆ ボトムシート（ロードマップ/今月/今週 の選択） %>
-  <div class="goals-create" data-controller="bottom-sheet">
-    <button type="button"
-            class="goals-btn goals-btn--primary goals-create-trigger"
-            data-action="bottom-sheet#open">
-      ＋ 新規目標作成
-    </button>
+      <p class="goals-page-month">
+        <%= @current_month_date.strftime("%Y年%-m月") %>
+      </p>
+    </div>
 
-    <div class="bottom-sheet"
-         data-bottom-sheet-target="sheet"
-         data-action="click->bottom-sheet#closeFromOverlay">
-      <div class="bottom-sheet-panel" role="dialog" aria-modal="true" aria-label="作成する目標の種類を選ぶ">
-        <span class="bottom-sheet-handle" aria-hidden="true"></span>
-        <h2 class="bottom-sheet-title">何を作りますか？</h2>
 
-        <%= link_to new_roadmap_goal_path, class: "bottom-sheet-option bottom-sheet-option--roadmap" do %>
-          <span class="bottom-sheet-option-icon" aria-hidden="true">📖</span>
-          <span class="bottom-sheet-option-body">
-            <span class="bottom-sheet-option-title">ロードマップ目標を作る</span>
-            <span class="bottom-sheet-option-desc">2か月以上の大きな目標</span>
+    <%# ============================================================
+        ＋ 新規目標作成
+        クリックするとボトムシートを表示
+    ============================================================ %>
+
+    <div class="goals-create" data-controller="bottom-sheet">
+
+      <button
+        type="button"
+        class="goals-btn goals-btn--primary goals-create-trigger"
+        data-action="bottom-sheet#open">
+        ＋ 新規目標を作成
+      </button>
+
+
+      <%# ボトムシート %>
+
+      <div
+        class="bottom-sheet"
+        data-bottom-sheet-target="sheet"
+        data-action="click->bottom-sheet#closeFromOverlay">
+
+        <div
+          class="bottom-sheet-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-label="作成する目標の種類を選ぶ">
+
+          <span
+            class="bottom-sheet-handle"
+            aria-hidden="true">
           </span>
-          <span class="bottom-sheet-option-arrow" aria-hidden="true">→</span>
-        <% end %>
 
-        <%= link_to new_monthly_goal_path(target_month: "this"), class: "bottom-sheet-option" do %>
-          <span class="bottom-sheet-option-icon" aria-hidden="true">📅</span>
-          <span class="bottom-sheet-option-body">
-            <span class="bottom-sheet-option-title">今月の目標を作る</span>
-            <span class="bottom-sheet-option-desc">ひと月で完結する目標</span>
-          </span>
-          <span class="bottom-sheet-option-arrow" aria-hidden="true">→</span>
-        <% end %>
 
-        <%# 今週の目標は月目標配下に作るため、月目標一覧セクションへ誘導する %>
-        <a href="#goals-list" class="bottom-sheet-option" data-action="bottom-sheet#close">
-          <span class="bottom-sheet-option-icon" aria-hidden="true">📝</span>
-          <span class="bottom-sheet-option-body">
-            <span class="bottom-sheet-option-title">今週の目標を作る</span>
-            <span class="bottom-sheet-option-desc">月目標の中から週目標を追加できます</span>
-          </span>
-          <span class="bottom-sheet-option-arrow" aria-hidden="true">→</span>
-        </a>
+          <h2 class="bottom-sheet-title">
+            何を作りますか？
+          </h2>
 
-        <button type="button" class="bottom-sheet-cancel" data-action="bottom-sheet#close">
-          キャンセル
-        </button>
+
+          <%# ----------------------------------------------------
+              ロードマップ目標
+          ---------------------------------------------------- %>
+
+          <%= link_to new_roadmap_goal_path,
+                class: "bottom-sheet-option bottom-sheet-option--roadmap" do %>
+
+            <span
+              class="bottom-sheet-option-icon"
+              aria-hidden="true">
+              📖
+            </span>
+
+            <span class="bottom-sheet-option-body">
+
+              <span class="bottom-sheet-option-title">
+                ロードマップ目標を作る
+              </span>
+
+              <span class="bottom-sheet-option-desc">
+                2か月以上の大きな目標
+              </span>
+
+            </span>
+
+            <span
+              class="bottom-sheet-option-arrow"
+              aria-hidden="true">
+              →
+            </span>
+
+          <% end %>
+
+
+          <%# ----------------------------------------------------
+              今月の単体月目標
+          ---------------------------------------------------- %>
+
+          <%= link_to new_monthly_goal_path(target_month: "this"),
+                class: "bottom-sheet-option" do %>
+
+            <span
+              class="bottom-sheet-option-icon"
+              aria-hidden="true">
+              📅
+            </span>
+
+            <span class="bottom-sheet-option-body">
+
+              <span class="bottom-sheet-option-title">
+                今月の目標を作る
+              </span>
+
+              <span class="bottom-sheet-option-desc">
+                ひと月で完結する目標
+              </span>
+
+            </span>
+
+            <span
+              class="bottom-sheet-option-arrow"
+              aria-hidden="true">
+              →
+            </span>
+
+          <% end %>
+
+
+          <%# ----------------------------------------------------
+              今週の単体週目標
+
+              ※ new_weekly_goal_path が使えることを前提。
+                 top-level の weekly_goals route がまだなければ
+                 後でroutesを追加する。
+          ---------------------------------------------------- %>
+
+          <%= link_to new_weekly_goal_path,
+                class: "bottom-sheet-option" do %>
+
+            <span
+              class="bottom-sheet-option-icon"
+              aria-hidden="true">
+              📝
+            </span>
+
+            <span class="bottom-sheet-option-body">
+
+              <span class="bottom-sheet-option-title">
+                今週の目標を作る
+              </span>
+
+              <span class="bottom-sheet-option-desc">
+                今週だけ取り組む目標
+              </span>
+
+            </span>
+
+            <span
+              class="bottom-sheet-option-arrow"
+              aria-hidden="true">
+              →
+            </span>
+
+          <% end %>
+
+
+          <button
+            type="button"
+            class="bottom-sheet-cancel"
+            data-action="bottom-sheet#close">
+            キャンセル
+          </button>
+
+        </div>
       </div>
     </div>
-  </div>
+  </header>
 
 
-  <%# 進行中かつ今月が期間内のロードマップ目標と、そこに紐づく今月の月目標 %>
-  <% if @roadmap_goals.present? %>
-    <section class="roadmap-summary" aria-label="ロードマップ目標">
-      <h2 class="goals-section-heading">ロードマップ目標</h2>
-      <% @roadmap_goals.each do |roadmap| %>
-        <%= render "monthly_goals/roadmap_goal_card",
-              roadmap_goal: roadmap,
-              monthly_goals: @roadmap_monthly_goals.fetch(roadmap.id, []) %>
-      <% end %>
-    </section>
-  <% end %>
 
-  <%# 来月：25日以降のみ表示。登録済みなら追加ボタンだけ出す %>
-  <% if @next_month_available %>
-    <% if @show_next_month_prompt %>
-      <section class="goals-prompt goals-prompt--secondary" aria-label="来月の目標登録のお願い">
-        <p class="goals-prompt-text">来月の目標を登録しましょう</p>
-        <%= link_to "来月の目標を登録する", new_monthly_goal_path(target_month: "next"), class: "goals-btn goals-btn--secondary" %>
-      </section>
-    <% else %>
-      <div class="goals-actions">
-        <%= link_to "来月の目標を登録する", new_monthly_goal_path(target_month: "next"), class: "goals-btn goals-btn--secondary" %>
+  <%# ============================================================
+      ① ロードマップ目標
+
+      Controller：
+      @roadmap_goals
+
+      そのロードマップに紐づく今月の月目標：
+      @roadmap_monthly_goals[roadmap.id]
+  ============================================================ %>
+
+  <section
+    class="goals-section goals-section--roadmap"
+    aria-labelledby="roadmap-goals-heading">
+
+    <div class="goals-section-header">
+
+      <div class="goals-section-title-area">
+
+        <h2
+          id="roadmap-goals-heading"
+          class="goals-section-heading">
+
+          <span
+            class="goals-section-icon"
+            aria-hidden="true">
+            🗺
+          </span>
+
+          ロードマップ目標
+
+          <span class="goals-section-count">
+            <%= @roadmap_goals.size %>
+          </span>
+
+        </h2>
+
       </div>
-    <% end %>
-  <% end %>
 
-  <%# ロードマップに紐づかない月目標（既存仕様どおりの一覧） %>
-  <section class="goals-list" id="goals-list">
-    <h2 class="goals-section-heading">月目標（ロードマップなし）</h2>
 
-    <% if @monthly_goals.empty? %>
-      <p class="goals-empty">まだ月目標がありません。<br>「＋ 新規目標作成」からはじめましょう。</p>
-    <% else %>
-      <% @monthly_goals.each do |goal| %>
-        <%= render "monthly_goals/monthly_goal_card", goal: goal %>
+      <%= link_to "＋ 新規作成",
+            new_roadmap_goal_path,
+            class: "goals-section-create-link" %>
+
+    </div>
+
+
+    <div class="goals-section-list">
+
+      <% if @roadmap_goals.empty? %>
+
+        <p class="goals-empty">
+          現在進行中のロードマップ目標はありません。
+        </p>
+
+      <% else %>
+
+        <% @roadmap_goals.each do |roadmap| %>
+
+          <%= render "monthly_goals/roadmap_goal_card",
+                roadmap_goal: roadmap,
+                monthly_goals: @roadmap_monthly_goals.fetch(
+                  roadmap.id,
+                  []
+                ) %>
+
+        <% end %>
+
       <% end %>
-    <% end %>
+
+    </div>
+
   </section>
+
+
+
+  <%# ============================================================
+      ② ロードマップに紐づかない単体月目標
+
+      Controller：
+      @monthly_goals
+  ============================================================ %>
+
+  <section
+    class="goals-section goals-section--monthly"
+    id="monthly-goals-list"
+    aria-labelledby="monthly-goals-heading">
+
+    <div class="goals-section-header">
+
+      <div class="goals-section-title-area">
+
+        <h2
+          id="monthly-goals-heading"
+          class="goals-section-heading">
+
+          <span
+            class="goals-section-icon"
+            aria-hidden="true">
+            📅
+          </span>
+
+          月目標（単体）
+
+          <span class="goals-section-count">
+            <%= @monthly_goals.size %>
+          </span>
+
+        </h2>
+
+      </div>
+
+
+      <%= link_to "＋ 新規作成",
+            new_monthly_goal_path(target_month: "this"),
+            class: "goals-section-create-link" %>
+
+    </div>
+
+
+    <div class="goals-section-list">
+
+      <% if @monthly_goals.empty? %>
+
+        <p class="goals-empty">
+          今月の単体月目標はありません。
+        </p>
+
+      <% else %>
+
+        <% @monthly_goals.each do |goal| %>
+
+          <%= render "monthly_goals/monthly_goal_card",
+                goal: goal %>
+
+        <% end %>
+
+      <% end %>
+
+    </div>
+
+  </section>
+
+
+
+  <%# ============================================================
+      ③ 月目標に紐づかない今週の単体週目標
+
+      Controller：
+      @weekly_goals
+  ============================================================ %>
+
+  <section
+    class="goals-section goals-section--weekly"
+    id="weekly-goals-list"
+    aria-labelledby="weekly-goals-heading">
+
+    <div class="goals-section-header">
+
+      <div class="goals-section-title-area">
+
+        <h2
+          id="weekly-goals-heading"
+          class="goals-section-heading">
+
+          <span
+            class="goals-section-icon"
+            aria-hidden="true">
+            📝
+          </span>
+
+          今週の週目標（単体）
+
+          <span class="goals-section-count">
+            <%= @weekly_goals.size %>
+          </span>
+
+        </h2>
+
+      </div>
+
+
+      <%= link_to "＋ 新規作成",
+            new_weekly_goal_path,
+            class: "goals-section-create-link" %>
+
+    </div>
+
+
+    <div class="goals-section-list">
+
+      <% if @weekly_goals.empty? %>
+
+        <p class="goals-empty">
+          今週の単体週目標はありません。
+        </p>
+
+      <% else %>
+
+        <% @weekly_goals.each do |goal| %>
+
+          <article class="goal-card goal-card--weekly">
+
+            <div class="goal-card-main">
+
+              <%# アイコン %>
+
+              <div
+                class="goal-card-icon"
+                aria-hidden="true">
+
+                📝
+
+              </div>
+
+
+              <%# 目標情報 %>
+
+              <div class="goal-card-content">
+
+                <% if goal.category.present? %>
+
+                  <span class="goal-card-category">
+                    <%= goal.category.name %>
+                  </span>
+
+                <% end %>
+
+
+                <h3 class="goal-card-title">
+                  <%= goal.title %>
+                </h3>
+
+              </div>
+
+
+              <%# 詳細リンク %>
+
+              <div class="goal-card-actions">
+
+                <%= link_to "詳細",
+                      edit_weekly_goal_path(goal),
+                      class: "goal-card-detail-link" %>
+
+              </div>
+
+            </div>
+
+          </article>
+
+        <% end %>
+
+      <% end %>
+
+    </div>
+
+  </section>
+
 </main>
