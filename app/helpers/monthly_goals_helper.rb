@@ -9,11 +9,19 @@ module MonthlyGoalsHelper
     return nil if months.nil?
 
     if months.positive?
-      "残り#{months}か月"
+      I18n.t(
+      "monthly_goals.roadmap_goal_card.roadmap_remaining_months",
+      count: months
+      )
+
     elsif months.zero?
-      "今月まで"
+      I18n.t(
+      "monthly_goals.roadmap_goal_card.due_this_month"
+      )
     else
-      "期間終了"
+      I18n.t(
+      "monthly_goals.roadmap_goal_card.period_ended"
+      )
     end
   end
 

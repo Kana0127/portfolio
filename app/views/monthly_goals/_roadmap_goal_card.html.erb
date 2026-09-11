@@ -14,32 +14,15 @@
   class="roadmap-group"
   data-controller="goal-accordion">
 
-
-  <%# ============================================================
-      ロードマップ目標本体
-  ============================================================ %>
-
   <article class="roadmap-summary-card">
 
     <div class="roadmap-summary-main">
 
-
-      <%# --------------------------------------------------------
-          左側：ロードマップアイコン
-      -------------------------------------------------------- %>
-
       <div
         class="roadmap-summary-icon"
         aria-hidden="true">
-
         📖
-
       </div>
-
-
-      <%# --------------------------------------------------------
-          中央：カテゴリ・タイトル
-      -------------------------------------------------------- %>
 
       <div class="roadmap-summary-content">
 
@@ -47,20 +30,16 @@
           <%= roadmap_goal.category.name %>
         </span>
 
-
         <h3 class="roadmap-summary-title">
           <%= roadmap_goal.title %>
         </h3>
 
-
-        <%# 必要であれば期間も小さく表示する %>
-
         <p class="roadmap-summary-meta">
 
           <span>
-            <%= roadmap_goal.start_month.strftime("%Y年%-m月") %>
+            <%= l roadmap_goal.start_month, format: :year_month %>
             〜
-            <%= roadmap_goal.target_month.strftime("%Y年%-m月") %>
+            <%= l roadmap_goal.target_month, format: :year_month %>
           </span>
 
           <span class="roadmap-summary-remaining">
@@ -71,23 +50,17 @@
 
       </div>
 
-
-      <%# --------------------------------------------------------
-          右側：詳細リンク・開閉ボタン
-      -------------------------------------------------------- %>
-
       <div class="roadmap-summary-actions">
 
-        <%= link_to "詳細",
+        <%= link_to t("common.details"),
               roadmap_goal_path(roadmap_goal),
               class: "roadmap-summary-link" %>
-
 
         <button
           type="button"
           class="roadmap-summary-toggle"
           aria-expanded="false"
-          aria-label="<%= roadmap_goal.title %>の今月の目標を表示"
+          aria-label="<%= t('.show_monthly_goals', title: roadmap_goal.title) %>"
           data-goal-accordion-target="button"
           data-action="goal-accordion#toggle">
 
@@ -106,40 +79,20 @@
   </article>
 
 
-
-  <%# ============================================================
-      ▼をクリックした時に表示する部分
-
-      ロードマップ
-        └ 今月の月目標
-             └ その月目標に紐づく週目標
-  ============================================================ %>
-
   <div
     class="roadmap-group-children"
     data-goal-accordion-target="content"
     hidden>
 
-
     <h4 class="roadmap-group-children-heading">
-      今月の目標
+      <%= t(".monthly_goals_heading") %>
     </h4>
-
-
-    <%# ----------------------------------------------------------
-        今月の月目標が存在しない場合
-    ---------------------------------------------------------- %>
 
     <% if monthly_goals.empty? %>
 
       <p class="roadmap-group-empty">
-        このロードマップに紐づく今月の目標はまだありません。
+        <%= t(".no_monthly_goals") %>
       </p>
-
-
-    <%# ----------------------------------------------------------
-        今月の月目標が存在する場合
-    ---------------------------------------------------------- %>
 
     <% else %>
 
@@ -147,26 +100,15 @@
 
         <% monthly_goals.each do |monthly_goal| %>
 
-
-          <%# ====================================================
-              月目標1件
-          ==================================================== %>
-
           <div class="roadmap-monthly-item">
-
-
-            <%# 月目標のヘッダー %>
 
             <div class="roadmap-monthly-item__main">
 
               <div
                 class="roadmap-monthly-item__icon"
                 aria-hidden="true">
-
                 📅
-
               </div>
-
 
               <div class="roadmap-monthly-item__content">
 
@@ -178,7 +120,6 @@
 
                 <% end %>
 
-
                 <h5 class="roadmap-monthly-item__title">
                   <%= monthly_goal.title %>
                 </h5>
@@ -188,24 +129,17 @@
             </div>
 
 
-
-            <%# ==================================================
-                この月目標に紐づく週目標
-            ================================================== %>
-
             <div class="roadmap-weekly-area">
 
               <p class="roadmap-weekly-heading">
-                週目標
+                <%= t(".weekly_goals_heading") %>
               </p>
-
 
               <% if monthly_goal.weekly_goals.empty? %>
 
                 <p class="roadmap-weekly-empty">
-                  まだ週目標はありません。
+                  <%= t(".no_weekly_goals") %>
                 </p>
-
 
               <% else %>
 
@@ -217,31 +151,18 @@
 
                     <div class="roadmap-weekly-item">
 
-
-                      <%# 第何週か %>
-
                       <span class="roadmap-weekly-item__week">
-
-                        第<%= weekly_goal.week_number %>週
-
+                        <%= t(".week_number", number: weekly_goal.week_number) %>
                       </span>
-
-
-                      <%# 週目標タイトル %>
 
                       <span class="roadmap-weekly-item__title">
-
                         <%= weekly_goal.title %>
-
                       </span>
-
-
-                      <%# 今週なら表示する %>
 
                       <% if weekly_goal.week_number == @current_week_number %>
 
                         <span class="roadmap-weekly-item__current">
-                          今週
+                          <%= t(".current_week") %>
                         </span>
 
                       <% end %>

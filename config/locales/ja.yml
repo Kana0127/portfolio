@@ -1,0 +1,71 @@
+ja:
+  common:
+    new: "＋ 新規作成"
+    cancel: "キャンセル"
+    details: "詳細"
+    edit: "編集"
+    delete: "削除"
+
+  date:
+    formats:
+      year_month: "%Y年%-m月"
+      month_day: "%-m月%-d日"
+
+  monthly_goals:
+    index:
+      page_title: "目標一覧 | Monthly Step"
+      title: "目標一覧"
+      create_goal: "＋ 新規目標を作成"
+      create_dialog_label: "作成する目標の種類を選ぶ"
+      create_prompt: "何を作りますか？"
+
+      roadmap:
+        create_title: "ロードマップ目標を作る"
+        description: "2か月以上の大きな目標"
+        section_title: "ロードマップ目標"
+        empty: "現在進行中のロードマップ目標はありません。"
+
+
+      monthly:
+        create_title: "今月の目標を作る"
+        description: "ひと月で完結する目標"
+        section_title: "月目標（単体）"
+        empty: "今月の単体月目標はありません。"
+
+      weekly:
+        create_title: "今週の目標を作る"
+        description: "今週だけ取り組む目標"
+        section_title: "今週の週目標（単体）"
+        empty: "今週の単体週目標はありません。"
+
+    roadmap_goal_card:
+      show_monthly_goals: "%{title}の今月の目標を表示"
+      monthly_goals_heading: "今月の目標"
+      no_monthly_goals: "このロードマップに紐づく今月の目標はまだありません。"
+      weekly_goals_heading: "週目標"
+      no_weekly_goals: "まだ週目標はありません。"
+      week_number: "第%{number}週"
+      current_week: "今週"
+      roadmap_remaining_months: "残り%{count}か月"
+      due_this_month: "今月まで"
+      period_ended: "期間終了"
+
+  monthly_goals_card:
+    actions:
+      edit_aria: "%{title}を編集"
+      delete_aria: "%{title}を削除"
+      delete_confirm: "「%{title}」を削除しますか？"
+
+    kind:
+      step: "週分解型"
+      single: "単発型"
+
+    weekly:
+      heading: "週目標"
+      empty: "まだ週目標はありません。"
+      week: "第%{number}週"
+      date_from: "%{date}〜"
+      edit_aria: "第%{week_number}週「%{title}」を編集"
+      delete_aria: "第%{week_number}週「%{title}」を削除"
+      delete_confirm: "第%{week_number}週「%{title}」を削除しますか？"
+      add: "＋ 週目標を追加"
