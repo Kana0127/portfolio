@@ -13,7 +13,7 @@ module MonthlyGoalsHelper
       "monthly_goals.roadmap_goal_card.roadmap_remaining_months",
       count: months
       )
-                  
+
     elsif months.zero?
       I18n.t(
       "monthly_goals.roadmap_goal_card.due_this_month"
@@ -36,6 +36,3 @@ module MonthlyGoalsHelper
       (current_month.year * 12 + current_month.month)
   end
 end
-
-
-
