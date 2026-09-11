@@ -1,31 +1,72 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  common:
+    new: "+ New"
+    cancel: "Cancel"
+    details: "Details"
+    edit: "Edit"
+    delete: "Delete"
+
+  date:
+    formats:
+      year_month: "%B %Y"
+      month_day: "%b %-d"
+
+  monthly_goals:
+    index:
+      page_title: "Goals | Monthly Step"
+      title: "Goals"
+      create_goal: "+ Create New Goal"
+      create_dialog_label: "Choose the type of goal to create"
+      create_prompt: "What would you like to create?"
+
+      roadmap:
+        create_title: "Create a Roadmap Goal"
+        description: "A long-term goal lasting at least 2 months"
+        section_title: "Roadmap Goals"
+        empty: "There are no active roadmap goals."
+
+      monthly:
+        create_title: "Create a Monthly Goal"
+        description: "A goal to complete within one month"
+        section_title: "Standalone Monthly Goals"
+        empty: "There are no standalone monthly goals for this month."
+
+      weekly:
+        create_title: "Create a Weekly Goal"
+        description: "A goal to work on this week"
+        section_title: "Standalone Weekly Goals for This Week"
+        empty: "There are no standalone weekly goals for this week."
+
+    roadmap_goal_card:
+      show_monthly_goals: "Show this month's goals for %{title}"
+      monthly_goals_heading: "Goals for This Month"
+      no_monthly_goals: "There are no goals for this month linked to this roadmap yet."
+      weekly_goals_heading: "Weekly Goals"
+      no_weekly_goals: "There are no weekly goals yet."
+      week_number: "Week %{number}"
+      current_week: "This Week"
+      roadmap_remaining_months: 
+         one: "%{count} month remaining"
+         other: "%{count} months remaining" 
+      due_this_month: "Ends this month"
+      period_ended: Ended""
+
+  monthly_goals_card:
+    actions:
+      edit_aria: "Edit %{title}"
+      delete_aria: "Delete %{title}"
+      delete_confirm: "Are you sure you want to delete \"%{title}\"?"
+
+    kind:
+      step: "Weekly Breakdown"
+      single: "Standalone"
+
+    weekly:
+      heading: "Weekly Goals"
+      empty: "There are no weekly goals yet."
+      week: "Week %{number}"
+      date_from: "From %{date}"
+      edit_aria: "Edit Week %{week_number}: %{title}"
+      delete_aria: "Delete Week %{week_number}: %{title}"
+      delete_confirm: "Are you sure you want to delete Week %{week_number}: \"%{title}\"?"
+      add: "+ Add Weekly Goal"
