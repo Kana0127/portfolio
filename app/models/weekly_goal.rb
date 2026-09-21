@@ -628,9 +628,6 @@ class WeeklyGoal < ApplicationRecord
     # weekly_goal.save
     #
     # はfalseになり、保存されない。
-    errors.add(
-      :start_date,
-      "は対象月の1日または対象月内の日曜日（最大5週）から選んでください"
-    )
+    errors.add(:start_date, :invalid_week_start)
   end
 end

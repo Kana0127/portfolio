@@ -1,41 +1,162 @@
 ja:
+  # Rails 標準のバリデーションエラー文（rails-i18n 相当を必要分だけ定義）
+  errors:
+    format: "%{attribute}%{message}"
+
+    messages:
+      blank: "を入力してください"
+      required: "を入力してください"
+      present: "は入力しないでください"
+      taken: "はすでに使用されています"
+      inclusion: "は一覧にありません"
+      exclusion: "は予約されています"
+      invalid: "は不正な値です"
+      confirmation: "と%{attribute}の入力が一致しません"
+      accepted: "を受諾してください"
+      empty: "を入力してください"
+      too_long: "は%{count}文字以内で入力してください"
+      too_short: "は%{count}文字以上で入力してください"
+      wrong_length: "は%{count}文字で入力してください"
+      not_a_number: "は数値で入力してください"
+      not_an_integer: "は整数で入力してください"
+      greater_than: "は%{count}より大きい値にしてください"
+      greater_than_or_equal_to: "は%{count}以上の値にしてください"
+      less_than: "は%{count}より小さい値にしてください"
+      less_than_or_equal_to: "は%{count}以下の値にしてください"
+      equal_to: "は%{count}にしてください"
+      other_than: "は%{count}以外の値にしてください"
+
+  activerecord:
+    errors:
+      messages:
+        record_invalid: "バリデーションに失敗しました: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "%{record}が存在しているため削除できません"
+          has_many: "%{record}が存在しているため削除できません"
+
+      # モデル固有のカスタムバリデーション文
+      models:
+        roadmap_goal:
+          attributes:
+            target_month:
+              before_start_month: "は開始月以降を選択してください"
+              duration_too_short: "は開始月から%{count}か月以上先を選択してください"
+              duration_too_long: "は開始月から%{count}か月以内を選択してください"
+
+        monthly_goal:
+          attributes:
+            roadmap_goal:
+              not_owned: "は自分のロードマップ目標を選択してください"
+
+        weekly_goal:
+          attributes:
+            start_date:
+              invalid_week_start: "は対象月の1日または対象月内の日曜日（最大5週）から選んでください"
+
+    models:
+      user: "ユーザー"
+      category: "カテゴリー"
+      roadmap_goal: "ロードマップ目標"
+      monthly_goal: "月目標"
+      weekly_goal: "週目標"
+      daily_record: "日次記録"
+      monthly_review: "月次振り返り"
+      weekly_review: "週次振り返り"
+
+    attributes:
+      user:
+        name: "ユーザー名"
+        email: "メールアドレス"
+        password: "パスワード"
+        password_confirmation: "パスワード（確認用）"
+
+      category:
+        name: "カテゴリー名"
+
+      roadmap_goal:
+        title: "ロードマップ目標名"
+        reason: "理由・目的"
+        start_month: "開始月"
+        target_month: "目標達成月"
+        status: "ステータス"
+        category: "カテゴリー"
+        user: "ユーザー"
+
+      monthly_goal:
+        title: "目標内容"
+        target_month: "対象月"
+        goal_kind: "目標タイプ"
+        category: "カテゴリー"
+        user: "ユーザー"
+
+      weekly_goal:
+        title: "週目標の内容"
+        week_number: "週番号"
+        start_date: "週の開始日"
+        category: "カテゴリー"
+        user: "ユーザー"
+        monthly_goal: "月目標"
+
+      daily_record:
+        record_date: "記録日"
+        status: "達成度"
+        memo: "メモ"
+
+      monthly_review:
+        achievement_rate: "達成度"
+        good_point: "今月の自分への一言"
+        improvement_point: "来月の自分への一言"
+        memo: "メモ"
+
+      weekly_review:
+        achievement_rate: "達成度"
+        good_point: "今週できたこと"
+        improvement_point: "来週への課題"
+        memo: "メモ"
+
   common:
-    new: "＋ 新規作成"
+    new: "+ 新規作成"
     cancel: "キャンセル"
     details: "詳細"
     edit: "編集"
     delete: "削除"
+    back_to_top: "TOPに戻る"
+    memo_empty: "メモはありません"
+
+    errors:
+      title: "%{count}件のエラーがあります"
 
   date:
     formats:
       year_month: "%Y年%-m月"
+      month_only: "%-m月"
       month_day: "%-m月%-d日"
+      year_month_day: "%Y年%-m月%-d日"
 
   monthly_goals:
     index:
       page_title: "目標一覧 | Monthly Step"
       title: "目標一覧"
-      create_goal: "＋ 新規目標を作成"
-      create_dialog_label: "作成する目標の種類を選ぶ"
-      create_prompt: "何を作りますか？"
+      create_goal: "+ 新しい目標を作成"
+      create_dialog_label: "作成する目標の種類を選択"
+      create_prompt: "どの目標を作成しますか？"
 
       roadmap:
-        create_title: "ロードマップ目標を作る"
-        description: "2か月以上の大きな目標"
+        create_title: "ロードマップ目標を作成"
+        description: "2か月以上かけて取り組む長期目標"
         section_title: "ロードマップ目標"
-        empty: "現在進行中のロードマップ目標はありません。"
-
+        empty: "進行中のロードマップ目標はありません。"
 
       monthly:
-        create_title: "今月の目標を作る"
-        description: "ひと月で完結する目標"
-        section_title: "月目標（単体）"
+        create_title: "月目標を作成"
+        description: "1か月以内に達成する目標"
+        section_title: "単体の月目標"
         empty: "今月の単体月目標はありません。"
 
       weekly:
-        create_title: "今週の目標を作る"
-        description: "今週だけ取り組む目標"
-        section_title: "今週の週目標（単体）"
+        create_title: "週目標を作成"
+        description: "今週取り組む目標"
+        section_title: "今週の単体週目標"
         empty: "今週の単体週目標はありません。"
 
     roadmap_goal_card:
@@ -43,12 +164,78 @@ ja:
       monthly_goals_heading: "今月の目標"
       no_monthly_goals: "このロードマップに紐づく今月の目標はまだありません。"
       weekly_goals_heading: "週目標"
-      no_weekly_goals: "まだ週目標はありません。"
+      no_weekly_goals: "週目標はまだありません。"
       week_number: "第%{number}週"
       current_week: "今週"
-      roadmap_remaining_months: "残り%{count}か月"
-      due_this_month: "今月まで"
-      period_ended: "期間終了"
+
+      roadmap_remaining_months:
+        one: "残り%{count}か月"
+        other: "残り%{count}か月"
+
+      due_this_month: "今月終了"
+      period_ended: "終了"
+    
+    new:
+      page_title: "月目標を作成 | Monthly Step"
+      back_aria: "目標一覧に戻る"
+      heading: "目標を作成する"
+
+      target_period:
+        current: "今月の目標"
+        next: "来月の目標"
+
+      target_month: "%{month}の月目標を作成"
+
+      errors:
+        title: "%{count}件のエラーがあります"
+
+      title:
+        label: "目標内容"
+        placeholder: "例：毎日30分英語の勉強をする"
+
+      category:
+        label: "カテゴリー"
+        aria_label: "カテゴリー"
+
+      goal_kind:
+        label: "目標タイプ"
+        aria_label: "目標タイプ"
+        step: "週分解型"
+        single: "単発型"
+        step_hint: "週分解型：週ごとの小さな目標に分解して取り組むタイプ"
+        single_hint: "単発型：1か月単位で達成・未達成を管理するタイプ"
+
+      submit: "登録する"
+    
+    edit:
+      page_title: "月目標を編集 | Monthly Step"
+      back_aria: "目標一覧に戻る"
+      heading: "目標を編集する"
+
+      monthly_goal_label: "月目標"
+
+      target_month: "%{month}の月目標"
+
+      errors:
+        title: "%{count}件のエラーがあります"
+
+      title:
+        label: "目標内容"
+        placeholder: "例：毎日30分英語の勉強をする"
+
+      category:
+        label: "カテゴリー"
+        aria_label: "カテゴリー"
+
+      goal_kind:
+        label: "目標タイプ"
+        aria_label: "目標タイプ"
+        step: "週分解型"
+        single: "単発型"
+        step_hint: "週分解型：週ごとの小さな目標に分解して取り組むタイプ"
+        single_hint: "単発型：1か月単位で達成・未達成を管理するタイプ"
+
+      submit: "更新する"
 
   monthly_goals_card:
     actions:
@@ -57,15 +244,492 @@ ja:
       delete_confirm: "「%{title}」を削除しますか？"
 
     kind:
-      step: "週分解型"
-      single: "単発型"
+      step: "週ごとに分解"
+      single: "単体"
 
     weekly:
       heading: "週目標"
-      empty: "まだ週目標はありません。"
+      empty: "週目標はまだありません。"
       week: "第%{number}週"
-      date_from: "%{date}〜"
+      date_from: "%{date}から"
       edit_aria: "第%{week_number}週「%{title}」を編集"
       delete_aria: "第%{week_number}週「%{title}」を削除"
       delete_confirm: "第%{week_number}週「%{title}」を削除しますか？"
-      add: "＋ 週目標を追加"
+      add: "+ 週目標を追加"
+
+  mypages:
+    show:
+      page_title: "マイページ | Monthly Step"
+
+      username: "%{name}さん"
+      greeting: "おかえりなさい！"
+      greeting_lead: "今月の目標に向かって、今日も少しずつ進んでいきましょう。"
+
+      roadmap:
+        label: "ロードマップ目標"
+
+      monthly:
+        label: "月目標"
+        empty: "今月の月目標はまだ設定されていません。"
+        register: "月目標を作成する"
+
+      weekly:
+        label: "今週の目標"
+        week_number: "第%{number}週"
+        date_range: "%{start_date}〜%{end_date}"
+        empty: "今週の週目標はまだ設定されていません。"
+        add: "週目標を追加する"
+
+      origin:
+        roadmap: "ロードマップゴール由来"
+        monthly: "単体月目標由来"
+        weekly: "単体週目標"
+
+      record:
+        recorded_message: "今日の取り組みを記録しました。"
+        memo_label: "メモ"
+        recorded: "記録済み"
+        prompt: "今日はどうでしたか？"
+        create: "今日の記録をつける"
+
+  daily_records:
+    new:
+      page_title: "今日の記録 | Monthly Step"
+      back_aria: "月目標に戻る"
+      heading: "今日の記録"
+      lead: "自分のペースで、一歩ずつ進めていきましょう。"
+
+      weekly_goal_label: "今週の目標"
+
+      target_period: "%{month}・第%{week_number}週"
+
+      errors:
+        title: "%{count}件のエラーがあります"
+
+      achievement_label: "今日の達成度"
+
+      statuses:
+        perfect: "できた！"
+        good: "まあまあ"
+        bad: "お休み"
+
+      memo:
+        label: "メモ（任意）"
+        placeholder: "今日できた小さなことや、明日に向けた気持ちを書いてみましょう。"
+
+      submit: "記録を保存"
+
+  home:
+    top:
+      page_title: "Monthly Step"
+      heading: "小さな一歩を、確かな自信に。"
+      lead_first: "目標を無理のない週単位のステップに分けて、忙しい日々の中でも少しずつ前に進みましょう。"
+      lead_second: "無理なく続けながら、目標達成を目指せるシンプルな方法です。"
+      start: "無料ではじめる"
+      login: "ログイン"
+
+  shared:
+    app_header:
+      todays_tasks: "今日のタスク"
+      goals: "目標一覧"
+      reviews: "振り返り"
+      logout: "ログアウト"
+      main_navigation: "メインナビゲーション"
+      desktop_navigation: "主要ナビゲーション（PC）"
+
+      language:
+        confirm_ja: "日本語に切り替えますか？"
+        confirm_en: "英語に切り替えますか？"
+
+    bottom_nav:
+      aria_label: "主要ナビゲーション"
+      mypage: "マイページ"
+      goals: "目標一覧"
+      reviews: "ふりかえり"
+
+  roadmap_goals:
+    show:
+      page_title: "ロードマップ詳細 | Monthly Step"
+      back_aria: "目標一覧に戻る"
+      heading: "ロードマップ詳細"
+
+      period: "%{start_month}〜%{target_month}"
+
+      category: "カテゴリ"
+      status: "ステータス"
+      created_at: "作成日"
+
+      edit: "編集"
+      delete: "削除"
+      delete_confirm: "このロードマップを削除すると、紐づく月目標と週目標も削除されます。削除してもよろしいですか？"
+
+      back_to_goals: "目標一覧に戻る"
+
+    status:
+      active: "進行中"
+      achieved: "達成"
+      paused: "一時停止"
+      canceled: "中止"
+
+    form:
+      title:
+        label: "ロードマップ目標名"
+        placeholder: "例：ITエンジニアとしてのスキルアップ"
+
+      reason:
+        label: "理由・目的（任意）"
+        placeholder: "なぜこの目標を達成したいですか？"
+
+      start_month:
+        label: "開始月"
+
+      target_month:
+        label: "目標達成月"
+
+      category:
+        label: "目標カテゴリ"
+        aria_label: "目標カテゴリ"
+
+      status:
+        label: "ステータス"
+
+    index:
+      page_title: "ロードマップ目標一覧 | Monthly Step"
+      back_aria: "目標一覧に戻る"
+      heading: "ロードマップ目標一覧"
+
+      empty_line1: "まだロードマップ目標がありません。"
+      empty_line2: "目標一覧の「＋ 新規目標作成」から作成できます。"
+
+      label: "ロードマップ目標"
+      badge: "任意"
+      period: "%{start_month} 〜 %{target_month}"
+      show_link: "ロードマップを見る →"
+
+    new:
+      page_title: "ロードマップ目標を作る | Monthly Step"
+      back_aria: "目標一覧に戻る"
+      heading: "ロードマップ目標を作る"
+
+      about:
+        title: "ロードマップ目標とは？"
+        text: "2〜6か月かけて達成したい、中長期的な目標です。各月の目標をひもづけることで、達成までの道筋を整理し、月ごとの進捗を確認できます。"
+
+      submit: "月目標を設定する"
+
+    edit:
+      page_title: "ロードマップ目標を編集 | Monthly Step"
+      back_aria: "ロードマップ詳細に戻る"
+      heading: "ロードマップ目標を編集"
+
+      submit: "更新する"
+
+    monthly_goals_setup:
+      page_title: "月目標を設定する | Monthly Step"
+      back_aria: "ロードマップ作成に戻る"
+      heading: "ロードマップ目標を作る"
+
+      roadmap_label: "ロードマップ目標"
+
+      lead_heading: "各月の目標を設定しましょう"
+      lead_note: "あとから追加・編集できます。ざっくりでOKです。"
+
+      month_placeholder: "%{month}の目標（任意）"
+      month_aria: "%{month}の目標"
+
+      submit: "保存して完了"
+
+  weekly_goals:
+    form:
+      title:
+        label: "週目標の内容"
+        placeholder: "例：単語1〜300の意味を覚える"
+
+      start_date:
+        label: "週の開始日"
+        include_blank: "週を選んでください"
+
+      monthly_goal_label: "対象の月目標"
+      target_month: "%{month}：%{title}"
+
+    new:
+      page_title: "週目標を作成 | Monthly Step"
+      back_aria: "月目標一覧に戻る"
+      heading: "週目標を作成する"
+
+      hint_line1: "週番号（第1週・第2週…）は開始日から自動で決まります。"
+      hint_line2: "第1週は月初日から、第2週以降は対象月内の日曜日始まりで扱います。"
+
+      submit: "登録する"
+
+    edit:
+      page_title: "週目標を編集 | Monthly Step"
+      back_aria: "月目標一覧に戻る"
+      heading: "週目標を編集する"
+
+      current_week_number: "現在の週番号："
+      week_number: "第%{number}週"
+
+      hint_line1: "週番号（第1週・第2週…）は開始日から自動で決まります。"
+      hint_line2: "開始日を変更すると週番号も自動で再計算されます。"
+
+      submit: "更新する"
+
+  weekly_reviews:
+    new:
+      page_title: "今週のふりかえり | Monthly Step"
+      back_aria: "振り返り一覧に戻る"
+      heading: "今週のふりかえり"
+
+      target:
+        label: "今週の目標"
+        meta: "%{month} 第%{week_number}週"
+
+      achievement:
+        label: "達成度の評価"
+        lead: "今週のがんばりを教えてください。"
+
+        options:
+          excellent: "素晴らしい"
+          done: "できた"
+          almost: "まあまあ"
+          next: "少しだけ"
+          starting: "これから"
+
+      comment:
+        label: "今週の振り返りコメント"
+        lead: "今週できたこと、来週への課題などを書きましょう。"
+
+        good_point:
+          label: "今週できたこと"
+          placeholder: "例：毎朝30分の学習を継続できた"
+
+        improvement_point:
+          label: "来週への課題"
+          placeholder: "例：週末の取り組み量を増やす"
+
+        memo:
+          label: "メモ（任意）"
+          placeholder: "気づいたことや感想を残せます。"
+
+      submit: "振り返りを登録する"
+
+    show:
+      page_title: "今週のふりかえり | Monthly Step"
+      back_aria: "振り返り一覧に戻る"
+      heading: "今週のふりかえり"
+
+      target:
+        label: "今週の目標"
+        meta: "%{month} 第%{week_number}週"
+
+      achievement_rate:
+        label: "達成率"
+
+      good_point:
+        label: "今週できたこと"
+
+      improvement_point:
+        label: "来週への課題"
+
+      memo:
+        label: "メモ"
+
+      back_to_reviews: "振り返り一覧に戻る"
+
+  sessions:
+    new:
+      page_title: "ログイン | Monthly Step"
+      app_name: "Monthly Step"
+      heading: "ログイン"
+      lead: "アカウント情報を入力してください。"
+
+      email:
+        label: "メールアドレス"
+        placeholder: "your@email.com"
+
+      password:
+        label: "パスワード"
+
+      submit: "ログイン"
+
+      signup_prompt: "アカウントをお持ちでない方は"
+      signup_link: "新規会員登録"
+
+  users:
+    new:
+      page_title: "新規会員登録 | Monthly Step"
+      app_name: "Monthly Step"
+      heading: "新規会員登録"
+      lead: "アカウントを作成して、はじめの一歩を踏み出しましょう。"
+
+      name:
+        label: "ユーザー名"
+        placeholder: "まんすりい　たろう"
+
+      email:
+        label: "メールアドレス"
+        placeholder: "your@email.com"
+
+      password:
+        label: "パスワード"
+        hint: "3文字以上"
+
+      password_confirmation:
+        label: "パスワード（確認用）"
+
+      submit: "登録する"
+
+  daily_records_status:
+    perfect: "よくできた"
+    good: "できた"
+    bad: "おやすみ"
+
+  monthly_reviews:
+    new:
+      page_title: "今月のふりかえり | Monthly Step"
+      back_aria: "振り返り一覧に戻る"
+      heading: "今月のふりかえり"
+
+      errors:
+        title: "%{count}件のエラーがあります"
+
+      target:
+        label: "今月の目標"
+
+      achievement:
+        label: "達成度の評価"
+        lead: "今月のがんばりを教えてください。"
+
+        options:
+          excellent: "最高！"
+          done: "できた"
+          almost: "まあまあ"
+          next: "少しだけ"
+          starting: "これから"
+
+      comment:
+        label: "今月のふりかえりコメント"
+        lead: "1ヶ月をふりかえって、来月への気持ちを書きましょう。"
+
+        good_point:
+          label: "今月の自分への一言"
+          placeholder: "今月1ヶ月を振り返って、自分を褒めてあげましょう"
+
+        improvement_point:
+          label: "来月の自分への一言"
+          placeholder: "来月はどう過ごしたいですか？"
+
+        memo:
+          label: "メモ（任意）"
+          placeholder: "気づいたことや感想を残せます。"
+
+      submit: "振り返りを登録する"
+      back_to_reviews: "振り返り一覧に戻る"
+    
+    show:
+      page_title: "月次ふりかえり | Monthly Step"
+      back_aria: "振り返り一覧に戻る"
+      heading: "月次ふりかえり"
+
+      target:
+        label: "今月の目標"
+
+      achievement_rate:
+        label: "達成率"
+
+      good_point:
+        label: "今月の自分への一言"
+
+      improvement_point:
+        label: "来月の自分への一言"
+
+      memo:
+        label: "メモ"
+        empty: "メモはありません"
+
+      back_to_reviews: "振り返り一覧へ戻る"
+
+  reviews:
+    index:
+      page_title: "振り返り | Monthly Step"
+      heading: "振り返り"
+      tagline: "小さな積み重ねをふりかえって、次のステップにつなげましょう。"
+
+      tabs:
+        weekly: "週次"
+        monthly: "月次"
+
+      weekly:
+        meta: "%{month} 第%{week_number}週"
+
+        summary:
+          achievement_rate: "達成率"
+          good_point: "良かった点"
+          improvement_point: "改善点"
+
+        last:
+          heading: "先週のふりかえり"
+          prompt: "先週の目標のふりかえりをしましょう！"
+
+        current:
+          heading: "今週のふりかえり"
+          no_goal: "目標一覧から今週の目標を登録しましょう。"
+          prompt: "今週の目標をふりかえりましょう"
+          in_progress: "今週の目標に取り組み中です。"
+          available_from: "ふりかえりは週末（土曜日）から登録できます。"
+
+      monthly:
+        summary:
+          achievement_rate: "達成率"
+          good_point: "今月の自分への一言"
+          improvement_point: "来月の自分への一言"
+
+        last:
+          heading: "先月のふりかえり"
+          prompt: "先月の月目標に対して振り返りを行いましょう"
+
+        current:
+          heading: "今月のふりかえり"
+          no_goal: "目標一覧から今月の目標を登録しましょう。"
+          prompt: "今月の目標をふりかえりましょう"
+          available_from: "25日以降に今月の振り返りをすることができます。"
+
+      actions:
+        show_review: "振り返りを見る"
+        create_review: "＋ 振り返りを登録する"
+        goals: "目標一覧へ"
+        archive: "過去のふりかえりを見る →"
+
+  reviews_archive:
+    index:
+      page_title: "振り返りアーカイブ | Monthly Step"
+      heading: "振り返りアーカイブ"
+      tagline: "深呼吸して、これまでの歩みを振り返ってみましょう。"
+
+      empty:
+        line1: "まだ過去のふりかえりはありません。"
+        line2: "ふりかえりを記録すると、ここに表示されます。"
+
+      badges:
+        monthly: "月次"
+        weekly: "週次"
+
+      summary:
+        achievement_rate: "達成率"
+        memo: "メモ"
+
+      monthly:
+        title: "%{month}の月次振り返り"
+        good_point: "今月の自分への一言"
+        improvement_point: "来月の自分への一言"
+
+      weekly:
+        title: "%{month} 第%{week_number}週"
+        period: "%{start_date}〜%{end_date}"
+        good_point: "良かった点"
+        improvement_point: "改善点"
+
+      actions:
+        details: "詳細を見る"
+        back_to_reviews: "振り返りページへ戻る"

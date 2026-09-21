@@ -1,23 +1,27 @@
-<% content_for :title, "週目標を編集 | Monthly Step" %>
+<% content_for :title, t(".page_title") %>
 
 <main class="goal-new-page">
   <header class="goal-new-header">
-    <%= link_to "←", monthly_goals_path, class: "goal-new-back", "aria-label": "月目標一覧に戻る" %>
-    <h1 class="goal-new-heading">週目標を編集する</h1>
+    <%= link_to "←", monthly_goals_path, class: "goal-new-back", "aria-label": t(".back_aria") %>
+    <h1 class="goal-new-heading"><%= t(".heading") %></h1>
   </header>
 
   <section class="goal-new-card" aria-labelledby="weekly-edit-card-label">
-    <p id="weekly-edit-card-label" class="goal-new-card-label">対象の月目標</p>
-    <p class="goal-new-target-month">
-      <%= @monthly_goal.target_month.strftime("%Y年%-m月") %>：<%= @monthly_goal.title %>
+    <p id="weekly-edit-card-label" class="goal-new-card-label">
+      <%= t("weekly_goals.form.monthly_goal_label") %>
     </p>
     <p class="goal-new-target-month">
-      現在の週番号：<strong>第<%= @weekly_goal.week_number %>週</strong>
+      <%= t("weekly_goals.form.target_month",
+            month: l(@monthly_goal.target_month, format: :year_month),
+            title: @monthly_goal.title) %>
+    </p>
+    <p class="goal-new-target-month">
+      <%= t(".current_week_number") %><strong><%= t(".week_number", number: @weekly_goal.week_number) %></strong>
     </p>
 
     <% if @weekly_goal.errors.any? %>
       <div class="goal-new-error" role="alert">
-        <p class="goal-new-error-title"><%= @weekly_goal.errors.count %>件のエラーがあります</p>
+        <p class="goal-new-error-title"><%= t("common.errors.title", count: @weekly_goal.errors.count) %></p>
         <ul class="goal-new-error-list">
           <% @weekly_goal.errors.full_messages.each do |message| %>
             <li><%= message %></li>
@@ -30,25 +34,25 @@
         自動で PATCH /monthly_goals/:monthly_goal_id/weekly_goals/:id に送信される %>
     <%= form_with model: [@monthly_goal, @weekly_goal], local: true, class: "goal-new-form" do |f| %>
       <div class="goal-new-form-group">
-        <%= f.label :title, "週目標の内容", class: "goal-new-form-label" %>
+        <%= f.label :title, t("weekly_goals.form.title.label"), class: "goal-new-form-label" %>
         <%= f.text_field :title,
               class: "goal-new-form-input",
-              placeholder: "例：単語1〜300の意味を覚える" %>
+              placeholder: t("weekly_goals.form.title.placeholder") %>
       </div>
 
       <div class="goal-new-form-group">
-        <%= f.label :start_date, "週の開始日", class: "goal-new-form-label" %>
+        <%= f.label :start_date, t("weekly_goals.form.start_date.label"), class: "goal-new-form-label" %>
         <%= f.select :start_date,
               @start_date_options,
-              { include_blank: "週を選んでください" },
+              { include_blank: t("weekly_goals.form.start_date.include_blank") },
               class: "goal-new-form-input goal-new-form-select" %>
         <p class="goal-new-form-hint">
-          週番号（第1週・第2週…）は開始日から自動で決まります。<br>
-          開始日を変更すると週番号も自動で再計算されます。
+          <%= t(".hint_line1") %><br>
+          <%= t(".hint_line2") %>
         </p>
       </div>
 
-      <%= f.submit "更新する", class: "goal-new-submit" %>
+      <%= f.submit t(".submit"), class: "goal-new-submit" %>
     <% end %>
   </section>
 </main>

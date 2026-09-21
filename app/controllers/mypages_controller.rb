@@ -1,24 +1,42 @@
 class MypagesController < ApplicationController
   def show
     @today = Date.current
-    current_month_start = @today.beginning_of_month
 
-    # 今月の月目標すべて（複数あり得る）。
-    # weekly_goals と daily_records を eager load しておき N+1 を避ける。
-    monthly_goals = current_user.monthly_goals
-                                .includes(:category, weekly_goals: :daily_records)
-                                .where(target_month: current_month_start)
-                                .order(created_at: :desc)
+    weekly_goals = current_user.weekly_goals
+                               .includes(
+                                 :category,
+                                 :daily_records,
+                                 monthly_goal: [:category, :roadmap_goal]
+                               )
+                               .where(
+                                 start_date: (@today - 6.days)..@today
+                               )
+                               .order(created_at: :desc)
 
-    # それぞれの月目標に対して、今週の週目標と今日の日次記録をまとめてビューに渡す。
-    # weekly_goals は読み込み済みなので Ruby 側で .find を使い、追加クエリを発生させない。
-    @cards = monthly_goals.map do |mg|
-      weekly = mg.weekly_goals.find do |w|
-        w.start_date <= @today && @today <= (w.start_date + 6.days)
+    @cards = weekly_goals.map do |weekly|
+      monthly = weekly.monthly_goal
+      roadmap = monthly&.roadmap_goal
+
+      today_record = weekly.daily_records.find do |dr|
+        dr.record_date == @today
       end
-      today_record = weekly && weekly.daily_records.find { |dr| dr.record_date == @today }
 
-      { monthly_goal: mg, weekly_goal: weekly, today_record: today_record }
+      origin =
+        if roadmap
+          :roadmap
+        elsif monthly
+          :monthly
+        else
+          :weekly
+        end
+
+      {
+        weekly_goal: weekly,
+        monthly_goal: monthly,
+        roadmap_goal: roadmap,
+        today_record: today_record,
+        origin: origin
+      }
     end
   end
 end

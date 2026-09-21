@@ -19,14 +19,31 @@ class ApplicationController < ActionController::Base
     redirect_to login_path, alert: "ログインしてください"
   end
 
-  def switch_locale(&action)
+   def switch_locale(&action)
     locale =
-      if I18n.available_locales.map(&:to_s).include?(params[:locale])
+      if valid_locale?(params[:locale])
         params[:locale]
+      elsif valid_locale?(session[:locale])
+        session[:locale]
       else
-        I18n.default_locale
+        browser_locale || I18n.default_locale
       end
 
+    session[:locale] = locale
+
     I18n.with_locale(locale, &action)
+  end
+
+  def valid_locale?(locale)
+    I18n.available_locales.map(&:to_s).include?(locale.to_s)
+  end
+
+  def browser_locale
+    language =
+      request.env["HTTP_ACCEPT_LANGUAGE"]
+             &.scan(/^[a-z]{2}/)
+             &.first
+
+    language if valid_locale?(language)
   end
 end

@@ -1,24 +1,24 @@
-<% content_for :title, "新規会員登録 | Monthly Step" %>
+<% content_for :title, t(".page_title") %>
 
 <div class="signup-page">
   <section class="signup-card" aria-labelledby="signup-heading">
 
-    <p class="top-app-name">Monthly Step</p>
+    <p class="top-app-name"><%= t(".app_name") %></p>
 
     <header class="signup-header">
       <h1 id="signup-heading" class="signup-heading">
-        新規会員登録
+        <%= t(".heading") %>
       </h1>
 
       <p class="signup-lead">
-        アカウントを作成して、はじめの一歩を踏み出しましょう。
+        <%= t(".lead") %>
       </p>
     </header>
 
     <% if @user.errors.any? %>
       <div class="signup-error" role="alert">
         <p class="signup-error-title">
-          <%= @user.errors.count %>件のエラーがあります
+          <%= t("common.errors.title", count: @user.errors.count) %>
         </p>
 
         <ul class="signup-error-list">
@@ -33,29 +33,29 @@
 
       <div class="ms-form-group">
         <%= f.label :name,
-                    "ユーザー名",
+                    t(".name.label"),
                     class: "ms-form-label" %>
 
         <%= f.text_field :name,
               class: "ms-form-input",
-              placeholder: "まんすりい　たろう",
+              placeholder: t(".name.placeholder"),
               autocomplete: "name" %>
       </div>
 
       <div class="ms-form-group">
         <%= f.label :email,
-                    "メールアドレス",
+                    t(".email.label"),
                     class: "ms-form-label" %>
 
         <%= f.email_field :email,
               class: "ms-form-input",
-              placeholder: "your@email.com",
+              placeholder: t(".email.placeholder"),
               autocomplete: "email" %>
       </div>
 
       <div class="ms-form-group">
         <%= f.label :password,
-                    "パスワード",
+                    t(".password.label"),
                     class: "ms-form-label" %>
 
         <%= f.password_field :password,
@@ -64,13 +64,13 @@
               autocomplete: "new-password" %>
 
         <p class="ms-form-hint">
-          3文字以上
+          <%= t(".password.hint") %>
         </p>
       </div>
 
       <div class="ms-form-group">
         <%= f.label :password_confirmation,
-                    "パスワード（確認用）",
+                    t(".password_confirmation.label"),
                     class: "ms-form-label" %>
 
         <%= f.password_field :password_confirmation,
@@ -79,12 +79,12 @@
               autocomplete: "new-password" %>
       </div>
 
-      <%= f.submit "登録する", class: "btn-primary" %>
+      <%= f.submit t(".submit"), class: "btn-primary" %>
 
     <% end %>
 
     <p class="ms-back-link">
-      <%= link_to "TOPに戻る",
+      <%= link_to t("common.back_to_top"),
                   root_path,
                   class: "ms-back-link-anchor" %>
     </p>

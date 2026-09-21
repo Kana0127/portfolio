@@ -20,9 +20,6 @@ class MonthlyGoal < ApplicationRecord
     return if roadmap_goal.blank?
     return if roadmap_goal.user_id == user_id
 
-    errors.add(
-      :roadmap_goal,
-      "は自分のロードマップ目標を選択してください"
-    )
+    errors.add(:roadmap_goal, :not_owned)
   end
 end

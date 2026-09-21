@@ -15,22 +15,19 @@ class RoadmapGoal < ApplicationRecord
     canceled: 3
   }
 
-  # 画面表示用のステータス日本語ラベル
-  STATUS_LABELS = {
-    "active"   => "進行中",
-    "achieved" => "達成",
-    "paused"   => "一時停止",
-    "canceled" => "中止"
-  }.freeze
-
-  # このロードマップの現在のステータスを日本語で返す
+  # このロードマップの現在のステータスを現在のロケールで返す
   def status_label
-    STATUS_LABELS.fetch(status, status)
+    self.class.status_label_for(status)
+  end
+
+  # ステータスの表示ラベル（翻訳が無い場合は enum のキーをそのまま返す）
+  def self.status_label_for(key)
+    I18n.t("roadmap_goals.status.#{key}", default: key.to_s)
   end
 
   # select 用の [ラベル, value] 配列
   def self.status_options
-    statuses.keys.map { |key| [ STATUS_LABELS.fetch(key, key), key ] }
+    statuses.keys.map { |key| [ status_label_for(key), key ] }
   end
 
   # status の初期値は active（DB のデフォルトに依存せずモデル側で保証する）
@@ -77,7 +74,7 @@ class RoadmapGoal < ApplicationRecord
     return if start_month.blank? || target_month.blank?
 
     if target_month < start_month
-      errors.add(:target_month, "は開始月以降を選択してください")
+      errors.add(:target_month, :before_start_month)
     end
   end
 
@@ -87,9 +84,9 @@ class RoadmapGoal < ApplicationRecord
     return if target_month < start_month
 
     if month_difference < MIN_DURATION_MONTHS
-      errors.add(:target_month, "は開始月から#{MIN_DURATION_MONTHS}か月以上先を選択してください")
+      errors.add(:target_month, :duration_too_short, count: MIN_DURATION_MONTHS)
     elsif month_difference > MAX_DURATION_MONTHS
-      errors.add(:target_month, "は開始月から#{MAX_DURATION_MONTHS}か月以内を選択してください")
+      errors.add(:target_month, :duration_too_long, count: MAX_DURATION_MONTHS)
     end
   end
 

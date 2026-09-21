@@ -391,6 +391,79 @@ body {
   background-color: var(--ms-primary-dark);
 }
 
+/* ============================================================
+   ヘッダー：言語切り替え
+============================================================ */
+
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 2px;
+
+  border: 1px solid var(--ms-border);
+  border-radius: var(--ms-radius-pill);
+
+  background-color: #ffffff;
+
+  flex-shrink: 0;
+}
+
+
+.language-switcher__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 28px;
+  padding: 0 8px;
+
+  border-radius: var(--ms-radius-pill);
+
+  color: var(--ms-text-muted);
+
+  font-size: 12px;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+
+.language-switcher__item:hover {
+  background-color: var(--ms-bg-soft);
+}
+
+
+/* 現在選択している言語 */
+.language-switcher__item.is-active {
+  background-color: var(--ms-bg-tint);
+  color: var(--ms-primary-strong);
+
+  font-weight: 700;
+
+  pointer-events: none;
+  cursor: default;
+}
+
+
+/* 今回はボタン型なので / は表示しない */
+.language-switcher__separator {
+  display: none;
+}
+
+
+/* スマホでは JA / EN */
+.language-switcher__desktop {
+  display: none;
+}
+
+.language-switcher__mobile {
+  display: inline;
+}
 
 /* ============================================================
    ヘッダー：ログアウト
@@ -888,6 +961,15 @@ body {
    */
   .app-header {
     padding: 14px 32px;
+  }
+
+  /* 言語切り替え：PC */
+  .language-switcher__desktop {
+    display: inline;
+  }
+
+  .language-switcher__mobile {
+    display: none;
   }
 
 

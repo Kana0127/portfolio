@@ -1,49 +1,51 @@
-<% content_for :title, "今週のふりかえり | Monthly Step" %>
+<% content_for :title, t(".page_title") %>
 
 <main class="reviews-page">
   <header class="reviews-header">
-    <%= link_to "←", reviews_path, class: "reviews-back", "aria-label": "振り返り一覧に戻る" %>
-    <h1 class="reviews-heading">今週のふりかえり</h1>
+    <%= link_to "←", reviews_path, class: "reviews-back", "aria-label": t(".back_aria") %>
+    <h1 class="reviews-heading"><%= t(".heading") %></h1>
   </header>
 
   <%# 対象の週目標 %>
   <section class="reviews-card reviews-card--target">
-    <p class="reviews-card-label">今週の目標</p>
+    <p class="reviews-card-label"><%= t(".target.label") %></p>
     <p class="reviews-card-title"><%= @weekly_goal.title %></p>
     <p class="reviews-card-meta">
-      <%= @weekly_goal.monthly_goal.target_month.strftime("%Y年%-m月") %> 第<%= @weekly_goal.week_number %>週
+      <%= t(".target.meta",
+            month: l(@weekly_goal.monthly_goal.target_month, format: :year_month),
+            week_number: @weekly_goal.week_number) %>
     </p>
   </section>
 
   <%# 達成率 %>
   <section class="reviews-card">
-    <p class="reviews-card-label">達成率</p>
+    <p class="reviews-card-label"><%= t(".achievement_rate.label") %></p>
     <p class="reviews-show-rate"><%= @weekly_review.achievement_rate %><span class="reviews-show-rate-percent">%</span></p>
   </section>
 
   <%# 良かった点 %>
   <section class="reviews-card">
-    <p class="reviews-card-label">今週できたこと</p>
+    <p class="reviews-card-label"><%= t(".good_point.label") %></p>
     <p class="reviews-show-text"><%= simple_format(@weekly_review.good_point) %></p>
   </section>
 
   <%# 改善点 %>
   <section class="reviews-card">
-    <p class="reviews-card-label">来週への課題</p>
+    <p class="reviews-card-label"><%= t(".improvement_point.label") %></p>
     <p class="reviews-show-text"><%= simple_format(@weekly_review.improvement_point) %></p>
   </section>
 
   <%# メモ %>
   <section class="reviews-card">
-    <p class="reviews-card-label">メモ</p>
+    <p class="reviews-card-label"><%= t(".memo.label") %></p>
     <% if @weekly_review.memo.present? %>
       <p class="reviews-show-text"><%= simple_format(@weekly_review.memo) %></p>
     <% else %>
-      <p class="reviews-show-text reviews-show-text--empty">メモはありません</p>
+      <p class="reviews-show-text reviews-show-text--empty"><%= t("common.memo_empty") %></p>
     <% end %>
   </section>
 
   <p class="reviews-back-link">
-    <%= link_to "振り返り一覧に戻る", reviews_path, class: "reviews-btn reviews-btn--secondary reviews-btn--full" %>
+    <%= link_to t(".back_to_reviews"), reviews_path, class: "reviews-btn reviews-btn--secondary reviews-btn--full" %>
   </p>
 </main>

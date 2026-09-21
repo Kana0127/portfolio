@@ -1,17 +1,17 @@
-<% content_for :title, "ログイン | Monthly Step" %>
+<% content_for :title, t(".page_title") %>
 
 <div class="login-page">
   <section class="login-card" aria-labelledby="login-heading">
 
-    <p class="top-app-name">Monthly Step</p>
+    <p class="top-app-name"><%= t(".app_name") %></p>
 
     <header class="login-header">
       <h1 id="login-heading" class="login-heading">
-        ログイン
+        <%= t(".heading") %>
       </h1>
 
       <p class="login-lead">
-        アカウント情報を入力してください。
+        <%= t(".lead") %>
       </p>
     </header>
 
@@ -19,18 +19,18 @@
 
       <div class="ms-form-group">
         <%= f.label :email,
-                    "メールアドレス",
+                    t(".email.label"),
                     class: "ms-form-label" %>
 
         <%= f.email_field :email,
               class: "ms-form-input",
-              placeholder: "your@email.com",
+              placeholder: t(".email.placeholder"),
               autocomplete: "email" %>
       </div>
 
       <div class="ms-form-group">
         <%= f.label :password,
-                    "パスワード",
+                    t(".password.label"),
                     class: "ms-form-label" %>
 
         <%= f.password_field :password,
@@ -39,20 +39,20 @@
               autocomplete: "current-password" %>
       </div>
 
-      <%= f.submit "ログイン",
+      <%= f.submit t(".submit"),
                    class: "btn-primary" %>
 
     <% end %>
 
     <p class="ms-back-link">
-      アカウントをお持ちでない方は
-      <%= link_to "新規会員登録",
+      <%= t(".signup_prompt") %>
+      <%= link_to t(".signup_link"),
                   new_user_path,
                   class: "ms-back-link-anchor" %>
     </p>
 
     <p class="ms-back-link">
-      <%= link_to "TOPに戻る",
+      <%= link_to t("common.back_to_top"),
                   root_path,
                   class: "ms-back-link-anchor" %>
     </p>
