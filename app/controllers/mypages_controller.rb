@@ -6,7 +6,7 @@ class MypagesController < ApplicationController
                                .includes(
                                  :category,
                                  :daily_records,
-                                 monthly_goal: [:category, :roadmap_goal]
+                                 monthly_goal: [ :category, :roadmap_goal ]
                                )
                                .where(
                                  start_date: (@today - 6.days)..@today
