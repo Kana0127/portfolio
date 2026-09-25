@@ -157,6 +157,11 @@ en:
 
       target_month: "Create a monthly goal for %{month}"
 
+      about:
+        title: "What is a Monthly goal?"
+        text: "A goal you want to achieve within one month. Use it for something you want to focus on this month without creating a longer-term roadmap."
+
+
       errors:
         title:
           one: "%{count} error found"
@@ -493,6 +498,7 @@ en:
 
       weekly:
         meta: "%{month} · Week %{week_number}"
+        meta_standalone: "Week %{week_number}"
 
         summary:
           achievement_rate: "Achievement Rate"
@@ -567,24 +573,30 @@ en:
 
   weekly_goals:
     form:
-      title:
-        label: "Weekly Goal"
-        placeholder: "Example: Learn the meanings of words 1–300"
-
-      start_date:
-        label: "Week Start Date"
-        include_blank: "Please select a week"
-
-      monthly_goal_label: "Related Monthly Goal"
       target_month: "%{month}: %{title}"
+      standalone_target_month: "Standalone Weekly Goal for %{month}"
 
     new:
       page_title: "Create Weekly Goal | Monthly Step"
-      back_aria: "Back to Monthly Goals"
+      back_aria: "Back to Goals"
       heading: "Create a Weekly Goal"
 
-      hint_line1: "The week number (Week 1, Week 2, …) is determined automatically from the start date."
-      hint_line2: "Week 1 starts on the first day of the month; later weeks start on Sundays within that month."
+      errors:
+        title:
+          one: "%{count} error found"
+          other: "%{count} errors found"
+
+      title:
+        label: "Weekly Goal"
+        placeholder: "Example: Learn 300 English words"
+
+      category:
+        label: "Category"
+        prompt: "Please select a category"
+
+      start_date:
+        label: "Target Week"
+        prompt: "Please select a week"
 
       submit: "Create"
 

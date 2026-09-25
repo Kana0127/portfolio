@@ -94,17 +94,26 @@
 
               <p class="reviews-card-meta">
 
-                <%= t(
-                      ".weekly.meta",
-                      month: l(
-                        wg.monthly_goal.target_month,
-                        format: :year_month
-                      ),
-                      week_number: wg.week_number
-                    ) %>
+                <% if wg.monthly_goal.present? %>
+                  <%= t(
+                        ".weekly.meta",
+                        month: l(
+                          wg.monthly_goal.target_month,
+                          format: :year_month
+                        ),
+                        week_number: wg.week_number
+                      ) %>
+
+                <% else %>
+
+                  <%= t(
+                        ".weekly.meta_standalone",
+                        week_number: wg.week_number
+                      ) %>
+
+                <% end %>
 
               </p>
-
 
               <p class="reviews-card-title">
                 <%= wg.title %>
@@ -238,15 +247,26 @@
 
               <p class="reviews-card-meta">
 
-                <%= t(
-                      ".weekly.meta",
-                      month: l(
-                        wg.monthly_goal.target_month,
-                        format: :year_month
-                      ),
-                      week_number: wg.week_number
-                    ) %>
+                  <% if wg.monthly_goal.present? %>
 
+                  <%= t(
+                        ".weekly.meta",
+                        month: l(
+                          wg.monthly_goal.target_month,
+                          format: :year_month
+                        ),
+                        week_number: wg.week_number
+                      ) %>
+
+                  <% else %>
+
+                    <%= t(
+                       ".weekly.meta_standalone",
+                       week_number: wg.week_number
+                        ) %>
+
+                  <% end %>
+                
               </p>
 
 

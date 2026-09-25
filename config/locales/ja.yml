@@ -178,11 +178,15 @@ ja:
     new:
       page_title: "月目標を作成 | Monthly Step"
       back_aria: "目標一覧に戻る"
-      heading: "目標を作成する"
+      heading: "月目標を作成する"
 
       target_period:
         current: "今月の目標"
         next: "来月の目標"
+      
+      about:
+        title: "月目標とは？"
+        text: "1か月の中で達成したい目標です。中長期のロードマップを作るほどではない、その月だけ取り組みたいことがあるときに使います。"
 
       target_month: "%{month}の月目標を作成"
 
@@ -441,26 +445,30 @@ ja:
 
   weekly_goals:
     form:
-      title:
-        label: "週目標の内容"
-        placeholder: "例：単語1〜300の意味を覚える"
-
-      start_date:
-        label: "週の開始日"
-        include_blank: "週を選んでください"
-
-      monthly_goal_label: "対象の月目標"
       target_month: "%{month}：%{title}"
+      standalone_target_month: "%{month}の単独週目標"
 
     new:
-      page_title: "週目標を作成 | Monthly Step"
-      back_aria: "月目標一覧に戻る"
-      heading: "週目標を作成する"
+      page_title: "週目標作成 | Monthly Step"
+      back_aria: "目標一覧に戻る"
+      heading: "週目標を作成"
 
-      hint_line1: "週番号（第1週・第2週…）は開始日から自動で決まります。"
-      hint_line2: "第1週は月初日から、第2週以降は対象月内の日曜日始まりで扱います。"
+      errors:
+        title: "%{count}件のエラーがあります"
 
-      submit: "登録する"
+      title:
+        label: "週目標"
+        placeholder: "例：英単語を300語覚える"
+
+      category:
+        label: "カテゴリー"
+        prompt: "カテゴリーを選択してください"
+
+      start_date:
+        label: "対象週"
+        prompt: "週を選択してください"
+
+      submit: "作成する"
 
     edit:
       page_title: "週目標を編集 | Monthly Step"
@@ -662,6 +670,7 @@ ja:
 
       weekly:
         meta: "%{month} 第%{week_number}週"
+        meta_standalone: "第%{week_number}週"
 
         summary:
           achievement_rate: "達成率"
