@@ -149,7 +149,7 @@ class WeeklyGoalsController < ApplicationController
         "#{date.strftime('%-m月%-d日')}" \
         "（#{wday_names[date.wday]}）"
 
-      [label, date.to_s]
+      [ label, date.to_s ]
     end
   end
 end
