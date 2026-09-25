@@ -1,38 +1,135 @@
 <%#
   共通ヘッダー（issue28 + issue29）
   - 左：Monthly step ロゴ
-  - 右：[PC のみ] マイページ / 目標一覧 / ふりかえり ナビ + ログアウト
-  - スマホ・タブレットでは右側ナビは非表示（下部ナビが代替）
-  PC用 active 判定は _bottom_nav と同じロジック（controller_name ベース）
+  - 右：[PC のみ] マイページ / 目標一覧 / ふりかえり ナビ
+  - 右：言語切り替え + ログアウト
+  - スマホ・タブレットではナビを非表示（下部ナビが代替）
 %>
+
 <%
   mypage_active  = controller_name == "mypages"
-  goals_active   = %w[monthly_goals weekly_goals daily_records].include?(controller_name)
-  reviews_active = %w[reviews weekly_reviews monthly_reviews].include?(controller_name)
+  goals_active   = %w[
+    roadmap_goals
+    monthly_goals
+    weekly_goals
+    daily_records
+  ].include?(controller_name)
+
+  reviews_active = %w[
+    reviews
+    reviews_archive
+    weekly_reviews
+    monthly_reviews
+  ].include?(controller_name)
 %>
 
 <header class="app-header">
+
   <%= link_to mypage_path, class: "app-header__brand" do %>
     <%= image_tag "monthly-step-icon2.png",
                   alt: "Monthly Step",
                   class: "app-header__icon" %>
-    <span class="app-header__logo">Monthly step</span>
+
+    <span class="app-header__logo">
+      Monthly step
+    </span>
   <% end %>
 
+
   <div class="app-header__right">
-    <nav class="app-header__nav" aria-label="主要ナビゲーション（PC）">
-      <%= link_to "今日やること", mypage_path,
-                  class: class_names("app-header__nav-item", "is-active": mypage_active) %>
-      <%= link_to "目標一覧", monthly_goals_path,
-                  class: class_names("app-header__nav-item", "is-active": goals_active) %>
-      <%= link_to "ふりかえり", reviews_path,
-                  class: class_names("app-header__nav-item", "is-active": reviews_active) %>
+
+    <nav
+      class="app-header__nav"
+      aria-label="<%= t('.desktop_navigation') %>"
+    >
+      <%= link_to t(".todays_tasks"),
+            mypage_path,
+            class: class_names(
+              "app-header__nav-item",
+              "is-active": mypage_active
+            ) %>
+
+      <%= link_to t(".goals"),
+            monthly_goals_path,
+            class: class_names(
+              "app-header__nav-item",
+              "is-active": goals_active
+            ) %>
+
+      <%= link_to t(".reviews"),
+            reviews_path,
+            class: class_names(
+              "app-header__nav-item",
+              "is-active": reviews_active
+            ) %>
     </nav>
 
-    <%= button_to "ログアウト",
-                  logout_path,
-                  method: :delete,
-                  class: "app-header__logout",
-                  form: { class: "app-header__logout-form" } %>
+
+    <div class="language-switcher">
+
+      <%= link_to url_for(locale: :ja),
+            class: class_names(
+              "language-switcher__item",
+              "is-active": I18n.locale == :ja
+             ),
+      data: {
+        controller: "confirm",
+        action: "click->confirm#confirm",
+        confirm_message_value: t(".language.confirm_ja")
+      } do %>
+            
+
+        <span class="language-switcher__desktop">
+          日本語
+        </span>
+
+        <span class="language-switcher__mobile">
+          JA
+        </span>
+
+      <% end %>
+
+
+      <span
+        class="language-switcher__separator"
+        aria-hidden="true"
+      >
+        /
+      </span>
+
+
+      <%= link_to url_for(locale: :en),
+            class: class_names(
+              "language-switcher__item",
+              "is-active": I18n.locale == :en
+            ),
+      data: {
+        controller: "confirm",
+        action: "click->confirm#confirm",
+        confirm_message_value: t(".language.confirm_en")
+      } do %>
+
+        <span class="language-switcher__desktop">
+          English
+        </span>
+
+        <span class="language-switcher__mobile">
+          EN
+        </span>
+
+      <% end %>
+
+    </div>
+
+
+    <%= button_to t(".logout"),
+          logout_path,
+          method: :delete,
+          class: "app-header__logout",
+          form: {
+            class: "app-header__logout-form"
+          } %>
+
   </div>
+
 </header>

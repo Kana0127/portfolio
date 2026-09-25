@@ -20,12 +20,10 @@ class DailyRecord < ApplicationRecord
     end
   end
 
-  # ビュー表示用に日本語ラベルを返す
+  # ビュー表示用のラベルを現在のロケールで返す
   def status_label
-    case status
-    when "perfect" then "よくできた"
-    when "good"    then "できた"
-    when "bad"     then "おやすみ"
-    end
+    return if status.blank?
+
+    I18n.t("daily_records_status.#{status}", default: status.to_s)
   end
 end

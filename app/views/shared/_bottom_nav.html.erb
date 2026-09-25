@@ -8,22 +8,22 @@
   reviews_active = %w[reviews weekly_reviews monthly_reviews].include?(controller_name)
 %>
 
-<nav class="bottom-nav" aria-label="主要ナビゲーション">
+<nav class="bottom-nav" aria-label="<%= t('.aria_label') %>">
   <%= link_to mypage_path,
               class: "bottom-nav__item #{'is-active' if mypage_active}" do %>
     <span class="bottom-nav__icon" aria-hidden="true">🏠</span>
-    <span class="bottom-nav__label">マイページ</span>
+    <span class="bottom-nav__label"><%= t(".mypage") %></span>
   <% end %>
 
   <%= link_to monthly_goals_path,
               class: "bottom-nav__item #{'is-active' if goals_active}" do %>
     <span class="bottom-nav__icon" aria-hidden="true">📋</span>
-    <span class="bottom-nav__label">目標一覧</span>
+    <span class="bottom-nav__label"><%= t(".goals") %></span>
   <% end %>
 
   <%= link_to reviews_path,
               class: "bottom-nav__item #{'is-active' if reviews_active}" do %>
     <span class="bottom-nav__icon" aria-hidden="true">📝</span>
-    <span class="bottom-nav__label">ふりかえり</span>
+    <span class="bottom-nav__label"><%= t(".reviews") %></span>
   <% end %>
 </nav>

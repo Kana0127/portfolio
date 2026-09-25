@@ -1,15 +1,108 @@
 en:
+  # errors.messages are inherited from Rails' built-in English defaults;
+  # only model and attribute names are overridden here.
+  activerecord:
+    errors:
+      # Model-specific custom validation messages
+      models:
+        roadmap_goal:
+          attributes:
+            target_month:
+              before_start_month: "must be the same as or later than the start month"
+              duration_too_short: "must be at least %{count} months after the start month"
+              duration_too_long: "must be within %{count} months of the start month"
+
+        monthly_goal:
+          attributes:
+            roadmap_goal:
+              not_owned: "must be one of your own roadmap goals"
+
+        weekly_goal:
+          attributes:
+            start_date:
+              invalid_week_start: "must be the 1st of the target month or a Sunday within it (up to 5 weeks)"
+
+    models:
+      user: "User"
+      category: "Category"
+      roadmap_goal: "Roadmap Goal"
+      monthly_goal: "Monthly Goal"
+      weekly_goal: "Weekly Goal"
+      daily_record: "Daily Record"
+      monthly_review: "Monthly Review"
+      weekly_review: "Weekly Review"
+
+    attributes:
+      user:
+        name: "Username"
+        email: "Email address"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+
+      category:
+        name: "Category name"
+
+      roadmap_goal:
+        title: "Roadmap goal name"
+        reason: "Reason / purpose"
+        start_month: "Start month"
+        target_month: "Target month"
+        status: "Status"
+        category: "Category"
+        user: "User"
+
+      monthly_goal:
+        title: "Goal"
+        target_month: "Target month"
+        goal_kind: "Goal type"
+        category: "Category"
+        user: "User"
+
+      weekly_goal:
+        title: "Weekly goal"
+        week_number: "Week number"
+        start_date: "Week start date"
+        category: "Category"
+        user: "User"
+        monthly_goal: "Monthly goal"
+
+      daily_record:
+        record_date: "Record date"
+        status: "Progress"
+        memo: "Memo"
+
+      monthly_review:
+        achievement_rate: "Achievement"
+        good_point: "A message to yourself this month"
+        improvement_point: "A message to yourself for next month"
+        memo: "Memo"
+
+      weekly_review:
+        achievement_rate: "Achievement"
+        good_point: "What went well"
+        improvement_point: "What to improve next week"
+        memo: "Memo"
+
   common:
     new: "+ New"
     cancel: "Cancel"
     details: "Details"
     edit: "Edit"
     delete: "Delete"
+    back_to_top: "Back to Top"
+    memo_empty: "No memo has been added."
+
+    errors:
+      title:
+        one: "%{count} error found"
+        other: "%{count} errors found"
 
   date:
     formats:
       year_month: "%B %Y"
+      month_only: "%B"
       month_day: "%b %-d"
+      year_month_day: "%B %-d, %Y"
 
   monthly_goals:
     index:
@@ -45,11 +138,84 @@ en:
       no_weekly_goals: "There are no weekly goals yet."
       week_number: "Week %{number}"
       current_week: "This Week"
-      roadmap_remaining_months: 
-         one: "%{count} month remaining"
-         other: "%{count} months remaining" 
+
+      roadmap_remaining_months:
+        one: "%{count} month remaining"
+        other: "%{count} months remaining"
+
       due_this_month: "Ends this month"
-      period_ended: Ended""
+      period_ended: "Ended"
+
+    new:
+      page_title: "Create Monthly Goal | Monthly Step"
+      back_aria: "Back to Goals"
+      heading: "Create a Goal"
+
+      target_period:
+        current: "This Month's Goal"
+        next: "Next Month's Goal"
+
+      target_month: "Create a monthly goal for %{month}"
+
+      about:
+        title: "What is a Monthly goal?"
+        text: "A goal you want to achieve within one month. Use it for something you want to focus on this month without creating a longer-term roadmap."
+
+
+      errors:
+        title:
+          one: "%{count} error found"
+          other: "%{count} errors found"
+
+      title:
+        label: "Goal"
+        placeholder: "Example: Study English for 30 minutes every day"
+
+      category:
+        label: "Category"
+        aria_label: "Category"
+
+      goal_kind:
+        label: "Goal Type"
+        aria_label: "Goal Type"
+        step: "Weekly Breakdown"
+        single: "Standalone"
+        step_hint: "Weekly Breakdown: Break the monthly goal into smaller weekly goals."
+        single_hint: "Standalone: Track completion of the goal over the month without weekly breakdowns."
+
+      submit: "Create Goal"
+
+    edit:
+      page_title: "Edit Monthly Goal | Monthly Step"
+      back_aria: "Back to Goals"
+      heading: "Edit Goal"
+
+      monthly_goal_label: "Monthly Goal"
+
+      target_month: "Monthly goal for %{month}"
+
+      errors:
+        title:
+          one: "%{count} error found"
+          other: "%{count} errors found"
+
+      title:
+        label: "Goal"
+        placeholder: "Example: Study English for 30 minutes every day"
+
+      category:
+        label: "Category"
+        aria_label: "Category"
+
+      goal_kind:
+        label: "Goal Type"
+        aria_label: "Goal Type"
+        step: "Weekly Breakdown"
+        single: "Standalone"
+        step_hint: "Weekly Breakdown: Break the monthly goal into smaller weekly goals."
+        single_hint: "Standalone: Track completion of the goal over the month without weekly breakdowns."
+
+      submit: "Update Goal"
 
   monthly_goals_card:
     actions:
@@ -70,3 +236,489 @@ en:
       delete_aria: "Delete Week %{week_number}: %{title}"
       delete_confirm: "Are you sure you want to delete Week %{week_number}: \"%{title}\"?"
       add: "+ Add Weekly Goal"
+
+  mypages:
+    show:
+      page_title: "My Page | Monthly Step"
+
+      username: "%{name}"
+      greeting: "Welcome back!"
+      greeting_lead: "Let's take another small step toward your goals this month."
+
+      roadmap:
+        label: "Roadmap Goal"
+
+      monthly:
+        label: "Monthly Goal"
+        empty: "You haven't set any monthly goals for this month yet."
+        register: "Create a Monthly Goal"
+
+      weekly:
+        label: "This Week's Goal"
+        week_number: "Week %{number}"
+        date_range: "%{start_date} – %{end_date}"
+        empty: "You haven't set a weekly goal for this week yet."
+        add: "Add a Weekly Goal"
+
+      origin:
+        roadmap: "From Roadmap"
+        monthly: "From Monthly Goal"
+        weekly: "Standalone Weekly Goal"
+
+      record:
+        recorded_message: "Today's progress has been recorded."
+        memo_label: "Memo"
+        recorded: "Recorded"
+        prompt: "How did it go today?"
+        create: "Record Today's Progress"
+
+  daily_records:
+    new:
+      page_title: "Today's Record | Monthly Step"
+      back_aria: "Back to Monthly Goals"
+      heading: "Today's Record"
+      lead: "Take it at your own pace, one step at a time."
+
+      weekly_goal_label: "This Week's Goal"
+
+      target_period: "%{month} · Week %{week_number}"
+
+      errors:
+        title: "%{count} error(s) found"
+
+      achievement_label: "Today's Progress"
+
+      statuses:
+        perfect: "Done!"
+        good: "Pretty Good"
+        bad: "Rest Day"
+
+      memo:
+        label: "Memo (Optional)"
+        placeholder: "Write down a small good thing from today or how you feel about tomorrow."
+
+      submit: "Save Record"
+
+  home:
+    top:
+      page_title: "Monthly Step"
+      heading: "Turn small steps into lasting confidence."
+      lead_first: "Break your goals into manageable weekly steps and keep moving forward, even when life gets busy."
+      lead_second: "A simple, sustainable way to achieve your goals."
+      start: "Get Started for Free"
+      login: "Log In"
+
+  roadmap_goals:
+    status:
+      active: "In Progress"
+      achieved: "Achieved"
+      paused: "Paused"
+      canceled: "Canceled"
+
+    form:
+      title:
+        label: "Roadmap Goal Name"
+        placeholder: "Example: Grow my skills as a software engineer"
+
+      reason:
+        label: "Reason / Purpose (Optional)"
+        placeholder: "Why do you want to achieve this goal?"
+
+      start_month:
+        label: "Start Month"
+
+      target_month:
+        label: "Target Month"
+
+      category:
+        label: "Goal Category"
+        aria_label: "Goal Category"
+
+      status:
+        label: "Status"
+
+    index:
+      page_title: "Roadmap Goals | Monthly Step"
+      back_aria: "Back to Goals"
+      heading: "Roadmap Goals"
+
+      empty_line1: "You don't have any roadmap goals yet."
+      empty_line2: "You can create one from \"+ Create New Goal\" on the Goals page."
+
+      label: "Roadmap Goal"
+      badge: "Optional"
+      period: "%{start_month} – %{target_month}"
+      show_link: "View Roadmap →"
+
+    new:
+      page_title: "Create Roadmap Goal | Monthly Step"
+      back_aria: "Back to Goals"
+      heading: "Create a Roadmap Goal"
+
+      about:
+        title: "What is a roadmap goal?"
+        text: "A mid- to long-term goal you want to achieve over 2 to 6 months. By linking monthly goals to it, you can map out the path to completion and track your progress month by month."
+
+      submit: "Set Monthly Goals"
+
+    edit:
+      page_title: "Edit Roadmap Goal | Monthly Step"
+      back_aria: "Back to Roadmap Details"
+      heading: "Edit Roadmap Goal"
+
+      submit: "Update"
+
+    monthly_goals_setup:
+      page_title: "Set Monthly Goals | Monthly Step"
+      back_aria: "Back to Roadmap Creation"
+      heading: "Create a Roadmap Goal"
+
+      roadmap_label: "Roadmap Goal"
+
+      lead_heading: "Let's set a goal for each month"
+      lead_note: "You can add or edit these later. A rough idea is fine."
+
+      month_placeholder: "Goal for %{month} (Optional)"
+      month_aria: "Goal for %{month}"
+
+      submit: "Save and Finish"
+
+    show:
+      page_title: "Roadmap Details | Monthly Step"
+      back_aria: "Back to Goals"
+      heading: "Roadmap Details"
+
+      period: "%{start_month} – %{target_month}"
+
+      category: "Category"
+      status: "Status"
+      created_at: "Created"
+
+      edit: "Edit"
+      delete: "Delete"
+      delete_confirm: "Deleting this roadmap will also delete the monthly and weekly goals linked to it. Are you sure you want to continue?"
+
+      back_to_goals: "Back to Goals"
+
+  shared:
+    app_header:
+      todays_tasks: "Today's Tasks"
+      goals: "Goals"
+      reviews: "Reviews"
+      logout: "Log Out"
+      main_navigation: "Main navigation"
+      desktop_navigation: "Primary navigation (desktop)"
+
+      language:
+        confirm_ja: "Are you sure you want to switch the language to Japanese?"
+        confirm_en: "Are you sure you want to switch the language to English?"
+
+    bottom_nav:
+      aria_label: "Primary navigation"
+      mypage: "My Page"
+      goals: "Goals"
+      reviews: "Reviews"
+
+  monthly_reviews:
+    new:
+      page_title: "Monthly Review | Monthly Step"
+      back_aria: "Back to Reviews"
+      heading: "Monthly Review"
+
+      errors:
+        title:
+          one: "%{count} error found"
+          other: "%{count} errors found"
+
+      target:
+        label: "This Month's Goal"
+
+      achievement:
+        label: "Achievement"
+        lead: "How did this month go?"
+
+        options:
+          excellent: "Excellent!"
+          done: "Done"
+          almost: "Almost There"
+          next: "Keep Going"
+          starting: "Just Getting Started"
+
+      comment:
+        label: "Monthly Reflection"
+        lead: "Reflect on this month and write down how you feel about the month ahead."
+
+        good_point:
+          label: "A Message to Yourself This Month"
+          placeholder: "Look back on this month and give yourself some credit."
+
+        improvement_point:
+          label: "A Message to Yourself for Next Month"
+          placeholder: "How would you like to spend next month?"
+
+        memo:
+          label: "Memo (Optional)"
+          placeholder: "Write down any thoughts or things you noticed."
+
+      submit: "Save Review"
+      back_to_reviews: "Back to Reviews"
+
+    show:
+      page_title: "Monthly Review | Monthly Step"
+      back_aria: "Back to Reviews"
+      heading: "Monthly Review"
+
+      target:
+        label: "This Month's Goal"
+
+      achievement_rate:
+        label: "Achievement Rate"
+
+      good_point:
+        label: "A Message to Yourself This Month"
+
+      improvement_point:
+        label: "A Message to Yourself for Next Month"
+
+      memo:
+        label: "Memo"
+        empty: "No memo has been added."
+
+      back_to_reviews: "Back to Reviews"
+
+  reviews:
+    index:
+      page_title: "Reviews | Monthly Step"
+      heading: "Reviews"
+      tagline: "Reflect on your small steps and use them to move forward."
+
+      tabs:
+        weekly: "Weekly"
+        monthly: "Monthly"
+
+      weekly:
+        meta: "%{month} · Week %{week_number}"
+        meta_standalone: "Week %{week_number}"
+
+        summary:
+          achievement_rate: "Achievement Rate"
+          good_point: "What Went Well"
+          improvement_point: "What to Improve"
+
+        last:
+          heading: "Last Week's Review"
+          prompt: "Take a moment to reflect on last week's goal."
+
+        current:
+          heading: "This Week's Review"
+          no_goal: "Set a goal for this week from the Goals page."
+          prompt: "Let's reflect on this week's goal."
+          in_progress: "You're currently working on this week's goal."
+          available_from: "You can submit your review from Saturday."
+
+      monthly:
+        summary:
+          achievement_rate: "Achievement Rate"
+          good_point: "A Message to Yourself This Month"
+          improvement_point: "A Message to Yourself for Next Month"
+
+        last:
+          heading: "Last Month's Review"
+          prompt: "Take a moment to reflect on last month's goal."
+
+        current:
+          heading: "This Month's Review"
+          no_goal: "Set a goal for this month from the Goals page."
+          prompt: "Let's reflect on this month's goal."
+          available_from: "You can submit this month's review from the 25th."
+
+      actions:
+        show_review: "View Review"
+        create_review: "+ Add Review"
+        goals: "Go to Goals"
+        archive: "View Past Reviews →"
+
+  reviews_archive:
+    index:
+      page_title: "Review Archive | Monthly Step"
+      heading: "Review Archive"
+      tagline: "Take a moment to look back on how far you've come."
+
+      empty:
+        line1: "There are no past reviews yet."
+        line2: "Once you record a review, it will appear here."
+
+      badges:
+        monthly: "Monthly"
+        weekly: "Weekly"
+
+      summary:
+        achievement_rate: "Achievement Rate"
+        memo: "Memo"
+
+      monthly:
+        title: "%{month} Monthly Review"
+        good_point: "A Message to Yourself This Month"
+        improvement_point: "A Message to Yourself for Next Month"
+
+      weekly:
+        title: "%{month} · Week %{week_number}"
+        period: "%{start_date} – %{end_date}"
+        good_point: "What Went Well"
+        improvement_point: "What to Improve"
+
+      actions:
+        details: "View Details"
+        back_to_reviews: "Back to Reviews"
+
+  weekly_goals:
+    form:
+      target_month: "%{month}: %{title}"
+      standalone_target_month: "Standalone Weekly Goal for %{month}"
+
+    new:
+      page_title: "Create Weekly Goal | Monthly Step"
+      back_aria: "Back to Goals"
+      heading: "Create a Weekly Goal"
+
+      errors:
+        title:
+          one: "%{count} error found"
+          other: "%{count} errors found"
+
+      title:
+        label: "Weekly Goal"
+        placeholder: "Example: Learn 300 English words"
+
+      category:
+        label: "Category"
+        prompt: "Please select a category"
+
+      start_date:
+        label: "Target Week"
+        prompt: "Please select a week"
+
+      submit: "Create"
+
+    edit:
+      page_title: "Edit Weekly Goal | Monthly Step"
+      back_aria: "Back to Monthly Goals"
+      heading: "Edit Weekly Goal"
+
+      current_week_number: "Current week number:"
+      week_number: "Week %{number}"
+
+      hint_line1: "The week number (Week 1, Week 2, …) is determined automatically from the start date."
+      hint_line2: "Changing the start date recalculates the week number automatically."
+
+      submit: "Update"
+
+  weekly_reviews:
+    new:
+      page_title: "Weekly Review | Monthly Step"
+      back_aria: "Back to Reviews"
+      heading: "Weekly Review"
+
+      target:
+        label: "This Week's Goal"
+        meta: "%{month} · Week %{week_number}"
+
+      achievement:
+        label: "Achievement"
+        lead: "How did this week go?"
+
+        options:
+          excellent: "Excellent!"
+          done: "Done"
+          almost: "Almost There"
+          next: "Just a Little"
+          starting: "Just Getting Started"
+
+      comment:
+        label: "Weekly Reflection"
+        lead: "Write down what you accomplished this week and what to work on next week."
+
+        good_point:
+          label: "What Went Well"
+          placeholder: "Example: I kept up 30 minutes of study every morning"
+
+        improvement_point:
+          label: "What to Improve Next Week"
+          placeholder: "Example: Do more over the weekend"
+
+        memo:
+          label: "Memo (Optional)"
+          placeholder: "Write down any thoughts or things you noticed."
+
+      submit: "Save Review"
+
+    show:
+      page_title: "Weekly Review | Monthly Step"
+      back_aria: "Back to Reviews"
+      heading: "Weekly Review"
+
+      target:
+        label: "This Week's Goal"
+        meta: "%{month} · Week %{week_number}"
+
+      achievement_rate:
+        label: "Achievement Rate"
+
+      good_point:
+        label: "What Went Well"
+
+      improvement_point:
+        label: "What to Improve Next Week"
+
+      memo:
+        label: "Memo"
+
+      back_to_reviews: "Back to Reviews"
+
+  sessions:
+    new:
+      page_title: "Log In | Monthly Step"
+      app_name: "Monthly Step"
+      heading: "Log In"
+      lead: "Please enter your account details."
+
+      email:
+        label: "Email Address"
+        placeholder: "your@email.com"
+
+      password:
+        label: "Password"
+
+      submit: "Log In"
+
+      signup_prompt: "Don't have an account yet?"
+      signup_link: "Sign Up"
+
+  users:
+    new:
+      page_title: "Sign Up | Monthly Step"
+      app_name: "Monthly Step"
+      heading: "Sign Up"
+      lead: "Create an account and take your first step."
+
+      name:
+        label: "Username"
+        placeholder: "Taro Monthly"
+
+      email:
+        label: "Email Address"
+        placeholder: "your@email.com"
+
+      password:
+        label: "Password"
+        hint: "At least 3 characters"
+
+      password_confirmation:
+        label: "Password (Confirmation)"
+
+      submit: "Sign Up"
+
+  daily_records_status:
+    perfect: "Well Done"
+    good: "Done"
+    bad: "Rest Day"

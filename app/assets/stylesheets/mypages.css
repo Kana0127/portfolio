@@ -3,10 +3,10 @@
  * Monthly Step - マイページ
  * ============================================================
  *
- * アプリ全体で共通する色・横幅・角丸・影などは
- * application.css で管理する。
+ * Mypageでは「今週やること = WeeklyGoal」を主役にする。
  *
- * このファイルではマイページ固有の表示のみ定義する。
+ * RoadmapGoal / MonthlyGoal / category / origin は
+ * WeeklyGoalを補足する情報として小さく表示する。
  */
 
 
@@ -24,25 +24,10 @@
 ============================================================ */
 
 .mypage-header {
-  margin: 8px 0 20px;
+  margin: 8px 0 24px;
   text-align: center;
 }
 
-
-.mypage-heading {
-  margin: 0;
-
-  color: var(--ms-text);
-
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-
-/* ============================================================
-   ようこそメッセージ
-============================================================ */
 
 .mypage-greeting {
   margin: 12px 0 4px;
@@ -72,116 +57,102 @@
 
 
 /* ============================================================
-   カード
+   WeeklyGoalカード
 ============================================================ */
 
 .mypage-card {
-  margin-bottom: 16px;
-  padding: 18px;
+  margin-bottom: 14px;
+  padding: 18px 20px;
 
   background-color: var(--ms-bg-card);
 
+  border: 1px solid var(--ms-border);
   border-radius: var(--ms-radius-card);
 
   box-shadow: var(--ms-shadow-card);
+
+  box-sizing: border-box;
 }
 
 
-/* 今月の目標 */
-.mypage-card--monthly {
-  border-left: 4px solid var(--ms-primary-strong);
-}
-
-
-/* 今週の目標 */
+/*
+ * 今回のMypageではWeeklyGoalが主役。
+ * 左側に薄いグリーンを置いて「今週やること」を強調する。
+ */
 .mypage-card--weekly {
-  border-left: 4px solid var(--ms-accent);
+  border-left: 4px solid var(--ms-primary);
 }
 
 
-/* カード上部 */
+/* ============================================================
+   カード上部
+============================================================ */
+
 .mypage-card-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  margin-bottom: 10px;
+  gap: 12px;
+
+  margin-bottom: 8px;
 }
 
 
+/* 「今週の目標」 */
 .mypage-card-label {
   margin: 0;
 
-  color: var(--ms-text);
-
-  font-size: 14px;
-  font-weight: 700;
-}
-
-
-.mypage-card-pin {
   color: var(--ms-primary-strong);
 
-  font-size: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
 }
 
 
+/* 第1週、第2週など */
 .mypage-card-week {
   display: inline-block;
 
-  padding: 2px 10px;
+  padding: 2px 9px;
 
   background-color: var(--ms-bg-tint);
   color: var(--ms-primary-strong);
 
   border-radius: var(--ms-radius-pill);
 
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-}
-
-
-.mypage-card-title {
-  margin: 0 0 10px;
-
-  color: var(--ms-text);
-
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.5;
-}
-
-
-.mypage-card-sub {
-  margin: 0 0 12px;
-
-  color: var(--ms-text-muted);
-
-  font-size: 12px;
-}
-
-
-.mypage-card-meta {
-  display: flex;
-  flex-wrap: wrap;
-
-  gap: 8px;
 }
 
 
 /* ============================================================
-   チップ・タグ
+   由来・カテゴリ
 ============================================================ */
 
-.mypage-chip {
-  display: inline-block;
+.mypage-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 
-  padding: 4px 12px;
+  gap: 6px;
+
+  margin-bottom: 7px;
+}
+
+
+.mypage-chip {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 2px 8px;
 
   border-radius: var(--ms-radius-pill);
 
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
+  line-height: 1.5;
 }
 
 
@@ -192,7 +163,7 @@
 }
 
 
-/* 目標の種類 */
+/* Roadmap由来 / Monthly由来 / Weekly単体 */
 .mypage-chip--kind {
   background-color: var(--ms-bg-soft);
   color: var(--ms-text-muted);
@@ -202,65 +173,137 @@
 
 
 /* ============================================================
-   記録エリア
+   親目標
+   RoadmapGoal / MonthlyGoal
+============================================================ */
+
+/*
+ * 親目標はWeeklyGoalより目立たせない。
+ *
+ * 例:
+ * Roadmap Goal   ITエンジニアになる
+ * Monthly Goal   ポートフォリオを完成させる
+ */
+.mypage-card-parent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+
+  gap: 6px;
+
+  margin: 2px 0;
+
+  color: var(--ms-text-muted);
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+
+/*
+ * 「Roadmap Goal」「Monthly Goal」の部分
+ */
+.mypage-card-parent-label {
+  color: var(--ms-primary-strong);
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+
+/* ============================================================
+   WeeklyGoal本体
+============================================================ */
+
+/*
+ * このページで最も重要な文字。
+ *
+ * 例:
+ * 「リスニング問題を毎日30分練習する」
+ */
+.mypage-card-title {
+  margin: 8px 0 3px;
+
+  color: var(--ms-text);
+
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+
+/*
+ * WeeklyGoalの期間
+ * Sep 21 – Sep 27
+ */
+.mypage-card-sub {
+  margin: 0;
+
+  color: var(--ms-text-light);
+
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+
+/* ============================================================
+   今日の記録
 ============================================================ */
 
 .mypage-card-record {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 
-  gap: 10px;
+  gap: 8px;
 
-  margin-top: 14px;
-  padding-top: 14px;
+  margin-top: 12px;
+  padding-top: 12px;
 
-  border-top: 1px dashed var(--ms-border);
+  border-top: 1px solid var(--ms-border);
 }
 
 
+/* 未記録 */
 .mypage-record-prompt {
   margin: 0;
 
-  color: var(--ms-text);
+  color: var(--ms-text-muted);
 
-  font-size: 13px;
-  font-weight: 600;
-
-  text-align: center;
+  font-size: 11px;
+  font-weight: 500;
 }
 
 
 /* ============================================================
-   記録済み表示
+   記録済み
 ============================================================ */
 
 .mypage-record-done {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-wrap: wrap;
+
+  gap: 6px;
 
   width: 100%;
 
-  gap: 4px;
-
   margin: 0;
-  padding: 14px 12px;
+  padding: 8px 10px;
 
   background-color: var(--ms-bg-soft);
 
   border-radius: var(--ms-radius-input);
 
-  text-align: center;
-
   box-sizing: border-box;
 }
 
 
+/* ◎ ○ × など */
 .mypage-record-symbol {
   color: var(--ms-primary-strong);
 
-  font-size: 28px;
+  font-size: 18px;
   font-weight: 700;
   line-height: 1;
 }
@@ -269,7 +312,7 @@
 .mypage-record-label {
   color: var(--ms-text);
 
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -277,7 +320,7 @@
 .mypage-record-msg {
   color: var(--ms-text-muted);
 
-  font-size: 11px;
+  font-size: 10px;
 }
 
 
@@ -285,19 +328,16 @@
    達成度ごとの色
 ============================================================ */
 
-/* ◎ */
 .mypage-record-done--perfect {
   background-color: #ffd9e2;
 }
 
 
-/* ○ */
 .mypage-record-done--good {
   background-color: #ffeef2;
 }
 
 
-/* × */
 .mypage-record-done--bad {
   background-color: var(--ms-bg-soft);
 }
@@ -310,12 +350,12 @@
 .mypage-record-memo {
   width: 100%;
 
-  padding: 12px 14px;
+  padding: 10px 12px;
 
   background-color: var(--ms-bg-soft);
 
   border-left: 3px solid var(--ms-accent);
-  border-radius: 10px;
+  border-radius: 8px;
 
   text-align: left;
 
@@ -324,13 +364,13 @@
 
 
 .mypage-record-memo__label {
-  margin: 0 0 4px;
+  margin: 0 0 3px;
 
   color: var(--ms-primary-strong);
 
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
 }
 
 
@@ -339,7 +379,7 @@
 
   color: var(--ms-text);
 
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.6;
 
   white-space: pre-wrap;
@@ -348,7 +388,7 @@
 
 
 /* ============================================================
-   マイページ用ボタン
+   ボタン
 ============================================================ */
 
 .mypage-btn {
@@ -356,17 +396,16 @@
   align-items: center;
   justify-content: center;
 
-  width: 100%;
-  max-width: 280px;
-  height: 44px;
+  min-width: 120px;
+  height: 36px;
 
-  padding: 0 18px;
+  padding: 0 16px;
 
   border: none;
   border-radius: var(--ms-radius-pill);
 
   font-family: inherit;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
 
   text-decoration: none;
@@ -412,7 +451,7 @@
 }
 
 
-/* 使用不可 */
+/* 記録済み */
 .mypage-btn--disabled {
   background-color: var(--ms-border);
   color: var(--ms-text-light);
@@ -447,12 +486,51 @@
 
 
 /* ============================================================
-   月目標同士の区切り
+   WeeklyGoal同士の区切り
 ============================================================ */
 
 .mypage-divider {
-  margin: 24px 0 16px;
+  margin: 18px 0;
 
   border: none;
-  border-top: 1px dashed var(--ms-border);
+  border-top: 1px solid var(--ms-border);
+}
+
+
+/* ============================================================
+   PC表示
+============================================================ */
+
+@media (min-width: 768px) {
+
+  .mypage-card {
+    padding: 16px 20px;
+  }
+
+
+  .mypage-card-title {
+    font-size: 18px;
+  }
+
+
+  /*
+   * PCでは記録エリアを少し横方向に見せる。
+   * 参考画像の「右側に記録ボタン」の印象に近づける。
+   */
+  .mypage-card-record {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+
+  .mypage-record-done {
+    width: auto;
+    flex: 1;
+  }
+
+
+  .mypage-btn {
+    flex-shrink: 0;
+  }
 }

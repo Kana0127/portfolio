@@ -154,7 +154,7 @@ RSpec.describe "MonthlyGoals index", type: :request do
       get monthly_goals_path
 
       expect(response.body).to include("体重2kg減")
-      expect(response.body).to include("月目標（ロードマップなし）")
+      expect(response.body).to include("単体の月目標")
     end
 
     it "ロードマップなし月目標に紐づく週目標も表示される" do

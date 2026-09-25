@@ -1,43 +1,41 @@
 class WeeklyGoalsController < ApplicationController
-  # MonthlyGoalsController と同じ「来月解禁日」のしきい値を使う
+  # MonthlyGoalsController と同じ「来月解禁日」のしきい値
   NEXT_MONTH_AVAILABLE_DAY = 25
 
   before_action :set_monthly_goal
-  before_action :restrict_next_month_weekly_goal_creation, only: %i[new create]
   before_action :set_weekly_goal, only: %i[edit update destroy]
+  before_action :restrict_next_month_weekly_goal_creation, only: %i[new create]
 
   def new
-    @weekly_goal = @monthly_goal.weekly_goals.build
-    @weekly_goal.user = @monthly_goal.user
-    @weekly_goal.category = @monthly_goal.category
-    @start_date_options = build_start_date_options
+    @weekly_goal = current_user.weekly_goals.build
+
+    apply_monthly_goal_defaults
+    prepare_form_data
   end
 
   def create
-    @weekly_goal = @monthly_goal.weekly_goals.build(weekly_goal_params)
-    @weekly_goal.user = @monthly_goal.user
-    @weekly_goal.category = @monthly_goal.category
+    @weekly_goal = current_user.weekly_goals.build(weekly_goal_params)
+
+    apply_monthly_goal_defaults
 
     if @weekly_goal.save
-      flash[:notice] = "週目標を作成しました"
-      redirect_to monthly_goals_path
+      redirect_to monthly_goals_path, notice: "週目標を作成しました"
     else
-      @start_date_options = build_start_date_options
+      prepare_form_data
       flash.now[:alert] = "週目標を作成できませんでした"
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @start_date_options = build_start_date_options
+    prepare_form_data
   end
 
   def update
     if @weekly_goal.update(weekly_goal_params)
-      flash[:notice] = "週目標を更新しました"
-      redirect_to monthly_goals_path
+      redirect_to monthly_goals_path, notice: "週目標を更新しました"
     else
-      @start_date_options = build_start_date_options
+      prepare_form_data
       flash.now[:alert] = "週目標を更新できませんでした"
       render :edit, status: :unprocessable_entity
     end
@@ -45,50 +43,112 @@ class WeeklyGoalsController < ApplicationController
 
   def destroy
     @weekly_goal.destroy!
-    flash[:notice] = "週目標を削除しました"
-    redirect_to monthly_goals_path
+
+    redirect_to monthly_goals_path, notice: "週目標を削除しました"
   end
 
   private
 
-  # 本人の月目標から取得。他人の月目標IDをURLに入れても RecordNotFound → 404
+  # monthly_goal_id がある場合だけ月目標を取得する。
+  # Standalone WeeklyGoal の場合は @monthly_goal = nil のまま進む。
   def set_monthly_goal
-    @monthly_goal = current_user.monthly_goals.find(params[:monthly_goal_id])
+    return if params[:monthly_goal_id].blank?
+
+    @monthly_goal =
+      current_user.monthly_goals.find(params[:monthly_goal_id])
   end
 
-  # 必ず @monthly_goal.weekly_goals から取得。
-  # 他人の monthly_goal の配下にある週目標IDを直打ちしても RecordNotFound になる。
+  # 編集・更新・削除するWeeklyGoalを取得する。
+  #
+  # MonthlyGoal経由
+  # → そのMonthlyGoalに属するWeeklyGoalだけ取得
+  #
+  # Standalone
+  # → current_userのmonthly_goal_id=nilのWeeklyGoalだけ取得
   def set_weekly_goal
-    @weekly_goal = @monthly_goal.weekly_goals.find(params[:id])
+    @weekly_goal =
+      if @monthly_goal
+        @monthly_goal.weekly_goals
+                     .where(user: current_user)
+                     .find(params[:id])
+      else
+        current_user.weekly_goals
+                    .where(monthly_goal_id: nil)
+                    .find(params[:id])
+      end
   end
 
-  # 来月の月目標に対する週目標は、25日以降のみ作成できるようにする。
-  # new / create の前段で動かすことで、URL直打ち・POST直打ちのどちらも弾く。
+  # MonthlyGoal経由の場合だけ
+  # monthly_goal と category を引き継ぐ。
+  def apply_monthly_goal_defaults
+    return unless @monthly_goal
+
+    @weekly_goal.monthly_goal = @monthly_goal
+    @weekly_goal.category = @monthly_goal.category
+  end
+
+  # new / edit / validation error時のフォーム表示に必要なデータを準備する。
+  def prepare_form_data
+    @target_month =
+      if @monthly_goal
+        @monthly_goal.target_month
+      elsif @weekly_goal.persisted? && @weekly_goal.start_date.present?
+        @weekly_goal.start_date.beginning_of_month
+      else
+        Date.current.beginning_of_month
+      end
+
+    # Standaloneの場合だけカテゴリー選択が必要
+    @categories = Category.order(:id) unless @monthly_goal
+
+    @start_date_options = build_start_date_options
+  end
+
+  # 来月のMonthlyGoalに紐づくWeeklyGoalは25日以降のみ作成可能。
+  # Standalone WeeklyGoalではこのチェックを行わない。
   def restrict_next_month_weekly_goal_creation
+    return unless @monthly_goal
     return unless next_month_goal?
     return if next_month_available?
 
-    redirect_to monthly_goals_path, alert: "来月の週目標は毎月25日以降に作成できます"
+    redirect_to(
+      monthly_goals_path,
+      alert: "来月の週目標は毎月25日以降に作成できます"
+    )
   end
 
   def next_month_goal?
-    @monthly_goal.target_month == Date.current.next_month.beginning_of_month
+    @monthly_goal.target_month ==
+      Date.current.next_month.beginning_of_month
   end
 
   def next_month_available?
     Date.current.day >= NEXT_MONTH_AVAILABLE_DAY
   end
 
-  # week_number / monthly_goal_id はフォームから受け取らない
+  # MonthlyGoal経由の場合はcategoryをMonthlyGoalから引き継ぐため
+  # category_idをフォームから受け取らない。
+  #
+  # Standaloneの場合だけcategory_idを受け取る。
   def weekly_goal_params
-    params.require(:weekly_goal).permit(:title, :start_date)
+    permitted_params = %i[title start_date]
+
+    permitted_params << :category_id unless @monthly_goal
+
+    params.require(:weekly_goal).permit(*permitted_params)
   end
 
-  # 「第N週：M月D日（曜）」というラベルで select 用の [label, value] 配列を作る
+  # 対象月から「第N週：M月D日（曜）」を作る。
   def build_start_date_options
-    wday_names = %w[日 月 火 水 木 金 土]
-    WeeklyGoal.start_date_candidates(@monthly_goal.target_month).map.with_index(1) do |date, week_num|
-      label = "第#{week_num}週：#{date.strftime('%-m月%-d日')}（#{wday_names[date.wday]}）"
+    wday_names = %w[ 日 月 火 水 木 金 土 ]
+
+    WeeklyGoal.start_date_candidates(@target_month)
+              .map.with_index(1) do |date, week_num|
+      label =
+        "第#{week_num}週：" \
+        "#{date.strftime('%-m月%-d日')}" \
+        "（#{wday_names[date.wday]}）"
+
       [ label, date.to_s ]
     end
   end

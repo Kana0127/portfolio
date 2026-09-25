@@ -1,49 +1,127 @@
-<% content_for :title, "月次ふりかえり | Monthly Step" %>
+<% content_for :title, t(".page_title") %>
 
 <main class="reviews-page">
+
   <header class="reviews-header">
-    <%= link_to "←", reviews_path, class: "reviews-back", "aria-label": "振り返り一覧に戻る" %>
-    <h1 class="reviews-heading">月次ふりかえり</h1>
+
+    <%= link_to "←",
+          reviews_path,
+          class: "reviews-back",
+          "aria-label": t(".back_aria") %>
+
+    <h1 class="reviews-heading">
+      <%= t(".heading") %>
+    </h1>
+
   </header>
 
-  <%# 対象の月目標 %>
+
+  <%# ==============================
+      対象の月目標
+  ============================== %>
+
   <section class="reviews-card reviews-card--target">
-    <p class="reviews-card-label">今月の目標</p>
-    <p class="reviews-card-title"><%= @monthly_goal.title %></p>
-    <p class="reviews-card-meta">
-      <%= @monthly_goal.target_month.strftime("%Y年%-m月") %>
+
+    <p class="reviews-card-label">
+      <%= t(".target.label") %>
     </p>
+
+    <p class="reviews-card-title">
+      <%= @monthly_goal.title %>
+    </p>
+
+    <p class="reviews-card-meta">
+      <%= l(@monthly_goal.target_month, format: :year_month) %>
+    </p>
+
   </section>
 
-  <%# 達成率 %>
+
+  <%# ==============================
+      達成率
+  ============================== %>
+
   <section class="reviews-card">
-    <p class="reviews-card-label">達成率</p>
-    <p class="reviews-show-rate"><%= @monthly_review.achievement_rate %><span class="reviews-show-rate-percent">%</span></p>
+
+    <p class="reviews-card-label">
+      <%= t(".achievement_rate.label") %>
+    </p>
+
+    <p class="reviews-show-rate">
+      <%= @monthly_review.achievement_rate %>
+      <span class="reviews-show-rate-percent">%</span>
+    </p>
+
   </section>
 
-  <%# 良かった点 %>
+
+  <%# ==============================
+      今月の自分への一言
+  ============================== %>
+
   <section class="reviews-card">
-    <p class="reviews-card-label">今月の自分への一言</p>
-    <p class="reviews-show-text"><%= simple_format(@monthly_review.good_point) %></p>
+
+    <p class="reviews-card-label">
+      <%= t(".good_point.label") %>
+    </p>
+
+    <div class="reviews-show-text">
+      <%= simple_format(@monthly_review.good_point) %>
+    </div>
+
   </section>
 
-  <%# 改善点 %>
+
+  <%# ==============================
+      来月の自分への一言
+  ============================== %>
+
   <section class="reviews-card">
-    <p class="reviews-card-label">来月の自分への一言</p>
-    <p class="reviews-show-text"><%= simple_format(@monthly_review.improvement_point) %></p>
+
+    <p class="reviews-card-label">
+      <%= t(".improvement_point.label") %>
+    </p>
+
+    <div class="reviews-show-text">
+      <%= simple_format(@monthly_review.improvement_point) %>
+    </div>
+
   </section>
 
-  <%# メモ %>
+
+  <%# ==============================
+      メモ
+  ============================== %>
+
   <section class="reviews-card">
-    <p class="reviews-card-label">メモ</p>
+
+    <p class="reviews-card-label">
+      <%= t(".memo.label") %>
+    </p>
+
     <% if @monthly_review.memo.present? %>
-      <p class="reviews-show-text"><%= simple_format(@monthly_review.memo) %></p>
+
+      <div class="reviews-show-text">
+        <%= simple_format(@monthly_review.memo) %>
+      </div>
+
     <% else %>
-      <p class="reviews-show-text reviews-show-text--empty">メモはありません</p>
+
+      <p class="reviews-show-text reviews-show-text--empty">
+        <%= t(".memo.empty") %>
+      </p>
+
     <% end %>
+
   </section>
+
 
   <p class="reviews-back-link">
-    <%= link_to "振り返り一覧へ戻る", reviews_path, class: "reviews-btn reviews-btn--secondary reviews-btn--full" %>
+
+    <%= link_to t(".back_to_reviews"),
+          reviews_path,
+          class: "reviews-btn reviews-btn--secondary reviews-btn--full" %>
+
   </p>
+
 </main>
