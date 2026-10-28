@@ -1,6 +1,6 @@
 <% content_for :title, t(".page_title") %>
 
-<main class="goal-new-page">
+<main class="goal-new-page ms-container">
 
   <header class="goal-new-header">
 
@@ -14,7 +14,7 @@
     </h1>
 
   </header>
-
+  <%# 月目標についての説明 %>
   <div class="roadmap-note" id="roadmap-new-about">
       <p class="roadmap-note-title"><%= t(".about.title") %></p>
       <p class="roadmap-note-text">
@@ -32,17 +32,7 @@
       id="goal-new-card-label"
       class="goal-new-card-label"
     >
-      <%= @target_month_param == "next" ?
-            t(".target_period.next") :
-            t(".target_period.current") %>
-    </p>
-
-
-    <p class="goal-new-target-month">
-      <%= t(
-            ".target_month",
-            month: l(@target_month_date, format: :year_month)
-          ) %>
+     <%= t(".heading") %>
     </p>
 
 
@@ -74,10 +64,39 @@
     <% end %>
 
 
-    <%= form_with model: @monthly_goal,
-                  url: monthly_goals_path(target_month: @target_month_param),
-                  local: true,
-                  class: "goal-new-form" do |f| %>
+  　<%= form_with model: @monthly_goal,
+              url: monthly_goals_path,
+              local: true, 
+              class: "goal-new-form" do |f|%>
+
+    <%# ==================================================
+          目標の対象月
+      =================================================== %>
+    <div class="goal-new-form-group">
+
+      <%= label_tag :target_month, "目標の対象月",
+          class: "goal-new-form-label" %>
+
+      <%= select_tag :target_month,
+            options_for_select(
+              [
+               [
+                t(".target_month_options.current",
+                  month: l(Date.current, format: :month_only)),
+                "this"
+               ],
+               [
+                t(".target_month_options.next",
+                  month: l(Date.current.next_month, format: :month_only)),
+                "next"
+               ]
+              ],
+              @target_month_param
+            ),
+          class: "goal-new-form-input" %>
+
+    </div>
+
 
 
       <%# ==================================================
@@ -191,7 +210,7 @@
 
 
       <%= f.submit t(".submit"),
-            class: "goal-new-submit" %>
+            class: "btn-primary" %>
 
     <% end %>
 

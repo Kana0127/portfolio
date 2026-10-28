@@ -243,21 +243,21 @@ en:
 
       username: "%{name}"
       greeting: "Welcome back!"
-      greeting_lead: "Let's take another small step toward your goals this month."
+      greeting_lead: "Let's take another small step toward your goals."
 
       roadmap:
         label: "Roadmap Goal"
 
       monthly:
         label: "Monthly Goal"
-        empty: "You haven't set any monthly goals for this month yet."
-        register: "Create a Monthly Goal"
+        empty: "You haven't set any goals for today yet."
+        register: "Create a Goal"
 
       weekly:
         label: "This Week's Goal"
         week_number: "Week %{number}"
         date_range: "%{start_date} – %{end_date}"
-        empty: "You haven't set a weekly goal for this week yet."
+        empty: "You haven't set any goals for today yet."
         add: "Add a Weekly Goal"
 
       origin:
@@ -326,6 +326,13 @@ en:
 
       start_month:
         label: "Start Month"
+        current: "This month (%{month})"
+        next: "Next month (%{month})"
+
+      duration_months:
+        label: "Time to Target"
+        option: "In %{months} months"
+
 
       target_month:
         label: "Target Month"
@@ -378,7 +385,7 @@ en:
       lead_heading: "Let's set a goal for each month"
       lead_note: "You can add or edit these later. A rough idea is fine."
 
-      month_placeholder: "Goal for %{month} (Optional)"
+      month_placeholder: "Goal for %{month}"
       month_aria: "Goal for %{month}"
 
       submit: "Save and Finish"

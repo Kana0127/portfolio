@@ -171,11 +171,12 @@ body.is-bottom-sheet-open {
 }
 
 .roadmap-summary-card {
-  background-color: #fdf6e3;
-  border: 1px solid #ecd9a6;
+  background-color: var(--ms-bg-card);
   border-radius: 16px;
   padding: 16px 18px;
   box-shadow: 0 4px 12px rgba(63, 107, 58, 0.05);
+  box-shadow: var(--ms-shadow-card);
+  border: 1px solid var(--ms-border);
 }
 
 .roadmap-summary-head {
@@ -248,16 +249,17 @@ body.is-bottom-sheet-open {
  * ============================================================ */
 .roadmap-page {
   min-height: calc(100vh - 60px);
-  max-width: 480px;
-  margin: 0 auto;
+  margin-inline: auto;
   padding: 16px 16px 24px;
   box-sizing: border-box;
-  background-color: #eaf2e6;
+  background-color: transparent;
   color: #2f3b2a;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
     "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
   line-height: 1.6;
 }
+
+
 
 .roadmap-header {
   display: flex;
@@ -553,14 +555,12 @@ body.is-bottom-sheet-open {
     display: none;
   }
 
-  /* 目標一覧を PC 幅に広げる（月/週/Roadmap カード・新規作成ボタンは親幅に追従） */
-  .goals-page {
-    max-width: 840px;
-  }
-}
+  
 
 /* 中央モーダルの登場アニメ（下からスライドではなく、軽くフェード＋拡大） */
 @keyframes modal-pop {
   from { opacity: 0; transform: scale(0.98); }
   to   { opacity: 1; transform: scale(1); }
 }
+
+

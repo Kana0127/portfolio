@@ -132,6 +132,7 @@ ja:
       month_only: "%-m月"
       month_day: "%-m月%-d日"
       year_month_day: "%Y年%-m月%-d日"
+      month_only: "%-m月"
 
   monthly_goals:
     index:
@@ -183,6 +184,10 @@ ja:
       target_period:
         current: "今月の目標"
         next: "来月の目標"
+
+      target_month_options:
+        current: "今月（%{month}の目標）"
+        next: "来月（%{month}の目標）"
       
       about:
         title: "月目標とは？"
@@ -267,7 +272,7 @@ ja:
 
       username: "%{name}さん"
       greeting: "おかえりなさい！"
-      greeting_lead: "今月の目標に向かって、今日も少しずつ進んでいきましょう。"
+      greeting_lead: "今日も目標に向かって、少しずつ進んでいきましょう。"
 
       roadmap:
         label: "ロードマップ目標"
@@ -281,8 +286,8 @@ ja:
         label: "今週の目標"
         week_number: "第%{number}週"
         date_range: "%{start_date}〜%{end_date}"
-        empty: "今週の週目標はまだ設定されていません。"
-        add: "週目標を追加する"
+        empty: "今日取り組む目標がまだありません。"
+        add: "目標を設定する"
 
       origin:
         roadmap: "ロードマップゴール由来"
@@ -379,6 +384,7 @@ ja:
       title:
         label: "ロードマップ目標名"
         placeholder: "例：ITエンジニアとしてのスキルアップ"
+        
 
       reason:
         label: "理由・目的（任意）"
@@ -386,6 +392,12 @@ ja:
 
       start_month:
         label: "開始月"
+        current: "今月（%{month}）"
+        next: "来月（%{month}）"
+
+      duration_months:
+        label: "達成までの期間"
+        option: "%{months}か月後"
 
       target_month:
         label: "目標達成月"
@@ -438,7 +450,7 @@ ja:
       lead_heading: "各月の目標を設定しましょう"
       lead_note: "あとから追加・編集できます。ざっくりでOKです。"
 
-      month_placeholder: "%{month}の目標（任意）"
+      month_placeholder: "%{month}の目標"
       month_aria: "%{month}の目標"
 
       submit: "保存して完了"
@@ -452,6 +464,7 @@ ja:
       page_title: "週目標作成 | Monthly Step"
       back_aria: "目標一覧に戻る"
       heading: "週目標を作成"
+  
 
       errors:
         title: "%{count}件のエラーがあります"
@@ -463,6 +476,8 @@ ja:
       category:
         label: "カテゴリー"
         prompt: "カテゴリーを選択してください"
+        aria_label: "カテゴリー"
+
 
       start_date:
         label: "対象週"

@@ -4,29 +4,32 @@
  */
 
 /* ============================================================
- *  共通：ページ全体の背景・フォント設定（layouts経由のbodyに当たる）
+ * 共通：ページ全体
+ *
+ * 横幅・最大幅・中央寄せ・画面端余白は
+ * application.css の .ms-container が担当する。
  * ============================================================ */
-
 .goals-page,
 .goal-new-page {
   min-height: calc(100vh - 60px);
-  padding: 16px;
+  padding-block: 16px 24px;
   box-sizing: border-box;
-  background-color: #eaf2e6;
   color: #2f3b2a;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
-    "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN",
+    "Noto Sans JP",
+    Meiryo,
+    sans-serif;
   line-height: 1.6;
 }
 
 /* ============================================================
- *  月目標一覧（goals-*）
+ * 月目標一覧（goals-*）
  * ============================================================ */
-
-.goals-page {
-  max-width: 480px;
-  margin: 0 auto;
-}
 
 .goals-page-header {
   margin: 8px 0 24px;
@@ -53,7 +56,8 @@
 }
 
 /* ============================================================
- *  登録促進カード（今月・来月の月目標が未登録のときに表示）
+ * 登録促進カード
+ * 今月・来月の月目標が未登録のときに表示
  * ============================================================ */
 
 .goals-prompt {
@@ -61,8 +65,8 @@
   flex-direction: column;
   gap: 12px;
   padding: 18px 16px;
-  border-radius: 16px;
   margin-bottom: 16px;
+  border-radius: 16px;
   background-color: #ffffff;
   box-shadow: 0 4px 12px rgba(63, 107, 58, 0.06);
 }
@@ -83,6 +87,10 @@
   line-height: 1.5;
 }
 
+/* ============================================================
+ * 共通ボタン
+ * ============================================================ */
+
 .goals-btn {
   display: inline-flex;
   align-items: center;
@@ -99,12 +107,13 @@
 }
 
 .goals-btn--primary {
-  background-color: #3f6b3a;
+  background-color: var(--ms-primary);
   color: #ffffff;
+  border: none;
 }
 
 .goals-btn--primary:hover {
-  background-color: #345a30;
+  background-color: var(--ms-primary-dark);
 }
 
 .goals-btn--secondary {
@@ -116,6 +125,10 @@
 .goals-btn--secondary:hover {
   background-color: #f4f7f1;
 }
+
+/* ============================================================
+ * 月目標一覧
+ * ============================================================ */
 
 .goals-list {
   display: flex;
@@ -131,9 +144,9 @@
 }
 
 .goals-card {
+  padding: 16px;
   background-color: #ffffff;
   border-radius: 16px;
-  padding: 16px;
   box-shadow: 0 4px 12px rgba(63, 107, 58, 0.06);
 }
 
@@ -174,7 +187,7 @@
   transition: background-color 0.15s ease;
 }
 
-/* button_to が生成する form 要素のデフォルト margin を消す */
+/* button_to が生成する form のデフォルト margin を消す */
 .goals-card-action-form {
   display: inline-block;
   margin: 0;
@@ -187,7 +200,7 @@
 .goals-card-action-btn--danger {
   color: #8a2a22;
   border-color: #f5c2bd;
-  background-color: #fff;
+  background-color: #ffffff;
 }
 
 .goals-card-action-btn--danger:hover {
@@ -228,8 +241,7 @@
 }
 
 /* ============================================================
- *  週目標プレースホルダー領域（月目標カード内に配置）
- *  WeeklyGoal モデル実装後にデータ表示用へ書き換える前提
+ * 週目標
  * ============================================================ */
 
 .weekly-goals {
@@ -263,7 +275,7 @@
   border-radius: 12px;
 }
 
-/* 現在の週の週目標を強調表示する */
+/* 現在の週を強調 */
 .weekly-goal-item--current {
   background-color: #3f6b3a;
   box-shadow: 0 4px 12px rgba(63, 107, 58, 0.18);
@@ -291,7 +303,7 @@
   color: #d8ecd0;
 }
 
-/* 週番号ラベル：左側に縦並びの「Week / 数字」表記 */
+/* Week / 数字 */
 .weekly-goal-week {
   flex-shrink: 0;
   display: flex;
@@ -319,7 +331,7 @@
   font-weight: 700;
 }
 
-/* タイトル＋日付の本文ブロック */
+/* タイトル＋日付 */
 .weekly-goal-body {
   flex: 1;
   min-width: 0;
@@ -341,7 +353,7 @@
   font-size: 11px;
 }
 
-/* 週目標カード右側の編集・削除ボタン */
+/* 週目標右側の編集・削除 */
 .weekly-goal-actions {
   display: flex;
   align-items: center;
@@ -383,7 +395,6 @@
   background-color: #fdecea;
 }
 
-/* 現在週カード内のボタンも視認性を保つ */
 .weekly-goal-item--current .weekly-goal-action-btn {
   background-color: rgba(255, 255, 255, 0.92);
 }
@@ -428,13 +439,11 @@
 }
 
 /* ============================================================
- *  新規作成（goal-new-*）
+ * 新規作成（goal-new-*）
+ *
+ * width / max-width / margin-inline は
+ * .ms-container が担当するため、ここでは設定しない。
  * ============================================================ */
-
-.goal-new-page {
-  max-width: 480px;
-  margin: 0 auto;
-}
 
 .goal-new-header {
   display: flex;
@@ -468,10 +477,9 @@
 }
 
 .goal-new-card {
-  background-color: #ffffff;
-  border-radius: 20px;
+  background-color: transparent;
+  border-radius: 0;
   padding: 20px;
-  box-shadow: 0 8px 20px rgba(63, 107, 58, 0.08);
 }
 
 .goal-new-card-label {
@@ -487,12 +495,16 @@
   font-size: 13px;
 }
 
+/* ============================================================
+ * エラー表示
+ * ============================================================ */
+
 .goal-new-error {
+  padding: 12px 14px;
+  margin-bottom: 16px;
   background-color: #fdecea;
   border: 1px solid #f5c2bd;
   border-radius: 12px;
-  padding: 12px 14px;
-  margin-bottom: 16px;
   color: #8a2a22;
 }
 
@@ -508,6 +520,10 @@
   font-size: 13px;
 }
 
+/* ============================================================
+ * 新規作成フォーム
+ * ============================================================ */
+
 .goal-new-form {
   display: flex;
   flex-direction: column;
@@ -520,10 +536,10 @@
 }
 
 .goal-new-form-label {
+  margin-bottom: 8px;
   font-size: 13px;
   font-weight: 700;
   color: #2f3b2a;
-  margin-bottom: 8px;
 }
 
 .goal-new-form-input {
@@ -555,7 +571,11 @@
   line-height: 1.6;
 }
 
-/* チップ状の radio（カテゴリー / 目標タイプ） */
+/* ============================================================
+ * チップ型 radio
+ * カテゴリー / 目標タイプ
+ * ============================================================ */
+
 .goal-new-chips {
   display: flex;
   flex-wrap: wrap;
@@ -584,7 +604,10 @@
   border: 1px solid #cdd6c7;
   font-size: 13px;
   font-weight: 600;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .goal-new-chip:hover .goal-new-chip-label {
@@ -601,6 +624,10 @@
   outline: 2px solid #3f6b3a;
   outline-offset: 2px;
 }
+
+/* ============================================================
+ * 送信ボタン
+ * ============================================================ */
 
 .goal-new-submit {
   margin-top: 8px;
@@ -622,7 +649,10 @@
 }
 
 /* ============================================================
- *  PC幅微調整
+ * レスポンシブ：内部レイアウト
+ *
+ * ページ全体の横幅調整ではなく、
+ * 画面が広いときの中身の配置のみ変更する。
  * ============================================================ */
 
 @media (min-width: 600px) {
@@ -632,7 +662,8 @@
 }
 
 /* ============================================================
- *  セクション見出し（ロードマップ目標 / 月目標）
+ * セクション見出し
+ * ロードマップ目標 / 月目標
  * ============================================================ */
 
 .goals-section-heading {
@@ -644,7 +675,7 @@
 }
 
 /* ============================================================
- *  ロードマップ目標とその配下の月目標（親子関係を示すグループ）
+ * ロードマップ目標と配下の月目標
  * ============================================================ */
 
 .roadmap-group {
@@ -652,7 +683,7 @@
   flex-direction: column;
 }
 
-/* 左の縦線でロードマップ配下であることを示す */
+/* 左線でロードマップ配下であることを示す */
 .roadmap-group-children {
   display: flex;
   flex-direction: column;
@@ -695,7 +726,7 @@
   margin: 0 0 10px;
 }
 
-/* PC幅ではロードマップ配下のインデントを少し広げて階層を強調する */
+/* PC寄りの幅では階層インデントを少し広げる */
 @media (min-width: 600px) {
   .roadmap-group-children {
     margin-left: 20px;

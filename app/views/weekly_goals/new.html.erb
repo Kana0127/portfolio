@@ -1,6 +1,6 @@
 <% content_for :title, t(".page_title") %>
 
-<main class="goal-new-page">
+<main class="goal-new-page ms-container">
   <header class="goal-new-header">
     <%= link_to "←",
           monthly_goals_path,
@@ -124,23 +124,34 @@
 
       <%# Standaloneではユーザーが選択 %>
 
-      <div class="ms-form-group">
-        <%= f.label :category_id,
-              t(".category.label"),
-              class: "ms-form-label" %>
+      <div class="goal-new-form-group">
 
-        <%= f.collection_select(
-              :category_id,
-              @categories,
-              :id,
-              :name,
-              { prompt: t(".category.prompt") },
-              { class: "ms-form-select" }
-            ) %>
+        <span class="goal-new-form-label">
+          <%= t(".category.label") %>
+        </span>
+
+        <div
+          class="goal-new-chips"
+          role="radiogroup"
+          aria-label="<%= t(".category.aria_label") %>"
+        >
+
+          <% @categories.each do |category| %>
+
+            <label class="goal-new-chip">
+
+              <%= f.radio_button :category_id,
+                    category.id,
+                    class: "goal-new-chip-input" %>
+
+              <span class="goal-new-chip-label">
+                <%= category.name %>
+              </span>    
+            </label>
+          <% end %>  
+        </div>
       </div>
-
     <% end %>
-
 
     <%# ================================
         週
@@ -158,7 +169,7 @@
               @weekly_goal.start_date&.to_s
             ),
             { prompt: t(".start_date.prompt") },
-            { class: "ms-form-select" }
+            { class: "goal-new-form-input" }
           ) %>
     </div>
 
@@ -169,7 +180,7 @@
 
     <div class="ms-form-actions">
       <%= f.submit t(".submit"),
-            class: "ms-btn ms-btn--primary" %>
+            class: "btn-primary" %>
     </div>
 
   <% end %>

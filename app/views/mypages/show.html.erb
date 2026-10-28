@@ -31,9 +31,18 @@
         </p>
 
         <%# TODO: 単体週目標も考慮した作成導線に変更する %>
-        <%= link_to t(".weekly.add"),
-              new_monthly_goal_path(target_month: "this"),
-              class: "mypage-btn mypage-btn--primary" %>
+        <div class="goals-create" data-controller="bottom-sheet">
+
+          <button
+            type="button"
+            class="mypage-btn mypage-btn--primary"
+            data-action="bottom-sheet#open">
+            <%= t(".weekly.add") %>
+          </button>
+
+          <%= render "shared/goal_create_sheet" %>
+
+        </div>
 
       </section>
 

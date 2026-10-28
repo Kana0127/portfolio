@@ -1,6 +1,6 @@
 <% content_for :title, t(".page_title") %>
 
-<main class="goal-new-page">
+<main class="goal-new-page ms-container">
   <header class="goal-new-header">
     <%= link_to "←", new_roadmap_goal_path, class: "goal-new-back", "aria-label": t(".back_aria") %>
     <h1 class="goal-new-heading"><%= t(".heading") %></h1>
@@ -48,7 +48,7 @@
         </div>
       <% end %>
 
-      <%= submit_tag t(".submit"), class: "goal-new-submit" %>
+      <%= submit_tag t(".submit"), class: "btn-primary" %>
     <% end %>
   </section>
 </main>

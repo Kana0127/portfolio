@@ -1,6 +1,5 @@
+
 class MonthlyGoalsController < ApplicationController
-  # 来月の月目標を作成できるようになる日
-  NEXT_MONTH_AVAILABLE_DAY = 25
 
   # edit / update / destroy の前に対象の月目標を取得する
   before_action :set_monthly_goal, only: %i[edit update destroy]
@@ -9,22 +8,21 @@ class MonthlyGoalsController < ApplicationController
   # 月目標に紐づけるロードマップ目標一覧を取得する
   before_action :set_roadmap_goals, only: %i[new create edit update]
 
+
   # ============================================================
   # 目標一覧
   # ============================================================
 
   def index
+
     # ============================================================
-    # 今月の基準日
-    #
-    # 例：
-    # 2026/8/18 → 2026/8/1
+    # 今月・来月の基準日
     # ============================================================
 
     current_month_start = Date.current.beginning_of_month
+    next_month_start = Date.current.next_month.beginning_of_month
 
     @today = Date.current
-
     @current_month_date = current_month_start
 
 
@@ -41,15 +39,6 @@ class MonthlyGoalsController < ApplicationController
 
     # ============================================================
     # ② 今月進行中のロードマップ目標
-    #
-    # ・active
-    # ・開始月が今月以前
-    # ・終了月が今月以降
-    #
-    # category
-    # monthly_goals
-    # monthly_goal に紐づく category / weekly_goals
-    # も事前読み込みする
     # ============================================================
 
     @roadmap_goals =
@@ -75,21 +64,12 @@ class MonthlyGoalsController < ApplicationController
 
 
     # ============================================================
-    # ③ 各ロードマップに紐づく
-    #    「今月の月目標」
-    #
-    # 例：
-    #
-    # {
-    #   1 => [MonthlyGoal, MonthlyGoal],
-    #   2 => [MonthlyGoal]
-    # }
-    #
-    # 1、2 は roadmap_goal.id
+    # ③ 各ロードマップに紐づく今月の月目標
     # ============================================================
 
     @roadmap_monthly_goals =
       @roadmap_goals.each_with_object({}) do |roadmap, hash|
+
         current_month_goals =
           roadmap.monthly_goals.select do |goal|
             goal.target_month == current_month_start
@@ -103,16 +83,7 @@ class MonthlyGoalsController < ApplicationController
 
 
     # ============================================================
-    # ④ ロードマップに紐づかない
-    #    「今月の単体月目標」
-    #
-    # roadmap_goal_id: nil
-    #   ↓
-    # ロードマップを親に持たない月目標
-    #
-    # target_month: current_month_start
-    #   ↓
-    # 今月の目標だけ
+    # ④ 今月の単体月目標
     # ============================================================
 
     @monthly_goals =
@@ -133,18 +104,28 @@ class MonthlyGoalsController < ApplicationController
 
 
     # ============================================================
-    # ⑤ 月目標に紐づかない
-    #    「今週の単体週目標」
-    #
-    # monthly_goal_id: nil
-    #   ↓
-    # 月目標を親に持たない単体週目標
-    #
-    # さらに
-    # ・今月
-    # ・現在の週番号
-    #
-    # に一致するものだけ取得する
+    # 来月の単体月目標
+    # ============================================================
+
+    @next_month_goals =
+      current_user.monthly_goals
+                  .where(
+                    roadmap_goal_id: nil
+                  )
+                  .where(
+                    target_month: next_month_start
+                  )
+                  .includes(
+                    :category,
+                    :weekly_goals
+                  )
+                  .order(
+                    created_at: :desc
+                  )
+
+
+    # ============================================================
+    # ⑤ 今週の単体週目標
     # ============================================================
 
     @weekly_goals =
@@ -166,23 +147,6 @@ class MonthlyGoalsController < ApplicationController
 
 
     # ============================================================
-    # ⑥ 来月の月目標を作成できるか
-    # ============================================================
-
-    @next_month_available =
-      next_month_available?
-
-
-    # 来月の1日
-    #
-    # 例：
-    # 2026/8/18 → 2026/9/1
-
-    next_month_start =
-      Date.current.next_month.beginning_of_month
-
-
-    # ============================================================
     # ⑦ 今月・来月の月目標がすでに存在するか
     # ============================================================
 
@@ -198,16 +162,124 @@ class MonthlyGoalsController < ApplicationController
 
 
     # ============================================================
-    # ⑧ View側で
-    # 「月目標を作りましょう」などを表示するための判定
+    # ⑧ 月目標作成を促す表示の判定
     # ============================================================
 
     @show_current_month_prompt =
       !@current_month_goal_registered
 
     @show_next_month_prompt =
-      @next_month_available &&
       !@next_month_goal_registered
+
+
+    # ============================================================
+    # ⑨【今回追加】今月・来月のタブを判定
+    #
+    # period=this → 今月
+    # period=next → 来月
+    # 指定がなければ今月
+    # ============================================================
+
+    @period =
+      if %w[this next].include?(params[:period])
+        params[:period]
+      else
+        "this"
+      end
+
+
+    # ============================================================
+    # ⑩【今回追加】表示対象の月を決定
+    # ============================================================
+
+    @selected_month =
+      if @period == "this"
+        current_month_start
+      else
+        next_month_start
+      end
+
+
+    # ============================================================
+    # ⑪【今回追加】選択中のタブに応じて
+    # 表示するロードマップ・月目標を切り替える
+    # ============================================================
+
+    if @period == "this"
+
+      # --------------------------------------------
+      # 今月の場合
+      #
+      # すでに取得済みのデータをそのまま使用
+      # --------------------------------------------
+
+      @selected_roadmap_goals = @roadmap_goals
+
+      @selected_roadmap_monthly_goals =
+        @roadmap_monthly_goals
+
+      @selected_monthly_goals = @monthly_goals
+
+    else
+
+      # --------------------------------------------
+      # 来月の場合
+      #
+      # 来月がロードマップ期間に含まれる目標を取得
+      # --------------------------------------------
+
+      @selected_roadmap_goals =
+        current_user.roadmap_goals
+                    .active
+                    .where(
+                      start_month: ..next_month_start
+                    )
+                    .where(
+                      target_month: next_month_start..
+                    )
+                    .includes(:category)
+                    .preload(
+                      monthly_goals: [
+                        :category,
+                        :weekly_goals
+                      ]
+                    )
+                    .order(
+                      start_month: :asc,
+                      created_at: :desc
+                    )
+
+
+      # --------------------------------------------
+      # 来月のロードマップに紐づく
+      # 来月の月目標を取得
+      # --------------------------------------------
+
+      @selected_roadmap_monthly_goals =
+        @selected_roadmap_goals.each_with_object({}) do |roadmap, hash|
+
+          next_month_goals =
+            roadmap.monthly_goals.select do |goal|
+              goal.target_month == next_month_start
+            end
+
+          hash[roadmap.id] =
+            next_month_goals
+              .sort_by(&:created_at)
+              .reverse
+        end
+
+
+      # --------------------------------------------
+      # 来月の単体月目標
+      #
+      # すでに取得済みのデータを使用
+      # --------------------------------------------
+
+      @selected_monthly_goals = @next_month_goals
+
+    end
+
   end
 
 
@@ -216,33 +288,9 @@ class MonthlyGoalsController < ApplicationController
   # ============================================================
 
   def new
-    # 来月の目標を作ろうとしている
-    # かつ
-    # まだ25日より前なら作成不可
-    if next_month_request? && !next_month_available?
-      redirect_to(
-        monthly_goals_path,
-        alert: "来月の目標は毎月25日以降に作成できます"
-      )
-
-      return
-    end
-
-    # 現在ログインしているユーザーの月目標を作る
-    @monthly_goal =
-      current_user.monthly_goals.build
-
-    # フォームのカテゴリ選択肢
-    @categories =
-      Category.order(:id)
-
-    # 今月 or 来月のどちらを作成するのか
-    @target_month_date =
-      resolve_target_month
-
-    # View側で this / next を利用する
-    @target_month_param =
-      current_target_month_param
+    @monthly_goal = current_user.monthly_goals.build
+    @categories = Category.order(:id)
+    @target_month_param = "this"
   end
 
 
@@ -251,34 +299,40 @@ class MonthlyGoalsController < ApplicationController
   # ============================================================
 
   def create
-    # current_user に紐づく月目標を作る
+
+    # ① ユーザーが選んだ値を取得
+    period = params[:target_month]
+
+    # ② 想定外の値を拒否
+    unless %w[this next].include?(period)
+      return head :unprocessable_entity
+    end
+
+    # ③ 選択値を日付に変換
+    target_month =
+      if period == "this"
+        Date.current.beginning_of_month
+      else
+        Date.current.next_month.beginning_of_month
+      end
+
+    # ④ 月目標のインスタンスを作成
     @monthly_goal =
       current_user.monthly_goals.build(
         monthly_goal_params
       )
 
-    # target_month はフォームから直接受け取らず、
-    # Controller側で今月または来月を設定する
-    @monthly_goal.target_month =
-      resolve_target_month
+    # ⑤ 対象月をセット
+    @monthly_goal.target_month = target_month
 
-    # 25日より前に来月目標を作成しようとした場合
-    if next_month_request? && !next_month_available?
-      @monthly_goal.errors.add(
-        :base,
-        "来月の目標は毎月25日以降に作成できます"
-      )
-
-      render_new_with_error
-
-      return
-    end
-
+    # ⑥ DBに保存
     if @monthly_goal.save
+
       flash[:notice] =
         "月目標を作成しました"
 
       redirect_to monthly_goals_path
+
     else
       render_new_with_error
     end
@@ -290,8 +344,7 @@ class MonthlyGoalsController < ApplicationController
   # ============================================================
 
   def edit
-    @categories =
-      Category.order(:id)
+    @categories = Category.order(:id)
   end
 
 
@@ -300,22 +353,22 @@ class MonthlyGoalsController < ApplicationController
   # ============================================================
 
   def update
+
     if @monthly_goal.update(monthly_goal_params)
+
       flash[:notice] =
         "月目標を更新しました"
 
       redirect_to monthly_goals_path
+
     else
-      @categories =
-        Category.order(:id)
+
+      @categories = Category.order(:id)
 
       flash.now[:alert] =
         "月目標を更新できませんでした"
 
-      render(
-        :edit,
-        status: :unprocessable_entity
-      )
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -325,6 +378,7 @@ class MonthlyGoalsController < ApplicationController
   # ============================================================
 
   def destroy
+
     @monthly_goal.destroy!
 
     flash[:notice] =
@@ -342,8 +396,7 @@ class MonthlyGoalsController < ApplicationController
   # ============================================================
 
   def set_monthly_goal
-    # current_user.monthly_goals から探すことで、
-    # 他ユーザーの月目標を取得できないようにする
+
     @monthly_goal =
       current_user.monthly_goals.find(
         params[:id]
@@ -356,6 +409,7 @@ class MonthlyGoalsController < ApplicationController
   # ============================================================
 
   def monthly_goal_params
+
     params
       .require(:monthly_goal)
       .permit(
@@ -372,14 +426,10 @@ class MonthlyGoalsController < ApplicationController
   # ============================================================
 
   def render_new_with_error
-    @categories =
-      Category.order(:id)
 
-    @target_month_date =
-      resolve_target_month
+    @categories = Category.order(:id)
 
-    @target_month_param =
-      current_target_month_param
+    @target_month_param = params[:target_month]
 
     flash.now[:alert] =
       "月目標を作成できませんでした"
@@ -392,60 +442,14 @@ class MonthlyGoalsController < ApplicationController
 
 
   # ============================================================
-  # URLから this / next を判定
-  # ============================================================
-
-  def current_target_month_param
-    if params[:target_month] == "next"
-      "next"
-    else
-      "this"
-    end
-  end
-
-
-  # ============================================================
   # 月目標フォームで選択できるロードマップ一覧
   # ============================================================
 
   def set_roadmap_goals
+
     @roadmap_goals =
       current_user.roadmap_goals
                   .order(created_at: :desc)
   end
 
-
-  # ============================================================
-  # 来月の目標作成リクエストか
-  # ============================================================
-
-  def next_month_request?
-    current_target_month_param == "next"
-  end
-
-
-  # ============================================================
-  # 来月の月目標を作成可能か
-  # ============================================================
-
-  def next_month_available?
-    Date.current.day >=
-      NEXT_MONTH_AVAILABLE_DAY
-  end
-
-
-  # ============================================================
-  # 月目標の対象月を決める
-  # ============================================================
-
-  def resolve_target_month
-    if next_month_request?
-      Date.current
-          .next_month
-          .beginning_of_month
-    else
-      Date.current
-          .beginning_of_month
-    end
-  end
 end

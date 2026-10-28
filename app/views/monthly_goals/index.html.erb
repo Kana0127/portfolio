@@ -1,6 +1,6 @@
 <% content_for :title, t("monthly_goals.index.page_title") %>
 
-<main class="goals-page">
+<main class="goals-page ms-container">
 
   <%# ============================================================
       ページ上部
@@ -32,142 +32,7 @@
         <%= t("monthly_goals.index.create_goal") %>
       </button>
 
-
-      <%# ボトムシート %>
-
-      <div
-        class="bottom-sheet"
-        data-bottom-sheet-target="sheet"
-        data-action="click->bottom-sheet#closeFromOverlay">
-
-        <div
-          class="bottom-sheet-panel"
-          role="dialog"
-          aria-modal="true"
-          aria-label="<%= t('monthly_goals.index.create_dialog_label') %>">
-
-          <span
-            class="bottom-sheet-handle"
-            aria-hidden="true">
-          </span>
-
-
-          <h2 class="bottom-sheet-title">
-            <%= t("monthly_goals.index.create_prompt") %>
-          </h2>
-
-
-          <%# ----------------------------------------------------
-              ロードマップ目標
-          ---------------------------------------------------- %>
-
-          <%= link_to new_roadmap_goal_path,
-                class: "bottom-sheet-option bottom-sheet-option--roadmap" do %>
-
-            <span
-              class="bottom-sheet-option-icon"
-              aria-hidden="true">
-              📖
-            </span>
-
-            <span class="bottom-sheet-option-body">
-
-              <span class="bottom-sheet-option-title">
-                <%= t("monthly_goals.index.roadmap.create_title") %>
-              </span>
-
-              <span class="bottom-sheet-option-desc">
-                <%= t("monthly_goals.index.roadmap.description") %>
-              </span>
-
-            </span>
-
-            <span
-              class="bottom-sheet-option-arrow"
-              aria-hidden="true">
-              →
-            </span>
-
-          <% end %>
-
-
-          <%# ----------------------------------------------------
-              今月の単体月目標
-          ---------------------------------------------------- %>
-
-          <%= link_to new_monthly_goal_path(target_month: "this"),
-                class: "bottom-sheet-option" do %>
-
-            <span
-              class="bottom-sheet-option-icon"
-              aria-hidden="true">
-              📅
-            </span>
-
-            <span class="bottom-sheet-option-body">
-
-              <span class="bottom-sheet-option-title">
-                <%= t("monthly_goals.index.monthly.create_title") %>
-              </span>
-
-              <span class="bottom-sheet-option-desc">
-                <%= t("monthly_goals.index.monthly.description") %>
-              </span>
-
-            </span>
-
-            <span
-              class="bottom-sheet-option-arrow"
-              aria-hidden="true">
-              →
-            </span>
-
-          <% end %>
-
-
-          <%# ----------------------------------------------------
-              今週の単体週目標
-          ---------------------------------------------------- %>
-
-          <%= link_to new_weekly_goal_path,
-                class: "bottom-sheet-option" do %>
-
-            <span
-              class="bottom-sheet-option-icon"
-              aria-hidden="true">
-              📝
-            </span>
-
-            <span class="bottom-sheet-option-body">
-
-              <span class="bottom-sheet-option-title">
-                <%= t("monthly_goals.index.weekly.create_title") %>
-              </span>
-
-              <span class="bottom-sheet-option-desc">
-                <%= t("monthly_goals.index.weekly.description") %>
-              </span>
-
-            </span>
-
-            <span
-              class="bottom-sheet-option-arrow"
-              aria-hidden="true">
-              →
-            </span>
-
-          <% end %>
-
-
-          <button
-            type="button"
-            class="bottom-sheet-cancel"
-            data-action="bottom-sheet#close">
-            <%= t("common.cancel") %>
-          </button>
-
-        </div>
-      </div>
+      <%= render "shared/goal_create_sheet" %>
     </div>
   </header>
 
@@ -275,7 +140,7 @@
 
 
       <%= link_to t("common.new"),
-            new_monthly_goal_path(target_month: "this"),
+            new_monthly_goal_path,
             class: "goals-section-create-link" %>
 
     </div>
