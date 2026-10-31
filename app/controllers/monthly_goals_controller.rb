@@ -388,6 +388,54 @@ class MonthlyGoalsController < ApplicationController
   end
 
 
+  
+  def weekly_goals_setup
+    period = params[:target_month_period]
+
+    # ② 想定外の値を拒否
+    unless %w[this next].include?(period)
+      return head :unprocessable_entity
+    end
+
+    @monthly_goal =
+    current_user.monthly_goals.build(
+    monthly_goal_params
+    )
+
+    # ③ 選択値を日付に変換
+    target_month=
+      if period == "this"
+        Date.current.beginning_of_month
+      else
+        Date.current.next_month.beginning_of_month
+      end
+      
+    
+    @monthly_goal.target_month = target_month
+
+
+    
+
+    unless @monthly_goal.valid?
+      render_new_with_error
+      return
+    end
+
+    
+    session[:monthly_goal_draft] =
+    draft_form(@monthly_goal)
+
+    @target_months =
+      build_target_months(
+        @monthly_goal.target_month
+      )
+
+    # ⑤ 週目標設定画面へ進む
+    render :weekly_goals_setup
+
+  end
+
+
   private
 
 
@@ -396,11 +444,10 @@ class MonthlyGoalsController < ApplicationController
   # ============================================================
 
   def set_monthly_goal
-
-    @monthly_goal =
-      current_user.monthly_goals.find(
-        params[:id]
-      )
+  @monthly_goal =
+    current_user.monthly_goals
+                .where(roadmap_goal_id: nil)
+                .find(params[:id])
   end
 
 
@@ -416,7 +463,6 @@ class MonthlyGoalsController < ApplicationController
         :title,
         :category_id,
         :goal_kind,
-        :roadmap_goal_id
       )
   end
 
@@ -429,7 +475,7 @@ class MonthlyGoalsController < ApplicationController
 
     @categories = Category.order(:id)
 
-    @target_month_param = params[:target_month]
+    @target_month_param = params[:target_month_period]
 
     flash.now[:alert] =
       "月目標を作成できませんでした"
@@ -439,6 +485,7 @@ class MonthlyGoalsController < ApplicationController
       status: :unprocessable_entity
     )
   end
+
 
 
   # ============================================================
@@ -452,4 +499,19 @@ class MonthlyGoalsController < ApplicationController
                   .order(created_at: :desc)
   end
 
+
+  # ============================================================
+  # セッション保存用の下書きデータを作成
+  # ============================================================
+
+  def draft_form(monthly_goal)
+    {
+      "title"           => monthly_goal.title,
+      "target_month"    => monthly_goal.target_month&.to_s,
+      "category_id"     => monthly_goal.category_id,
+      "goal_kind"       => monthly_goal.goal_kind,
+      "roadmap_goal_id" => monthly_goal.roadmap_goal_id
+    }
+  end
 end
+

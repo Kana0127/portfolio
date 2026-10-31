@@ -65,7 +65,7 @@
 
 
   　<%= form_with model: @monthly_goal,
-              url: monthly_goals_path,
+              url: weekly_goals_setup_monthly_goals_path,
               local: true, 
               class: "goal-new-form" do |f|%>
 
@@ -77,7 +77,7 @@
       <%= label_tag :target_month, "目標の対象月",
           class: "goal-new-form-label" %>
 
-      <%= select_tag :target_month,
+      <%= select_tag :target_month_period,
             options_for_select(
               [
                [
