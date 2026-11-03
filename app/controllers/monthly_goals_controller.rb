@@ -390,17 +390,13 @@ class MonthlyGoalsController < ApplicationController
 
   
   def weekly_goals_setup
+
     period = params[:target_month_period]
 
     # ② 想定外の値を拒否
     unless %w[this next].include?(period)
       return head :unprocessable_entity
     end
-
-    @monthly_goal =
-    current_user.monthly_goals.build(
-    monthly_goal_params
-    )
 
     # ③ 選択値を日付に変換
     target_month=
@@ -409,24 +405,27 @@ class MonthlyGoalsController < ApplicationController
       else
         Date.current.next_month.beginning_of_month
       end
-      
-    
+
+
+    @monthly_goal =
+    current_user.monthly_goals.build(
+    monthly_goal_params
+    )
+
     @monthly_goal.target_month = target_month
 
-
     
-
     unless @monthly_goal.valid?
       render_new_with_error
       return
     end
 
-    
+  
     session[:monthly_goal_draft] =
     draft_form(@monthly_goal)
 
-    @target_months =
-      build_target_months(
+    @target_weeks =
+      build_target_weeks(
         @monthly_goal.target_month
       )
 
@@ -434,6 +433,76 @@ class MonthlyGoalsController < ApplicationController
     render :weekly_goals_setup
 
   end
+
+  # ============================================================
+  # 新規作成フロー②
+  #
+  # セッションのロードマップ情報
+  #          ＋
+  # 対象月の週目標
+  #          ↓
+  # 一括保存
+  # ============================================================
+
+  def complete_creation
+
+    # ① セッションから下書きを取得
+    draft = session[:monthly_goal_draft]
+
+    if draft.blank?
+      redirect_to new_monthly_goal_path,
+                  alert: "もう一度入力してください"
+      return
+    end
+    #sessionのtarget_monthは文字列だったのでdate型へ変換
+    target_month = Date.iso8601(draft["target_month"])
+
+    # 下書きの対象月から
+    #    対象となる週の一覧を作成
+
+    @target_weeks =
+      build_target_weeks(target_month)
+    
+    #sessionに保管されていたhashの属性をactive recordの属性として組み立てる
+    @monthly_goal = current_user.monthly_goals.build(
+      title: draft["title"],
+      category_id: draft["category_id"],
+      goal_kind: draft["goal_kind"]
+    )
+
+    @monthly_goal.target_month = target_month
+
+    @target_weeks.each_with_index do |week, index|
+
+    # Viewで入力された週目標タイトルを取得
+    title = params.dig(
+      :weekly_goals,
+      index.to_s,
+      :title
+    )
+
+    # 月目標に紐づく週目標を組み立てる
+    @monthly_goal.weekly_goals.build(
+      title: title,
+      start_date: week[:start_date],
+      end_date: week[:end_date]
+    )
+    
+    session.delete(:monthly_goal_draft)
+
+    redirect_to monthly_goals_path,
+              notice: "月目標と週目標を作成しました"
+
+  else
+    @form_errors = @monthly_goal.errors.full_messages
+
+    flash.now[:alert] = "週目標を保存できませんでした"
+
+    render :weekly_goals_setup,
+           status: :unprocessable_entity
+
+  end
+
 
 
   private
@@ -514,4 +583,42 @@ class MonthlyGoalsController < ApplicationController
     }
   end
 end
+
+
+ # ============================================================
+  # 対象月の月初Date配列を生成
+  # ============================================================
+
+  def build_target_weeks(target_month)
+
+    return [] if target_month.blank?
+
+    #月初を取得
+    week_start = target_month.beginning_of_month
+
+    #月末を取得
+    month_end = target_month.end_of_month
+
+    weeks = []
+
+    #週の初めが月末最終日を超えていない限り処理を続ける
+    while week_start <= month_end
+
+     #その週の土曜日を取得
+     saturday = week_start.end_of_week(:sunday)
+     #その週の土曜日と月の終わりを比較し、先に来るほうをweek_endへ代入
+     week_end = [saturday, month_end].min
+     weeks << {
+       start_date: week_start,
+       end_date: week_end
+      }
+
+     # Q2. 次の週の開始日を取得
+     week_start = week_end + 1
+
+    end
+
+    weeks
+
+  end
 

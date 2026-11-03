@@ -1,0 +1,25 @@
+<%= form_with url: complete_creation_monthly_goals_path, method: :post, local: true,
+                  data: { turbo: false }, class: "goal-new-form" do %>
+      <% @target_weeks.each_with_index do|week, index| %>
+
+        <div class= "roadmap-setup-month">
+
+         <span>
+           第<%= index + 1 %>週
+
+           <%= week[:start_date] %>
+           ～
+           <%= week[:end_date] %>
+         </span>
+
+         <%= text_field_tag(
+           "weekly_goals[#{index}][title]",
+           nil,
+           required: true,
+           class: "goal-new-form-input"
+         ) %>
+
+        </div>
+
+      <% end %>
+<% end %>

@@ -29,6 +29,9 @@ Rails.application.routes.draw do
     resources :weekly_goals, only: %i[new create edit update destroy]
     # 月目標1つにつき月次振り返り1件のみ → 単数 resource
     resource :monthly_review, only: %i[new create show]
+    collection do
+      post :weekly_goals_setup
+    end
   end
 
   # daily_records / weekly_review は週目標配下にネスト
