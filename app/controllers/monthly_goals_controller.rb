@@ -480,6 +480,7 @@ class MonthlyGoalsController < ApplicationController
       index.to_s,
       :title
     )
+  
 
     # 月目標に紐づく週目標を組み立てる
     @monthly_goal.weekly_goals.build(
@@ -487,23 +488,26 @@ class MonthlyGoalsController < ApplicationController
       start_date: week[:start_date],
       end_date: week[:end_date]
     )
+    end
+
+     if @monthly_goal.save
     
-    session.delete(:monthly_goal_draft)
+      session.delete(:monthly_goal_draft)
 
-    redirect_to monthly_goals_path,
-              notice: "月目標と週目標を作成しました"
+      redirect_to monthly_goals_path,
+               notice: "月目標と週目標を作成しました"
 
-  else
-    @form_errors = @monthly_goal.errors.full_messages
+     else
 
-    flash.now[:alert] = "週目標を保存できませんでした"
+      @form_errors = @monthly_goal.errors.full_messages
 
-    render :weekly_goals_setup,
-           status: :unprocessable_entity
+      flash.now[:alert] = "週目標を保存できませんでした"
 
+      render :weekly_goals_setup,
+            status: :unprocessable_entity
+
+     end
   end
-
-
 
   private
 
@@ -582,7 +586,7 @@ class MonthlyGoalsController < ApplicationController
       "roadmap_goal_id" => monthly_goal.roadmap_goal_id
     }
   end
-end
+
 
 
  # ============================================================
@@ -615,10 +619,7 @@ end
 
      # Q2. 次の週の開始日を取得
      week_start = week_end + 1
-
     end
-
     weeks
-
   end
-
+end

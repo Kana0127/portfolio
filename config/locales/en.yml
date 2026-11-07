@@ -184,6 +184,15 @@ en:
         single_hint: "Standalone: Track completion of the goal over the month without weekly breakdowns."
 
       submit: "Create Goal"
+    
+    weekly_goals_setup:
+      page_title: "Create Weekly Goals for a Monthly Goal | Monthly Step"
+      back_aria: "Back to Monthly goal creation"
+      heading: "Create Weekly Goals for a Monthly Goal"
+
+      about:
+        title: "About Weekly Goals"
+        text: "Set specific goals for each week to help you achieve your monthly goal."
 
     edit:
       page_title: "Edit Monthly Goal | Monthly Step"

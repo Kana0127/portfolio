@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     resource :monthly_review, only: %i[new create show]
     collection do
       post :weekly_goals_setup
+      post :complete_creation
     end
   end
 

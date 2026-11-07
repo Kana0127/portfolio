@@ -1,10 +1,43 @@
+<% content_for :title, t(".page_title") %>
+
+<main class="goal-new-page ms-container">
+
+  <header class="goal-new-header">
+
+    <%= link_to "←",
+          new_monthly_goal_path,
+          class: "goal-new-back",
+          "aria-label": t(".back_aria") %>
+
+    <h1 class="goal-new-heading">
+      <%= t(".heading") %>
+    </h1>
+  </header>
+
+  <%# 月目標にひもづく週目標についての説明 %>
+  <div class="roadmap-note" id="roadmap-new-about">
+      <p class="roadmap-note-title"><%= t(".about.title") %></p>
+      <p class="roadmap-note-text">
+        <%= t(".about.text") %>
+      </p>
+  </div>
+
+  <%# 作成予定の月目標（まだ未保存）%>
+    <div class="roadmap-setup-goal">
+      <p class="roadmap-setup-goal-label">
+        <span class="roadmap-summary-icon" aria-hidden="true">📖</span>
+        <%= t(".roadmap_label") %>
+      </p>
+      <p class="roadmap-setup-goal-title"><%= @monthly_goals.title %></p>
+    </div>
+
 <%= form_with url: complete_creation_monthly_goals_path, method: :post, local: true,
                   data: { turbo: false }, class: "goal-new-form" do %>
       <% @target_weeks.each_with_index do|week, index| %>
 
-        <div class= "roadmap-setup-month">
+        <div class= "goal-new-form-group">
 
-         <span>
+         <span class ="goal-new-form-label">
            第<%= index + 1 %>週
 
            <%= week[:start_date] %>
@@ -22,4 +55,6 @@
         </div>
 
       <% end %>
+
+    <%= submit_tag "月目標と週目標を登録" %>
 <% end %>

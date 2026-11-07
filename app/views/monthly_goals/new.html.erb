@@ -28,13 +28,6 @@
     aria-labelledby="goal-new-card-label"
   >
 
-    <p
-      id="goal-new-card-label"
-      class="goal-new-card-label"
-    >
-     <%= t(".heading") %>
-    </p>
-
 
     <% if @monthly_goal.errors.any? %>
 
@@ -67,20 +60,21 @@
   　<%= form_with model: @monthly_goal,
               url: weekly_goals_setup_monthly_goals_path,
               local: true, 
-              class: "goal-new-form" do |f|%>
+              class: "goal-new-form" ,
+              data: { turbo: false } do |f|%>
 
     <%# ==================================================
           目標の対象月
       =================================================== %>
     <div class="goal-new-form-group">
 
-      <%= label_tag :target_month, "目標の対象月",
+      <%= label_tag :target_month_period, "目標の対象月",
           class: "goal-new-form-label" %>
 
       <%= select_tag :target_month_period,
             options_for_select(
               [
-               [
+            [
                 t(".target_month_options.current",
                   month: l(Date.current, format: :month_only)),
                 "this"

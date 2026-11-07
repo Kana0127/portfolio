@@ -216,6 +216,15 @@ ja:
 
       submit: "登録する"
     
+    weekly_goals_setup:
+      page_title: "月目標に紐づく週目標を作成 | Monthly Step"
+      back_aria: "月目標作成に戻る"
+      heading: "月目標達成のための週目標を作成する"
+
+      about:
+        title: "週目標について"
+        text: "月目標を達成するために、各週で取り組むことを具体的に設定しましょう。"
+    
     edit:
       page_title: "月目標を編集 | Monthly Step"
       back_aria: "目標一覧に戻る"
